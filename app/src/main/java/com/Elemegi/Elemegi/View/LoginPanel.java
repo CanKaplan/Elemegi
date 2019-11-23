@@ -1,6 +1,5 @@
 package com.Elemegi.Elemegi.View;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -9,7 +8,8 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import com.Elemegi.Elemegi.Controller.MainManager;
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.Elemegi.Elemegi.R;
 import com.Elemegi.Elemegi.Controller.ViewManager;
 
@@ -21,7 +21,7 @@ public class LoginPanel extends ViewManager {
     private String email;
     private String password;
     private boolean rememberMe;
-    private Activity act;
+    private AppCompatActivity act;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,7 +42,7 @@ public class LoginPanel extends ViewManager {
             @Override
             public void onClick(View v) {
                 //tara doğruysa
-                MainManager.getInstance().setUserProperties(email);
+                //MainManager.getInstance().setUserProperties(email);
                 changeActivity(ViewManager.getInstance().openHomePagePanel());
             }
         });
@@ -56,6 +56,7 @@ public class LoginPanel extends ViewManager {
             @Override
             public void onClick(View v) {
                 changeActivity(ViewManager.getInstance().openForgotPasswordPanel());
+                //changeActivity(ViewManager.getInstance().openChangePasswordPanel());
             }
         });
 

@@ -27,6 +27,18 @@
             android:name=".View.RegisterPanel"
             android:theme="@style/AppTheme.NoActionBar">
         </activity>
+        <activity
+            android:name=".View.HomePagePanel"
+            android:theme="@style/AppTheme.NoActionBar">
+        </activity>
+        <activity
+            android:name=".View.ForgotPasswordPanel"
+            android:theme="@style/AppTheme.NoActionBar">
+        </activity>
+        <activity
+            android:name=".View.ChangePasswordPanel"
+            android:theme="@style/AppTheme.NoActionBar">
+        </activity>
     </application>
 
 </manifest>

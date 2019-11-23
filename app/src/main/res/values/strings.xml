@@ -1,4 +1,24 @@
 <resources>
-    <string name="app_name">Elemegi</string>
-    <string name="action_settings">Settings</string>
+    <string name="app_name"><b>El Emegi</b></string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="nav_header_desc">Navigation header</string>
+
+
+    <string name="home_page"><b>Home Page</b></string>
+    <string name="profile_page"><b>Profile</b></string>
+    <string name="search_page"><b>Search</b></string>
+    <string name="add_page"><b>Add</b></string>
+    <string name="settings_page"><b>Settings</b></string>
+
+    <string name="menu_categories"><b>Categories</b></string>
+    <string name="menu_my_orders"><b>My Orders</b></string>
+    <string name="menu_orders"><b>Orders</b></string>
+    <string name="menu_favourites"><b>Favourites</b></string>
+    <string name="menu_message"><b>Messages</b></string>
+    <string name="menu_help"><b>Help</b></string>
+    <string name="menu_logout"><b>Logout</b></string>
+
+
+
 </resources>

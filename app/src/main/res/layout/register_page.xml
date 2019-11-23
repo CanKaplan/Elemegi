@@ -58,13 +58,13 @@
         android:textColor="#F5F5F3" />
 
     <TextView
-        android:id="@+id/forgotPasswordButton"
+        android:id="@+id/backButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="480dp"
         android:clickable="true"
-        android:text="Login"
+        android:text="Back"
         android:textAlignment="center"
         android:textAllCaps="false"
         android:textColor="#E1070404"
@@ -82,9 +82,7 @@
         android:ems="10"
         android:hint="Name"
         android:inputType="textPersonName"
-        android:textColorHighlight="#DC00FF04"
         android:textColorHint="#DC000000"
-        android:textColorLink="#DC00FF04"
         android:textCursorDrawable="@android:color/holo_blue_light" />
     <EditText
         android:id="@+id/surname"
@@ -97,9 +95,7 @@
         android:ems="10"
         android:hint="Surname"
         android:inputType="textPersonName"
-        android:textColorHighlight="#DC00FF04"
         android:textColorHint="#DC000000"
-        android:textColorLink="#DC00FF04"
         android:textCursorDrawable="@android:color/holo_blue_light" />
     <EditText
         android:id="@+id/email"
@@ -112,9 +108,7 @@
         android:ems="10"
         android:hint="E-mail"
         android:inputType="textEmailAddress"
-        android:textColorHighlight="#DC00FF04"
         android:textColorHint="#DC000000"
-        android:textColorLink="#DC00FF04"
         android:textCursorDrawable="@android:color/holo_blue_light" />
 
     <EditText
@@ -127,10 +121,8 @@
         android:backgroundTintMode="src_in"
         android:ems="10"
         android:hint="Password"
-        android:inputType="textEmailAddress"
-        android:textColorHighlight="#DC00FF04"
+        android:inputType="textPassword"
         android:textColorHint="#DC000000"
-        android:textColorLink="#DC00FF04"
         android:textCursorDrawable="@android:color/holo_blue_light" />
 
     <RadioGroup

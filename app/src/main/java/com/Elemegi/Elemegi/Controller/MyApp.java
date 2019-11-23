@@ -1,7 +1,8 @@
 package com.Elemegi.Elemegi.Controller;
 
-import android.app.Activity;
 import android.app.Application;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 public class MyApp extends Application {
 
@@ -11,11 +12,11 @@ public class MyApp extends Application {
         super.onCreate();
     }
 
-    private Activity mCurrentActivity = null;
-    public Activity getCurrentActivity(){
+    private AppCompatActivity mCurrentActivity = null;
+    public AppCompatActivity getCurrentActivity(){
         return mCurrentActivity;
     }
-    public void setCurrentActivity(Activity mCurrentActivity){
+    public void setCurrentActivity(AppCompatActivity mCurrentActivity){
         this.mCurrentActivity = mCurrentActivity;
     }
     public void setFirstTime(boolean flag){
