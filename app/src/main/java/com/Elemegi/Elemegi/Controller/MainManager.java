@@ -21,11 +21,9 @@ public class MainManager {
     }
 
     public static void setUserProperties(String email) {
-        //check email get id set properties
+        //loginden gelen user setlenicek
     }
 
-    public void openLoginPanel() {
-    }
 
     public List<User> getUsers() {
         return users;
@@ -117,4 +115,14 @@ public class MainManager {
         else
             return null;
     }
+
+    //setPassword Methodu
+
+    //remember me local file set method
+
+    //get 3 product for homepage
+
+    //get 18 product for homepage favourite
+
+    //
 }
