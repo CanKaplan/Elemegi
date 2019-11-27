@@ -13,13 +13,12 @@ public class Product {
     private int deliverTime;
     private List<Comment> comments;
 
-    public Product(String name, long productID, long userID, List<String> labels, List<String> image, double overallRating, double price, int deliverTime) {
+    public Product(String name, long productID, long userID, List<String> labels, List<String> image, double price, int deliverTime) {
         this.name = name;
         this.productID = productID;
         UserID = userID;
         this.labels = labels;
         this.image = image;
-        this.overallRating = overallRating;
         this.price = price;
         this.deliverTime = deliverTime;
     }

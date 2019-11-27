@@ -14,13 +14,14 @@ public class User {
     private long longtitude;
     private long latitude;
 
-    public User(String name, int roleType, String password, String email,String address,int age){
+    public User(String name, int roleType, String password, String email,String phoneNumber,String address,int age){
         this.name = name;
         this.roleType = roleType;
         this.password = password;
         this.email = email;
         this.address = address;
         this.age = age;
+        this.phoneNumber = phoneNumber;
     }
 
     public long getID() {

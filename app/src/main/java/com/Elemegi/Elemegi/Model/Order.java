@@ -9,15 +9,23 @@ public class Order {
     private String productName;
     private String productImage;
     private double price;
+    private String description;
 
-    public Order(long orderID, long productID, long userID, int amount, String productName, String productImage, double price) {
+    public Order(long orderID, long productID, long userID, int amount, String productName, double price) {
         this.orderID = orderID;
         this.productID = productID;
-        UserID = userID;
+        this.UserID = userID;
         this.amount = amount;
         this.productName = productName;
-        this.productImage = productImage;
         this.price = price;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public long getOrderID() {
