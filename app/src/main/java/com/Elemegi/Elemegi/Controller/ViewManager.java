@@ -1,10 +1,8 @@
 package com.Elemegi.Elemegi.Controller;
 
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -12,6 +10,7 @@ import com.Elemegi.Elemegi.View.ChangePasswordPanel;
 import com.Elemegi.Elemegi.View.ForgotPasswordPanel;
 import com.Elemegi.Elemegi.View.HomePagePanel;
 import com.Elemegi.Elemegi.View.LoginPanel;
+import com.Elemegi.Elemegi.View.ProductPagePanel;
 import com.Elemegi.Elemegi.View.RegisterPanel;
 
 
@@ -161,5 +160,9 @@ public class ViewManager extends AppCompatActivity {
             return "Passwords don't match!";
         }
         return "";
+    }
+
+    public Class openProductPagePanel(){
+        return ProductPagePanel.class;
     }
 }

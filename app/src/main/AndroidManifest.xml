@@ -36,6 +36,10 @@
             android:theme="@style/AppTheme.NoActionBar">
         </activity>
         <activity
+            android:name=".View.ProductPagePanel"
+            android:theme="@style/AppTheme.NoActionBar">
+        </activity>
+        <activity
             android:name=".View.ChangePasswordPanel"
             android:theme="@style/AppTheme.NoActionBar">
         </activity>
