@@ -32,6 +32,10 @@
             android:theme="@style/AppTheme.NoActionBar">
         </activity>
         <activity
+            android:name=".View.CommentsPanel"
+            android:theme="@style/AppTheme.NoActionBar">
+        </activity>
+        <activity
             android:name=".View.ForgotPasswordPanel"
             android:theme="@style/AppTheme.NoActionBar">
         </activity>

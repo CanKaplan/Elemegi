@@ -7,6 +7,7 @@ import android.os.Bundle;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.Elemegi.Elemegi.View.ChangePasswordPanel;
+import com.Elemegi.Elemegi.View.CommentsPanel;
 import com.Elemegi.Elemegi.View.ForgotPasswordPanel;
 import com.Elemegi.Elemegi.View.HomePagePanel;
 import com.Elemegi.Elemegi.View.LoginPanel;
@@ -54,6 +55,9 @@ public class ViewManager extends AppCompatActivity {
         return LoginPanel.class;
     }
 
+    public Class openCommentsPanel() {
+        return CommentsPanel.class;
+    }
     public void openLoginPanel() {
         currentAct = myApp.getCurrentActivity();
         startActivity(new Intent(currentAct, LoginPanel.class));

@@ -43,7 +43,14 @@ public class ProductPagePanel extends ViewManager implements BottomNavigationVie
     private int dotscount;
     private ImageView[] dots;
     private float startX;
-
+    private ImageView starImage;
+    private ImageView commentsIcon;
+    private TextView description;
+    private TextView price;
+    private TextView rate;
+    private TextView durationTime;
+    private TextView commentsText;
+    private boolean isFaved = false;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -51,6 +58,13 @@ public class ProductPagePanel extends ViewManager implements BottomNavigationVie
         navView2 = findViewById(R.id.nav_view_bottom);
         v_flipper = findViewById(R.id.v_flipper);
         sliderDotspanel = (LinearLayout) findViewById(R.id.SliderDots);
+        starImage = (ImageView) findViewById(R.id.starImage);
+        description = (TextView) findViewById(R.id.descriptionText);
+        price = (TextView) findViewById(R.id.price);
+        rate = (TextView) findViewById(R.id.rating);
+        durationTime = (TextView) findViewById(R.id.prepTime);
+        commentsIcon = (ImageView) findViewById(R.id.commentsIcon);
+        commentsText = (TextView) findViewById(R.id.commentsText);
 
         int images[] = {R.drawable.pic1, R.drawable.pic2, R.drawable.pic3};
         dotscount = images.length;
@@ -144,6 +158,34 @@ public class ProductPagePanel extends ViewManager implements BottomNavigationVie
         navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
         navView2.setOnNavigationItemSelectedListener(this);
+        starImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(isFaved){
+                    isFaved = false;
+                    starImage.setImageResource(R.drawable.star_empty);
+                    //update databse
+                }
+                else{
+                    isFaved = true;
+                    starImage.setImageResource(R.drawable.star_full);
+                    //update databse
+                }
+            }
+        });
+
+        commentsIcon.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                changeActivity(ViewManager.getInstance().openCommentsPanel());
+            }
+        });
+        commentsText.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                changeActivity(ViewManager.getInstance().openCommentsPanel());
+            }
+        });
 
     }
 

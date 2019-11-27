@@ -73,6 +73,8 @@
         app:layout_constraintLeft_toRightOf="@+id/profImage"
         android:layout_marginTop="308dp"
         />
+
+
     <ImageView
         android:id="@+id/starImage"
         android:layout_width="35dp"
@@ -81,8 +83,34 @@
         android:clickable="true"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        android:layout_marginTop="305dp"
-        android:focusable="true" />
+        android:layout_marginTop="305dp" />
+
+
+    <TextView
+        android:id="@+id/rating"
+        android:text="--"
+        android:layout_width="150dp"
+        android:layout_height="70dp"
+        android:textSize="22dp"
+        android:textColor="#FFFFFF"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:layout_marginTop="308dp"
+        android:layout_marginLeft="275dp"
+        />
+
+    <TextView
+        android:text="/5"
+        android:layout_width="150dp"
+        android:layout_height="70dp"
+        android:textSize="22dp"
+        android:textColor="#FFFFFF"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:layout_marginTop="308dp"
+        android:layout_marginLeft="290dp"
+        />
+
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -104,16 +132,92 @@
         app:layout_constraintLeft_toLeftOf="parent"
         android:background="@drawable/ovalrectangle"/>
 
+    <ImageView
+        android:layout_width="25dp"
+        android:layout_height="25dp"
+        android:src="@drawable/duration"
+        android:clickable="true"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:layout_marginTop="385dp"
+        android:layout_marginLeft="259dp"
+        android:focusable="true" />
+
+    <TextView
+        android:id="@+id/prepTime"
+        android:text="10 Min"
+        android:layout_width="150dp"
+        android:layout_height="70dp"
+        android:textSize="14sp"
+        android:textColor="#FFFFFF"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:layout_marginTop="385dp"
+        android:layout_marginLeft="290dp"
+        />
+
+    <ImageView
+        android:layout_width="25dp"
+        android:layout_height="25dp"
+        android:src="@drawable/price"
+        android:clickable="true"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:layout_marginTop="422dp"
+        android:layout_marginLeft="259dp"
+        android:focusable="true" />
+
+    <TextView
+        android:id="@+id/price"
+        android:text="21.5"
+        android:layout_width="150dp"
+        android:layout_height="70dp"
+        android:textSize="14sp"
+        android:textColor="#FFFFFF"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:layout_marginTop="422dp"
+        android:layout_marginStart="290dp"
+        />
+
+    <ImageView
+        android:id="@+id/commentsIcon"
+        android:layout_width="25dp"
+        android:layout_height="25dp"
+        android:src="@drawable/comment"
+        android:clickable="true"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:layout_marginTop="459dp"
+        android:layout_marginStart="259dp"
+        android:focusable="true" />
+
+    <TextView
+        android:id="@+id/commentsText"
+        android:text="Comments"
+        android:layout_width="150dp"
+        android:layout_height="70dp"
+        android:textSize="14sp"
+        android:clickable="true"
+        android:textColor="#FFFFFF"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:layout_marginTop="459dp"
+        android:layout_marginStart="290dp"
+        />
+
+
     <TextView
         android:text="Description"
         android:layout_width="220dp"
         android:layout_height="20dp"
-        android:textSize="11dp"
+        android:textSize="11sp"
         android:textStyle="bold"
         android:textColor="#000000"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
-        android:layout_marginLeft="15dp"
+        android:layout_marginStart="15dp"
+        android:clickable="true"
         android:layout_marginTop="385dp"
         />
 
@@ -122,11 +226,11 @@
         android:text="Aaaaaaaasdfasfasfasfafasfxfdadsdhjfgthtsssssgsergtaergaergaesssssrgarczxcaazxczxegaergsaerggfhghgsdfgarttudafgergaergae"
         android:layout_width="222dp"
         android:layout_height="100dp"
-        android:textSize="15dp"
+        android:textSize="15sp"
         android:textColor="#000000"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
-        android:layout_marginLeft="20dp"
+        android:layout_marginStart="20dp"
         android:layout_marginTop="405dp"
         />
 

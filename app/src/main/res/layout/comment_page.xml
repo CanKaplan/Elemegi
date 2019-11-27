@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="#DCBB1616"
+    >
+
+    <ScrollView
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent" >
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:id="@+id/first_layout"
+                android:layout_width="match_parent"
+                android:layout_height="65dp"
+                android:background="#FFFFFF"
+                android:layout_marginTop="30dp"
+                android:weightSum="1"
+                >
+
+                <TextView
+                    android:id="@+id/producer"
+                    android:text="Aaaaaaa"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:textSize="25dp"
+                    android:textColor="#000000"
+                    />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="65dp"
+                android:background="#FFFFFF"
+                android:layout_marginTop="1dp"
+                android:weightSum="1"
+                >
+
+                <TextView
+                    android:text="Aaaaaaa"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:textSize="25dp"
+                    android:textColor="#000000"
+                    />
+
+            </LinearLayout>
+        </LinearLayout>
+
+    </ScrollView>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_alignParentBottom="true"
+        android:background="#DDD8D8"
+        android:orientation="horizontal">
+        <EditText
+            android:id="@+id/name"
+            android:layout_width="310dp"
+            android:layout_height="match_parent"
+            android:hint="Write a Comment..."
+            android:backgroundTint="#00000000"
+            android:inputType="textPersonName"
+            android:textColorHint="#A6A8A5A5"
+            android:textCursorDrawable="@android:color/holo_blue_light" />
+        <ImageView
+            android:layout_width="40dp"
+            android:layout_height="match_parent"
+            android:clickable="true"
+            android:src="@drawable/send"/>
+    </LinearLayout>
+</RelativeLayout>
