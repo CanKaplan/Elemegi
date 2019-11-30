@@ -428,7 +428,10 @@ public class DatabaseManager extends MainManager {
                     "remainingTime int,\n" +
                     "productName varchar(50),\n" +
                     "productImage varchar,\n" +
-                    "price double;");
+                    "price double,\n" +
+                    "primary key (orderID),\n" +
+                    "foreign key (productID) references (Productlist),\n" +
+                    "foreign key (userID) references (Userlist);");
             pstmt.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
