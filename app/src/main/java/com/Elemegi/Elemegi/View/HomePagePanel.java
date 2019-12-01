@@ -327,13 +327,11 @@ public class HomePagePanel extends ViewManager implements BottomNavigationView.O
     public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
         switch(menuItem.getItemId()) {
             case R.id.navigation_home:
-                Log.d("aaa","slm");
                 break;
             case R.id.navigation_profile:
-                changeActivity(ViewManager.getInstance().openLoginPanel1());
+                changeActivity(ViewManager.getInstance().openProfile());
                 break;
             case R.id.navigation_logo:
-                Log.d("aaa","nbr");
                 break;
             case R.id.navigation_search:
                 //changeActivity(ViewManager.getInstance().openSearchPanel());

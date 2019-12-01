@@ -45,6 +45,7 @@ public class ProductPagePanel extends ViewManager implements BottomNavigationVie
     private float startX;
     private ImageView starImage;
     private ImageView commentsIcon;
+    private ImageView profImage;
     private TextView description;
     private TextView price;
     private TextView rate;
@@ -65,6 +66,13 @@ public class ProductPagePanel extends ViewManager implements BottomNavigationVie
         durationTime = (TextView) findViewById(R.id.prepTime);
         commentsIcon = (ImageView) findViewById(R.id.commentsIcon);
         commentsText = (TextView) findViewById(R.id.commentsText);
+        profImage = (ImageView) findViewById(R.id.profImage);
+        navView2.setSelectedItemId(R.id.navigation_logo);
+        navView2.getMenu().getItem(0).setCheckable(false);
+        navView2.getMenu().getItem(1).setCheckable(false);
+        navView2.getMenu().getItem(3).setCheckable(false);
+        navView2.getMenu().getItem(4).setCheckable(false);
+
 
         int images[] = {R.drawable.pic1, R.drawable.pic2, R.drawable.pic3};
         dotscount = images.length;
@@ -158,6 +166,12 @@ public class ProductPagePanel extends ViewManager implements BottomNavigationVie
         navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
         navView2.setOnNavigationItemSelectedListener(this);
+        profImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                changeActivity(ViewManager.getInstance().openProfile());
+            }
+        });
         starImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -219,13 +233,12 @@ public class ProductPagePanel extends ViewManager implements BottomNavigationVie
     public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
         switch(menuItem.getItemId()) {
             case R.id.navigation_home:
-                Log.d("aaa","slm");
+                changeActivity(ViewManager.getInstance().openHomePagePanel());
                 break;
             case R.id.navigation_profile:
-                changeActivity(ViewManager.getInstance().openLoginPanel1());
+                changeActivity(ViewManager.getInstance().openProfile());
                 break;
             case R.id.navigation_logo:
-                Log.d("aaa","nbr");
                 break;
             case R.id.navigation_search:
                 //changeActivity(ViewManager.getInstance().openSearchPanel());
@@ -250,7 +263,6 @@ public class ProductPagePanel extends ViewManager implements BottomNavigationVie
                 changeActivity(ViewManager.getInstance().openLoginPanel1());
                 break;
             case R.id.nav_logout:
-                //changeActivity(ViewManager.getInstance().openSettingsPanel());
                 changeActivity(ViewManager.getInstance().openLoginPanel1());
                 break;
         }

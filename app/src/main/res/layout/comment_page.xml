@@ -6,62 +6,50 @@
     android:background="#DCBB1616"
     >
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="35dp"
+        android:layout_alignParentTop="true"
+        android:background="#DCBB1616"
+        android:orientation="horizontal">
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/textView5"
+            android:fontFamily="sans-serif-black"
+            android:gravity="center_horizontal"
+            android:text="COMMENTS"
+            android:textAlignment="center"
+            android:textColor="#F1EEEE"
+            android:textSize="25sp"
+            android:textStyle="bold"
+            android:typeface="normal"
+            />
+    </LinearLayout>
+
     <ScrollView
         android:layout_width="fill_parent"
-        android:layout_height="fill_parent" >
+        android:layout_height="fill_parent"
+        android:layout_marginBottom="50dp"
+        android:layout_marginTop="35dp"
+        >
         <LinearLayout
+            android:id="@+id/commentsList"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical">
 
-            <LinearLayout
-                android:id="@+id/first_layout"
-                android:layout_width="match_parent"
-                android:layout_height="65dp"
-                android:background="#FFFFFF"
-                android:layout_marginTop="30dp"
-                android:weightSum="1"
-                >
-
-                <TextView
-                    android:id="@+id/producer"
-                    android:text="Aaaaaaa"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:textSize="25dp"
-                    android:textColor="#000000"
-                    />
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="65dp"
-                android:background="#FFFFFF"
-                android:layout_marginTop="1dp"
-                android:weightSum="1"
-                >
-
-                <TextView
-                    android:text="Aaaaaaa"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:textSize="25dp"
-                    android:textColor="#000000"
-                    />
-
-            </LinearLayout>
         </LinearLayout>
 
     </ScrollView>
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="60dp"
+        android:layout_height="50dp"
         android:layout_alignParentBottom="true"
         android:background="#DDD8D8"
         android:orientation="horizontal">
         <EditText
-            android:id="@+id/name"
+            android:id="@+id/comment"
             android:layout_width="310dp"
             android:layout_height="match_parent"
             android:hint="Write a Comment..."
@@ -70,9 +58,10 @@
             android:textColorHint="#A6A8A5A5"
             android:textCursorDrawable="@android:color/holo_blue_light" />
         <ImageView
-            android:layout_width="40dp"
-            android:layout_height="match_parent"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
             android:clickable="true"
+            android:layout_marginTop="10dp"
             android:src="@drawable/send"/>
     </LinearLayout>
 </RelativeLayout>

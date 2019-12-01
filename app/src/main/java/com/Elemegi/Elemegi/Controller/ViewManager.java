@@ -12,6 +12,7 @@ import com.Elemegi.Elemegi.View.ForgotPasswordPanel;
 import com.Elemegi.Elemegi.View.HomePagePanel;
 import com.Elemegi.Elemegi.View.LoginPanel;
 import com.Elemegi.Elemegi.View.ProductPagePanel;
+import com.Elemegi.Elemegi.View.ProfilePagePanel;
 import com.Elemegi.Elemegi.View.RegisterPanel;
 
 
@@ -168,5 +169,8 @@ public class ViewManager extends AppCompatActivity {
 
     public Class openProductPagePanel(){
         return ProductPagePanel.class;
+    }
+
+    public Class openProfile() { return ProfilePagePanel.class;
     }
 }
