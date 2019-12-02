@@ -4,14 +4,12 @@ public class Comment {
     private long commentID;
     private long ProductID;
     private long UserID;
-    private String image;
     private String comment;
 
-    public Comment(long commentID, long productID, long userID, String image, String comment) {
+    public Comment(long commentID, long productID, long userID, String comment) {
         this.commentID = commentID;
         ProductID = productID;
         UserID = userID;
-        this.image = image;
         this.comment = comment;
     }
 
@@ -39,13 +37,6 @@ public class Comment {
         UserID = userID;
     }
 
-    public String getImage() {
-        return image;
-    }
-
-    public void setImage(String image) {
-        this.image = image;
-    }
 
     public String getComment() {
         return comment;

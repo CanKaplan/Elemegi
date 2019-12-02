@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="#DCBB1616"
-    tools:showIn="@layout/app_bar_profile">
+    <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#DCBB1616"
+        tools:showIn="@layout/app_bar_profile">
+
     <LinearLayout
         android:id="@+id/layout1"
         android:layout_width="match_parent"
@@ -40,6 +41,7 @@
         android:layout_marginLeft="15dp"
         android:layout_marginTop="25dp"
         android:orientation="vertical"
+        android:id="@+id/layout2"
         app:layout_constraintTop_toBottomOf="@id/layout1"
         android:weightSum="9">
 
@@ -56,8 +58,8 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
-                android:layout_marginTop="15dp"
-                android:layout_marginLeft="10dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginLeft="7dp"
                 android:text="can.kaplan@ug.bilkent.edu.tr"
                 android:textStyle="bold"
                 android:textColor="#FFFFFF"
@@ -66,43 +68,76 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
             android:orientation="horizontal">
 
             <ImageView
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:src="@drawable/phonenumber"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:src="@drawable/phone_number"
                 />
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
                 android:textSize="14sp"
                 android:layout_marginLeft="10dp"
-                android:layout_marginTop="15dp"
+                android:layout_marginTop="7dp"
                 android:textStyle="bold"
                 android:textColor="#FFFFFF"
-                android:text="Phone Number : 0303094363564"/>
+                android:text="0303094363564"/>
         </LinearLayout>
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
             android:orientation="horizontal">
 
             <ImageView
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:src="@drawable/address"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:src="@drawable/homepage"
                 />
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textStyle="bold"
-                android:layout_marginTop="15dp"
+                android:layout_marginTop="7dp"
                 android:layout_marginLeft="10dp"
                 android:textColor="#FFFFFF"
-                android:text="Address : bilkentgds jgdfmmhhrdgfmhn dfg fhnb"
+                android:text="bilkentgds jgdfmmhhrdgfmhn dfg fhnb"
                 android:textSize="14sp"/>
         </LinearLayout>
+
+    </LinearLayout>
+    <LinearLayout
+        android:id="@+id/layout3"
+        android:layout_width="70dp"
+        android:layout_height="30dp"
+        app:layout_constraintTop_toBottomOf="@id/layout2"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:layout_marginStart="140dp"
+        android:layout_marginTop="20dp"
+        android:clickable="true"
+        android:background="#000000"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="40dp"
+            android:layout_height="30dp"
+            android:layout_marginTop="4dp"
+            android:layout_marginLeft="3dp"
+            android:text="Edit"
+            android:textColor="#FFFFFF"
+            android:textSize="18sp"/>
+
+        <ImageView
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_marginStart="3dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginRight="3dp"
+            android:src="@drawable/edit"/>
+
 
     </LinearLayout>
     <com.google.android.material.bottomnavigation.BottomNavigationView

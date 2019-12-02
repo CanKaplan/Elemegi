@@ -48,6 +48,7 @@ public class ForgotPasswordPanel extends ViewManager {
 
     public void changeActivity(Class className) {
         startActivity(new Intent(act, className));
+        finish();
     }
 
 }

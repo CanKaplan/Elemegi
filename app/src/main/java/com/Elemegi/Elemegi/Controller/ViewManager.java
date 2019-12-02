@@ -8,9 +8,11 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.Elemegi.Elemegi.View.ChangePasswordPanel;
 import com.Elemegi.Elemegi.View.CommentsPanel;
+import com.Elemegi.Elemegi.View.EditProfilePanel;
 import com.Elemegi.Elemegi.View.ForgotPasswordPanel;
 import com.Elemegi.Elemegi.View.HomePagePanel;
 import com.Elemegi.Elemegi.View.LoginPanel;
+import com.Elemegi.Elemegi.View.MyOrdersPanel;
 import com.Elemegi.Elemegi.View.ProductPagePanel;
 import com.Elemegi.Elemegi.View.ProfilePagePanel;
 import com.Elemegi.Elemegi.View.RegisterPanel;
@@ -172,5 +174,17 @@ public class ViewManager extends AppCompatActivity {
     }
 
     public Class openProfile() { return ProfilePagePanel.class;
+    }
+    public boolean checkUserFromDatabase(String email, String password){
+        if (MainManager.getInstance().checkUser(email,password)){
+            return true;
+        }
+        else
+            return false;
+    }
+    public Class openEditProfilePanel() { return EditProfilePanel.class;
+    }
+
+    public Class openMyOrdersPanel() { return MyOrdersPanel.class;
     }
 }

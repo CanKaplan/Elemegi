@@ -5,6 +5,7 @@ import com.Elemegi.Elemegi.Model.Order;
 import com.Elemegi.Elemegi.Model.Product;
 import com.Elemegi.Elemegi.Model.User;
 
+import java.util.Date;
 import java.util.List;
 
 public class MainManager {
@@ -15,8 +16,7 @@ public class MainManager {
     private List<Order> orders;
 
     //defined managers that will be controlled by MainManager
-    private DatabaseManager databaseManager;
-    private AuthenticationManager authenticationManager;
+    private DatabaseManager databaseManager = new DatabaseManager();
     private NetworkManager networkManager;
     private SearchManager searchManager;
 
@@ -63,14 +63,22 @@ public class MainManager {
         this.orders = orders;
     }
 
+    public boolean checkUser(String email, String password){
+        boolean statement = databaseManager.checkUser(email, password);
+        if (statement){
+            return true;
+        }
+        return false;
+    }
+
     public void createUser(String name, int roleType, String password, String email, String phoneNumber, String address, int age) {
-        User user = new User(name, roleType, password, email, phoneNumber, address, age);
+        User user = new User(name, roleType, password, email, phoneNumber, address);
         users.add(user);
         // Bu oluşturulan user database e eklenmeli
         //Id olayı halledilmesi lazım
         databaseManager.createUserlistTable();
         databaseManager.insertUser(name, email, password);
-        databaseManager.setUserID(email,password);
+        //databaseManager.setUserID(email,password);
     }
 
     public void addProduct(String productName, long productID, long userID, List<String> labels, List<String> image, double price, int deliverTime) {
@@ -108,10 +116,10 @@ public class MainManager {
         else
             return null;
     }
-    public void giveOrder(long productID, long userID,int amount, String productName,double price,String description, int deliverTime){
-        Order order = new Order(0,productID,userID,amount,productName,price);
-        order.setDescription(description);
-        order.setRemainingTime(deliverTime);
+    public void giveOrder(long orderID, long productID, long userID, String productName,double price,String description, Date givenDate){
+        Order order = new Order(orderID,productID,userID,givenDate,productName,price);
+        //order.setDescription(description);
+        //order.setRemainingTime(deliverTime);
         orders.add(order);
     }
     public Order cancelOrder(long orderID){

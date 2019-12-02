@@ -8,19 +8,16 @@ public class User {
     private String email;
     private String phoneNumber;
     private String address;
-    private double point;
-    private int age;
     //image eklenecek
     private long longtitude;
     private long latitude;
 
-    public User(String name, int roleType, String password, String email,String phoneNumber,String address,int age){
+    public User(String name, int roleType, String password, String email,String phoneNumber,String address){
         this.name = name;
         this.roleType = roleType;
         this.password = password;
         this.email = email;
         this.address = address;
-        this.age = age;
         this.phoneNumber = phoneNumber;
     }
 
@@ -78,22 +75,6 @@ public class User {
 
     public void setAddress(String address) {
         this.address = address;
-    }
-
-    public double getPoint() {
-        return point;
-    }
-
-    public void setPoint(double point) {
-        this.point = point;
-    }
-
-    public int getAge() {
-        return age;
-    }
-
-    public void setAge(int age) {
-        this.age = age;
     }
 
     public long getLongtitude() {

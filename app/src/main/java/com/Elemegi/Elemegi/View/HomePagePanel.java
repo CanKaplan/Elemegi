@@ -37,7 +37,6 @@ import com.google.android.material.navigation.NavigationView;
 public class HomePagePanel extends ViewManager implements BottomNavigationView.OnNavigationItemSelectedListener, NavigationView.OnNavigationItemSelectedListener {
     private int currentPosition = 1;
     private AppCompatActivity act;
-    private AppBarConfiguration mAppBarConfiguration;
     BottomNavigationView navView2;
     NavigationView navigationView;
     ViewFlipper v_flipper;
@@ -298,12 +297,14 @@ public class HomePagePanel extends ViewManager implements BottomNavigationView.O
 
     public void changeActivity(Class className) {
         startActivity(new Intent(act, className));
+        finish();
     }
 
     public void changeActivity(Class className, int id) {
         Intent myIntent = new Intent(act, className);
         myIntent.putExtra("id", id);
         startActivity(myIntent);
+        finish();
     }
 
     View.OnLayoutChangeListener onLayoutChangeListener_viewFlipper = new View.OnLayoutChangeListener() {

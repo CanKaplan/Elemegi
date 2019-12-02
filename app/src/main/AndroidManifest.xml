@@ -4,11 +4,14 @@
 
     <application
         android:allowBackup="true"
+        android:hardwareAccelerated="false"
         android:icon="@mipmap/ic_launcher"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
+        android:largeHeap="true"
         android:theme="@style/AppTheme"
-        android:name=".Controller.MyApp">
+        android:name=".Controller.MyApp"
+        >
 
         <activity
             android:name=".Controller.ViewManager"
@@ -21,6 +24,14 @@
         </activity>
         <activity
             android:name=".View.LoginPanel"
+            android:theme="@style/AppTheme.NoActionBar">
+        </activity>
+        <activity
+            android:name=".View.EditProfilePanel"
+            android:theme="@style/AppTheme.NoActionBar">
+        </activity>
+        <activity
+            android:name=".View.MyOrdersPanel"
             android:theme="@style/AppTheme.NoActionBar">
         </activity>
         <activity

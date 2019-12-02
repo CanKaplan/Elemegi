@@ -4,6 +4,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.ViewFlipper;
 
 import androidx.annotation.NonNull;
@@ -21,17 +23,23 @@ public class ProfilePagePanel extends ViewManager implements NavigationView.OnNa
     private AppCompatActivity act;
     BottomNavigationView navView3;
     NavigationView navigationView;
+    LinearLayout editButton;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.profile_page_page);
         navView3 = findViewById(R.id.nav_view_bottom);
         navView3.setSelectedItemId(R.id.navigation_profile);
-        //navView2.getMenu().getItem(0)
+        editButton = findViewById(R.id.layout3);
 
         myApp.setCurrentActivity(this);
         act = myApp.getCurrentActivity();
-
+        editButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                changeActivity(ViewManager.getInstance().openEditProfilePanel());
+            }
+        });
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
@@ -49,12 +57,14 @@ public class ProfilePagePanel extends ViewManager implements NavigationView.OnNa
 
     public void changeActivity(Class className) {
         startActivity(new Intent(act, className));
+        finish();
     }
 
     public void changeActivity(Class className, int id) {
         Intent myIntent = new Intent(act, className);
         myIntent.putExtra("id", id);
         startActivity(myIntent);
+        finish();
     }
 
     public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
@@ -83,7 +93,7 @@ public class ProfilePagePanel extends ViewManager implements NavigationView.OnNa
                 break;
             case R.id.nav_my_orders:
                 //changeActivity(ViewManager.getInstance().openSettingsPanel());
-                changeActivity(ViewManager.getInstance().openLoginPanel1());
+                changeActivity(ViewManager.getInstance().openMyOrdersPanel());
                 break;
             case R.id.nav_help:
                 //changeActivity(ViewManager.getInstance().openSettingsPanel());
