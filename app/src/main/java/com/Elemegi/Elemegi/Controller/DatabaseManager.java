@@ -25,21 +25,22 @@ import java.util.concurrent.TimeUnit;
 
 public class DatabaseManager extends MainManager {
 
+    //contraints and initialized variables
     private int userIDCounter;
 
     private String url = "jdbc:mysql://remotemysql.com?useSSL=false"; //url address
     private String username = "4AvrqHFO4g"; // username
-    private String password = "ItDNsJYW6V";
+    private String password = "ItDNsJYW6V"; // password
     private Connection conn;
 
     private Statement myst;
     private ResultSet myrs;
 
-
+    //main manager for database
     DatabaseManager() {
 
         try {
-
+            //use driver manager to connect
             Class.forName("com.mysql.jdbc.Driver");
 
             conn = DriverManager.getConnection(url, username, password); //connect to db server
@@ -55,25 +56,27 @@ public class DatabaseManager extends MainManager {
 
     //TODO userlist table with parameters
     void createUserlistTable(){
+        //check connection
         if(conn == null) return;
 
+        //create userlist table
         PreparedStatement pstmt = null;
         try {
             pstmt = conn.prepareStatement(  "create database if not exists MyCluster;\n" +
-                    "use MyCluster;\n" +
-                    "create table if not exists Userlist;\n" +
-                    "create table Userlist (\n" +
-                    "userID BIGINT NOT NULL,\t\n" +
-                    "name varchar(max),\n" +
-                    "roletype int,\n" +
-                    "password varchar(max),\n" +
-                    "email varchar(max),\n" +
-                    "phoneNumber varchar(max), \n" +
-                    "address varchar(nax),\n" +
-                    "image varchar(max),\n" +
-                    "longtitude BIGINT,\n" +
-                    "latitude BIGINT,\n" +
-                    "primary key (userID);");
+                                                "use MyCluster;\n" +
+                                                "create table if not exists Userlist;\n" +
+                                                "create table Userlist (\n" +
+                                                "userID BIGINT NOT NULL,\t\n" +
+                                                "name varchar(max),\n" +
+                                                "roletype int,\n" +
+                                                "password varchar(max),\n" +
+                                                "email varchar(max),\n" +
+                                                "phoneNumber varchar(max), \n" +
+                                                "address varchar(nax),\n" +
+                                                "image varchar(max),\n" +
+                                                "longtitude BIGINT,\n" +
+                                                "latitude BIGINT,\n" +
+                                                "primary key (userID);");
             pstmt.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -81,57 +84,70 @@ public class DatabaseManager extends MainManager {
 
     }
 
+    //get users from the userlist and return a list
     public List<User> getUsers(){
+        //variables
         Statement stmt = null;
         ResultSet rs = null;
         List<User> userlist = null;
 
+        //connection
         if(conn == null) return null;
         try {
+            //selection from query
             stmt = conn.createStatement();
             rs = stmt.executeQuery("SELECT userID\n" + "FROM Userlist;");
             Array userarr = rs.getArray("userID");
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                userlist = Collections.singletonList((User) userarr);
-            }
+
+            //query array to list
+            userlist = Collections.singletonList((User) userarr);
 
         } catch (SQLException e) {
             e.printStackTrace();
             return null;
 
         }
-
+        //return the list
         return userlist;
 
 
     }
 
-    private List<String> getCurrentUser(String email, String password){ //List<String> eklenecek***** --> DONE
+    //get a specific user using email and password
+    private List<User> getCurrentUser(String email, String password){ //List<String> eklenecek***** --> DONE
 
+        //variables
         Statement stmt;
         ResultSet rs;
         List<String> userlist = new ArrayList<>();
 
+        //connection
         if(conn==null) return null;
         try {
+            //get from query
             stmt = conn.createStatement();
             rs = stmt.executeQuery("SELECT *\n" +
                     "FROM Userlist\n" +
                     "WHERE email = '" + email + "' AND password = '" + password + "';");
+
+            //add to the list
             while(rs.next()){
                 String str =rs.getString("name");
                 userlist.add(str);
             }
 
+            //return the list (both of 2 ways)
 
-        } catch (SQLException e) {
+            return Collections.singletonList((User) userlist);
+
+            //return Arrays.asList((User) userlist); -> There are two different ways to transform query array to userlist
+
+        } catch (Exception e) {
             e.printStackTrace();
-            return null;
 
         }
 
-        return userlist;
-
+        return null;
 
     }
 
@@ -139,21 +155,23 @@ public class DatabaseManager extends MainManager {
 
         // type eklenicek, adress null olarak eklenicek, base64String image null, lang -lon eklicek null olacak, phone number eklenicek null olacak --> DONE
 
+        //variables
         address = "";
-        Base64 image = null;
-        long latitude = 0;
-        long longitude = 0;
         phoneNumber = "";
+        Base64 image = null;
+        long latitude = 0, longitude = 0;
+
 
         PreparedStatement pstmt;
         ResultSet rs;
 
         int count=0;
 
+        //connection
         if(conn == null) return;
 
         try {
-
+            //insert to the query
             pstmt = conn.prepareStatement("INSERT INTO Userlist (name, roleType, password, email, phoneNumber, address)\n"
                     + "VALUES (" + name + "," + roleType + "," + password + ", " + email + ", " + phoneNumber + ", " + address+ ", " + ");");
             pstmt.execute();
@@ -165,16 +183,23 @@ public class DatabaseManager extends MainManager {
 
     }
 
+    //check whether a user exists in the query
     public boolean checkUser (String email, String password){ //result set in boyutuna bak 0 sa false 1 se true --> DONE
 
         try {
+            //variables
             Statement stmt = conn.createStatement();
             ResultSet rs;
+
+            //connection
             if(conn==null) return false;
 
+            //check whether it is not zero in the query
             rs = stmt.executeQuery("SELECT COUNT(*)\n" +
                     "FROM Userlist\n" +
                     "WHERE email = '" + email + "AND password = '" + password + "';");
+
+            //if exists
             if (rs!=null) return true;
 
 
@@ -183,21 +208,24 @@ public class DatabaseManager extends MainManager {
 
         }
 
-
         return false;
     }
 
+    //change password of a user with email and password
     boolean changePassword (String email, String password){ // queryi çalıştır doğruysa true döndür -> DONE
+        //variables
         ResultSet rs;
         PreparedStatement pstmt = null;
         if(conn==null) return false;
 
         try {
+            //change the password in the query
             pstmt = conn.prepareStatement("UPDATE Userlist\n" +
                     "SET password = '" + password + "\n" +
                     "WHERE email = '" + email + "';");
             pstmt.execute();
 
+            //check whether it changed
             if (pstmt.executeUpdate()>0) return true;
 
         } catch (SQLException e) {
@@ -209,12 +237,15 @@ public class DatabaseManager extends MainManager {
     }
 
 
-    //TODO productlist table with parameters
+    //productlist table with parameters
     void createProductlistTable(){
+        //connection
         if(conn==null) return;
 
+        //variable
         PreparedStatement pstmt = null;
         try {
+            //prepare productlist table
             pstmt = conn.prepareStatement(  "create database if not exists MyCluster;\n" +
                     "use MyCluster;\n" +
                     "create table if not exists Productlist;\n" +
@@ -229,6 +260,7 @@ public class DatabaseManager extends MainManager {
                     "image BASE64,\n" + //bunu kontrol et -->DONE
                     "primary key (productID), \n" +
                     "foreign key (userID) references (Userlist);");
+            //create table
             pstmt.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -238,15 +270,17 @@ public class DatabaseManager extends MainManager {
 
     //sum of number of product for all users
     private Object[] getProducts(long userID ){ //productları getle ->DONE
-
+        //variables
         Statement stmt;
         ResultSet rs = null;
         ResultSetMetaData meta;
         List<Product> productlist = null;
 
+        //connection
         if(conn==null) return null;
 
         try {
+            //get the list from query
             stmt = conn.createStatement();
             rs = stmt.executeQuery("SELECT **\n" +
                     "FROM Productlist  \n" +
@@ -266,6 +300,7 @@ public class DatabaseManager extends MainManager {
                 collist.add(meta.getColumnName(c));
             }
 
+            //return the list
             return table2array(rs);
 
         } catch (SQLException e) {
@@ -278,22 +313,26 @@ public class DatabaseManager extends MainManager {
 
     }
 
-
-    private Array getFAV(long userID, long productID){ // Fav table userID + productID -> productları çek -> return will be implemented as list of user, Favlist should be creted in Model
-
+    //get favorite list
+    private Array getFAV(long userID, long productID){
+        //TODO Fav table userID + productID -> productları çek -> return will be implemented as list of user, Favlist should be created in Model
+        //variables
         Statement stmt = null;
         ResultSet rs = null;
 
         List<String> favlist;
 
+        //connection
         if(conn==null) return null;
         try {
+            //get from query
             stmt = conn.createStatement();
             rs = stmt.executeQuery("SELECT prouctID\n" +
                     "FROM Favlist\n" +
                     "WHERE" + " AND userID = " + userID + ";");
             Array favarr = rs.getArray("userID");
 
+            //return the list
             return favarr;
         } catch (SQLException e) {
             e.printStackTrace();
@@ -330,7 +369,7 @@ public class DatabaseManager extends MainManager {
 
         return false;} // userID + productID ye göre ekle->DONE
 
-    private List<Product> removeFav(Product productID) { //return will be fixed
+    private List<Product> removeFav(Product productID) { //return will be fixed -> DONE
         Statement stmt = null;
         try {
             stmt = conn.createStatement();
@@ -345,7 +384,7 @@ public class DatabaseManager extends MainManager {
             pstmt = conn.prepareStatement("DELETE FROM Favlist WHERE productID = " + productID + ";");
             pstmt.execute();
 
-            rs = conn.createStatement().executeQuery("SELEC productID FROM Favlist");
+            rs = conn.createStatement().executeQuery("SELECT productID FROM Favlist");
 
             while (true) {
                 try {
@@ -355,12 +394,10 @@ public class DatabaseManager extends MainManager {
                 }
                 String str = rs.getString("productID");
 
-                return null;
-
 
             }
             return null;
-        } // product ID ye göre row sil DONE
+        }
         catch (SQLException e) {
             e.printStackTrace();
         }
@@ -390,22 +427,25 @@ public class DatabaseManager extends MainManager {
 
     }
 
-
+    // get list of comments
     public List<Comment> getComments(long productID){// product ide ye göre commment list döndür DONE
-
+        //variables
         Statement stmt = null;
         ResultSet rs = null;
         List<Comment> commentList = null;
 
+        //connection
         if(conn==null) return null;
         try {
+            //get from query
             stmt = conn.createStatement();
             rs = stmt.executeQuery("SELECT Comments \n" + "" +
-                    "                   FROM Productlist, Commentlist\n" +
-                    "ON Productlist.prouctID = Commentlist.productID\n" +
-                    "WHERE Productlist.userID IS NOT NULL AND Commentlist.productID IS NOT NULL;");
+                                        "FROM Productlist, Commentlist\n" +
+                                        "ON Productlist.prouctID = Commentlist.productID\n" +
+                                        "WHERE Productlist.userID IS NOT NULL AND Commentlist.productID IS NOT NULL;");
             Array commentarr = rs.getArray("comments");
 
+            //array to list
             commentList = Collections.singletonList((Comment) commentarr);//ARRAY TO LIST
 
 
@@ -420,13 +460,17 @@ public class DatabaseManager extends MainManager {
 
     }
 
-    void addComment (Base64 comment, long userID, long productID){ // userID + productID ekleniicek DONE
+    //add comment to query
+    void addComment (Base64 comment, long userID, long productID){ // userID + productID eklenicek DONE
         Statement stmt = null;
         ResultSet rs = null;
         PreparedStatement pstmt = null;
+
+        //cconnection
         if(conn==null) return;
 
         try {
+            //add to query
             stmt = conn.createStatement();
 
             pstmt = conn.prepareStatement("INSERT INTO Commentlist (comment, userID, productID)\n"
@@ -438,12 +482,13 @@ public class DatabaseManager extends MainManager {
         }
 
     }
-
+    //create list of orders
     public void createOrderlistTable(){
         if(conn==null) return;
 
         PreparedStatement pstmt = null;
         try {
+            //create table
             pstmt = conn.prepareStatement(  "create database if not exists MyCluster;\n" +
                     "use MyCluster;\n" +
                     "create table if not exists Orderlist;\n" +
@@ -458,20 +503,25 @@ public class DatabaseManager extends MainManager {
                     "primary key (orderID),\n" +
                     "foreign key (productID) references (Productlist),\n" +
                     "foreign key (userID) references (Userlist);");
+            //execute table
             pstmt.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
         }
 
     }
+    //get length of columns
     public int getColSize(String columnName){
         Statement stmt = null;
         try {
+            //select all from query
             stmt = conn.createStatement();
             ResultSet rs = stmt.executeQuery("SELECT * FROM " + columnName);
 
+            //check whether it is zero
             if(rs==null) return 0;
 
+            //go to last row and get its rank
             rs.last();
             return rs.getRow();
 
@@ -483,12 +533,16 @@ public class DatabaseManager extends MainManager {
 
 
     }
+    //table to list method
     private Object[] table2array(ResultSet result){
+        //variables
         int nCol;
         List<String[]> table;
         try {
+            //get column count and create a list
             nCol = result.getMetaData().getColumnCount();
             table = new ArrayList<>();
+            //select from query and insert rows to a list
             while( result.next()) {
                 String[] row = new String[nCol];
                 for( int iCol = 1; iCol <= nCol; iCol++ ){
@@ -497,12 +551,12 @@ public class DatabaseManager extends MainManager {
                 }
                 table.add( row );
             }
+            //return the list
             return table.toArray();
 
         } catch (SQLException e) {
             e.printStackTrace();
         }
-
 
         return null;
     }
