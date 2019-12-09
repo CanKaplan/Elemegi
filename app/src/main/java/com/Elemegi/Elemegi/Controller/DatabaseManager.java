@@ -309,8 +309,6 @@ public class DatabaseManager extends MainManager {
         }
 
         return null;
-
-
     }
 
     //get favorite list
@@ -392,7 +390,6 @@ public class DatabaseManager extends MainManager {
                     e.printStackTrace();
                 }
                 String str = rs.getString("productID");
-
 
             }
             return Collections.singletonList((Product) rs.getArray("userID"));

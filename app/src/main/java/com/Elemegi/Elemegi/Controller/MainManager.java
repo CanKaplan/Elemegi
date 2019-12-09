@@ -64,11 +64,7 @@ public class MainManager {
     }
 
     public boolean checkUser(String email, String password){
-        boolean statement = databaseManager.checkUser(email, password);
-        if (statement){
-            return true;
-        }
-        return false;
+        return databaseManager.checkUser(email, password);
     }
 
     public void createUser(String name, int roleType, String password, String email, String phoneNumber, String address, int age) {
@@ -91,7 +87,7 @@ public class MainManager {
     public Product deleteProduct(long productID) {
         int i = 0;
         for (; i < products.size() && products.get(i).getProductID() != productID; i++) {
-
+            //TODO here
         }
         if(i < products.size()) {
             Product deletedProduct = products.get(i);
@@ -105,7 +101,7 @@ public class MainManager {
     public User deleteUser(long userID){
         int i = 0;
         for (; i < users.size() && users.get(i).getID() != userID; i++) {
-
+            //TODO here
         }
         if(i < users.size()) {
             User deleteduser = users.get(i);
@@ -125,7 +121,7 @@ public class MainManager {
     public Order cancelOrder(long orderID){
         int i = 0;
         for (; i < orders.size() && orders.get(i).getOrderID() != orderID; i++) {
-
+            //TODO here
         }
         if(i < orders.size()) {
             Order canceledorder = orders.get(i);
@@ -137,15 +133,28 @@ public class MainManager {
             return null;
     }
 
-    //setPassword Methodu
+    //setPassword Method
     public void setPassword(String email, String pass){
         databaseManager.changePassword(email, pass);
     }
+
+    //TODO we dont have these is the low level design report, these should be handled
     //remember me local file set method
+    public void rememberMe(){}
 
     //get 3 product for homepage
 
     //get 18 product for homepage favourite
 
-    //
+    public List<Product> getProducts(int type, int amount){
+        List<Product> products=null; //initially empty
+
+        if(type==1) return products;
+
+        else if(type==2) return products;
+
+        else return null;
+
+    }
+
 }
