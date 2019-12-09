@@ -7,18 +7,20 @@ import com.Elemegi.Elemegi.Model.Comment;
 import com.Elemegi.Elemegi.Model.Product;
 import com.Elemegi.Elemegi.Model.User;
 
-import java.io.IOException;
 import java.sql.Array;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Scanner;
 import java.util.concurrent.TimeUnit;
+
+//import class
 
 
 public class DatabaseManager extends MainManager {
@@ -30,7 +32,11 @@ public class DatabaseManager extends MainManager {
     private String password = "ItDNsJYW6V";
     private Connection conn;
 
-    public DatabaseManager() {
+    private Statement myst;
+    private ResultSet myrs;
+
+
+    DatabaseManager() {
 
         try {
 
@@ -43,72 +49,31 @@ public class DatabaseManager extends MainManager {
         }catch (Exception ex){
             System.out.println("Error Message: " + ex);
         }
-    }
 
-    void terminateDBConnection() throws InterruptedException {
-        try {
-            conn.close();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-
-        TimeUnit.MILLISECONDS.sleep(1200);
-        System.out.println("Disconnecting from the database...");
-
-    }
-
-
-
-    private void connectionHandler() throws InterruptedException, IOException {
-
-        System.out.println("Maria Database System...");
-
-        TimeUnit.SECONDS.sleep(2);
-        System.out.println("Connecting to the database...");
-
-        TimeUnit.MILLISECONDS.sleep(500);
-        System.out.println("The process is complete, terminating...");
-
-    }
-
-    private void askTermination(){
-        Scanner scanner = new Scanner(System.in);
-
-        System.out.println("Do you wanna disconnect from database?");
-        String option = scanner.nextLine();
-
-        if(option.equals("y")) {
-            try {
-                terminateDBConnection();
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-
-        }
 
     }
 
     //TODO userlist table with parameters
-    public void createUserlistTable(){
+    void createUserlistTable(){
         if(conn == null) return;
 
         PreparedStatement pstmt = null;
         try {
             pstmt = conn.prepareStatement(  "create database if not exists MyCluster;\n" +
-                                                "use MyCluster;\n" +
-                                                "create table if not exists Userlist;\n" +
-                                                "create table Userlist (\n" +
-                                                "userID long,\t\n" +
-                                                "name varchar(20),\n" +
-                                                "roletype int,\n" +
-                                                "password varchar(15),\n" +
-                                                "email varchar(100),\n" +
-                                                "phoneNumber varchar(11), \n" +
-                                                "address varchar(100),\n" +
-                                                "image varchar(64),\n" +
-                                                "longtitude long,\n" +
-                                                "latitude long,\n" +
-                                                "primary key (userID);");
+                    "use MyCluster;\n" +
+                    "create table if not exists Userlist;\n" +
+                    "create table Userlist (\n" +
+                    "userID BIGINT NOT NULL,\t\n" +
+                    "name varchar(max),\n" +
+                    "roletype int,\n" +
+                    "password varchar(max),\n" +
+                    "email varchar(max),\n" +
+                    "phoneNumber varchar(max), \n" +
+                    "address varchar(nax),\n" +
+                    "image varchar(max),\n" +
+                    "longtitude BIGINT,\n" +
+                    "latitude BIGINT,\n" +
+                    "primary key (userID);");
             pstmt.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -141,22 +106,23 @@ public class DatabaseManager extends MainManager {
 
     }
 
-     private List<Array> getCurrentUser(String email, String password){ //List<String> düzeltilicek*****
+    private List<String> getCurrentUser(String email, String password){ //List<String> eklenecek***** --> DONE
 
-        Statement stmt = null;
-        ResultSet rs = null;
-        List<Array> userlist = null;
+        Statement stmt;
+        ResultSet rs;
+        List<String> userlist = new ArrayList<>();
 
         if(conn==null) return null;
         try {
             stmt = conn.createStatement();
-            rs = stmt.executeQuery("SELECT userID\n" +
-                                        "FROM Userlist\n" +
-                                        "WHERE email = '" + email + "' AND password = '" + password + "';");
-            Array userarr = rs.getArray("userID");
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {  //başka yöntem
-                userlist = Collections.singletonList(userarr);
+            rs = stmt.executeQuery("SELECT *\n" +
+                    "FROM Userlist\n" +
+                    "WHERE email = '" + email + "' AND password = '" + password + "';");
+            while(rs.next()){
+                String str =rs.getString("name");
+                userlist.add(str);
             }
+
 
         } catch (SQLException e) {
             e.printStackTrace();
@@ -168,20 +134,29 @@ public class DatabaseManager extends MainManager {
 
 
     }
-    void insertUser (String name, String email, String password){ // type eklenicek, adress null olarak eklenicek, base64String image null, lang -lon eklicek null olacak, phone number eklenicek null olacak
-        Statement stmt = null;
-        ResultSet rs = null;
-        PreparedStatement pstmt = null;
+
+    void insertUser (String name, int roleType, String password, String email, String phoneNumber, String address){
+
+        // type eklenicek, adress null olarak eklenicek, base64String image null, lang -lon eklicek null olacak, phone number eklenicek null olacak --> DONE
+
+        address = "";
+        Base64 image = null;
+        long latitude = 0;
+        long longitude = 0;
+        phoneNumber = "";
+
+        PreparedStatement pstmt;
+        ResultSet rs;
+
+        int count=0;
+
         if(conn == null) return;
 
         try {
-            stmt = conn.createStatement();
-            int count1 = getCurrentUser(email,password).size();
-            pstmt = conn.prepareStatement("INSERT INTO Userlist (name, email, password)\n"
-                                            + "VALUES (" + name + "," + email + "," + password + ");");
-            int count2 = getCurrentUser(email,password).size();
-            if (count2>count1) {
-            }
+
+            pstmt = conn.prepareStatement("INSERT INTO Userlist (name, roleType, password, email, phoneNumber, address)\n"
+                    + "VALUES (" + name + "," + roleType + "," + password + ", " + email + ", " + phoneNumber + ", " + address+ ", " + ");");
+            pstmt.execute();
 
         } catch (SQLException e) {
             e.printStackTrace();
@@ -190,17 +165,18 @@ public class DatabaseManager extends MainManager {
 
     }
 
-    public boolean checkUser (String email, String password){ //result set in boyutuna bak 0 sa false 1 se true
-        Statement stmt = null;
-        ResultSet rs = null;
-        PreparedStatement pstmt = null;
-        if(conn==null) return false;
+    public boolean checkUser (String email, String password){ //result set in boyutuna bak 0 sa false 1 se true --> DONE
 
         try {
-            stmt = conn.createStatement();
-            rs = pstmt.executeQuery("SELECT COUNT(*)\n" +
+            Statement stmt = conn.createStatement();
+            ResultSet rs;
+            if(conn==null) return false;
+
+            rs = stmt.executeQuery("SELECT COUNT(*)\n" +
                     "FROM Userlist\n" +
                     "WHERE email = '" + email + "AND password = '" + password + "';");
+            if (rs!=null) return true;
+
 
         } catch (SQLException e) {
             e.printStackTrace();
@@ -211,17 +187,18 @@ public class DatabaseManager extends MainManager {
         return false;
     }
 
-    public boolean changePassword (String email, String password){ // queryi çalıştır doğruysa true döndür
-        Statement stmt = null;
-        ResultSet rs = null;
+    boolean changePassword (String email, String password){ // queryi çalıştır doğruysa true döndür -> DONE
+        ResultSet rs;
         PreparedStatement pstmt = null;
         if(conn==null) return false;
 
         try {
-            stmt = conn.createStatement();
             pstmt = conn.prepareStatement("UPDATE Userlist\n" +
-                                            "SET password = '" + password + "\n" +
-                                            "WHERE email = '" + email + "';");
+                    "SET password = '" + password + "\n" +
+                    "WHERE email = '" + email + "';");
+            pstmt.execute();
+
+            if (pstmt.executeUpdate()>0) return true;
 
         } catch (SQLException e) {
             e.printStackTrace();
@@ -233,25 +210,25 @@ public class DatabaseManager extends MainManager {
 
 
     //TODO productlist table with parameters
-    public void createProductlistTable(){
+    void createProductlistTable(){
         if(conn==null) return;
 
         PreparedStatement pstmt = null;
         try {
             pstmt = conn.prepareStatement(  "create database if not exists MyCluster;\n" +
-                                                "use MyCluster;\n" +
-                                                "create table if not exists Productlist;\n" +
-                                                "create table Productlist(\n" +
-                                                "name varchar(20),\n" +
-                                                "productID long,\n" +
-                                                "userID long,\n" +
-                                                "overallRating double,\n" +
-                                                "description varchar(100),\n" +
-                                                "price double,\n" +
-                                                "deliverTime int,\n" +
-                                                "image Base64String,\n" + //bunu kontrol et
-                                                "primary key (productID), \n" +
-                                                "foreign key (userID) references (Userlist);");
+                    "use MyCluster;\n" +
+                    "create table if not exists Productlist;\n" +
+                    "create table Productlist(\n" +
+                    "name varchar(max),\n" +
+                    "productID BIGINT NOT NULL,\n" +
+                    "userID BIGINT NOT NULL,\n" +
+                    "overallRating double,\n" +
+                    "description varchar(max),\n" +
+                    "price double,\n" +
+                    "deliverTime int,\n" +
+                    "image BASE64,\n" + //bunu kontrol et -->DONE
+                    "primary key (productID), \n" +
+                    "foreign key (userID) references (Userlist);");
             pstmt.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -260,51 +237,67 @@ public class DatabaseManager extends MainManager {
     }
 
     //sum of number of product for all users
-    private int getProducts(long userID ){ //productları getle
+    private Object[] getProducts(long userID ){ //productları getle ->DONE
 
-        Statement stmt = null;
+        Statement stmt;
         ResultSet rs = null;
+        ResultSetMetaData meta;
         List<Product> productlist = null;
 
-        if(conn==null) return -1;
+        if(conn==null) return null;
+
         try {
             stmt = conn.createStatement();
-            rs = stmt.executeQuery("SELECT *\n" + "FROM Productlist  \n" +
-                                        "ON Productlist.userID = Userlist.userID\n" +
-                                        "WHERE Productlist.userID IS NOT NULL AND Userlist.userID IS NOT NULL;");
-            return rs.getInt("total");
+            rs = stmt.executeQuery("SELECT **\n" +
+                    "FROM Productlist  \n" +
+                    "WHERE productID IS NOT NULL AND userID = " + userID + ";");
+            meta = rs.getMetaData();
+
+            //number of columns
+            int colCnt= meta.getColumnCount();
+
+            ResultSet temp = rs;
+            temp.last();
+            int rowCnt= temp.getRow();
+
+            //list of column names
+            ArrayList<String> collist = new ArrayList<>();
+            for (int c = 1; c<colCnt; c++){
+                collist.add(meta.getColumnName(c));
+            }
+
+            return table2array(rs);
 
         } catch (SQLException e) {
             e.printStackTrace();
 
         }
 
-        return -1;
+        return null;
 
 
     }
 
 
-    private List<Product> getFAV(float userID){ // Fav table userID + productID -> productları çek
+    private Array getFAV(long userID, long productID){ // Fav table userID + productID -> productları çek -> return will be implemented as list of user, Favlist should be creted in Model
 
         Statement stmt = null;
         ResultSet rs = null;
-        List<User> favlist = null;
+
+        List<String> favlist;
 
         if(conn==null) return null;
         try {
             stmt = conn.createStatement();
-            rs = stmt.executeQuery("SELECT name\n" +
-                                        "FROM Userlist\n" +
-                                        "WHERE" + " AND userID = " + userID + ";");
+            rs = stmt.executeQuery("SELECT prouctID\n" +
+                    "FROM Favlist\n" +
+                    "WHERE" + " AND userID = " + userID + ";");
             Array favarr = rs.getArray("userID");
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                favlist = Collections.singletonList((User) favarr);
-            }
 
+            return favarr;
         } catch (SQLException e) {
             e.printStackTrace();
-            return null;
+
 
         }
 
@@ -314,9 +307,65 @@ public class DatabaseManager extends MainManager {
     }
 
     //TODO here will be updated//
-    private void addFav(){ return;} // userID + productID ye göre ekle
+    private boolean addFav(long userID, long productID){
+        Statement stmt = null;
+        ResultSet rs = null;
+        PreparedStatement pstmt = null;
+        if(conn==null) return false;
 
-    private List<Product> removeFav(){ return null;} // product ID ye göre row sil
+        try {
+            stmt = conn.createStatement();
+
+            pstmt = conn.prepareStatement("INSERT INTO Favlist (productID, userID)\n"
+                    + "VALUES (" + productID + "), " + userID + ";");
+
+            pstmt.execute();
+
+            if(pstmt.executeUpdate()>0) return true;
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+
+        }
+
+        return false;} // userID + productID ye göre ekle->DONE
+
+    private List<Product> removeFav(Product productID) { //return will be fixed
+        Statement stmt = null;
+        try {
+            stmt = conn.createStatement();
+
+            ResultSet rs = null;
+            PreparedStatement pstmt;
+            if (conn == null) return null;
+
+
+            stmt = conn.createStatement();
+
+            pstmt = conn.prepareStatement("DELETE FROM Favlist WHERE productID = " + productID + ";");
+            pstmt.execute();
+
+            rs = conn.createStatement().executeQuery("SELEC productID FROM Favlist");
+
+            while (true) {
+                try {
+                    if (!rs.next()) break;
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+                String str = rs.getString("productID");
+
+                return null;
+
+
+            }
+            return null;
+        } // product ID ye göre row sil DONE
+        catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
 
 
     //TODO commentlist table with parameters
@@ -326,14 +375,14 @@ public class DatabaseManager extends MainManager {
         PreparedStatement pstmt;
         try {
             pstmt = conn.prepareStatement(  "create database if not exists MyCluster;\n" +
-                                                "use MyCluster;\n" +
-                                                "create table if not exists Commentlist;\n" +
-                                                "create table Commentlist(\n" +
-                                                "productID long,\n" +
-                                                "userID long,\n" +
-                                                "primary key (commentID),\n" +
-                                                "foreign key (productID) references (Productlist),\n" +
-                                                "foreign key (userID) references (Userlist);");
+                    "use MyCluster;\n" +
+                    "create table if not exists Commentlist;\n" +
+                    "create table Commentlist(\n" +
+                    "productID BIGINT NOT NULL,\n" +
+                    "userID BIGINT NOT NULL,\n" +
+                    "primary key (commentID),\n" +
+                    "foreign key (productID) references (Productlist),\n" +
+                    "foreign key (userID) references (Userlist);");
             pstmt.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -342,7 +391,7 @@ public class DatabaseManager extends MainManager {
     }
 
 
-    public List<Comment> getComments(float productID){// product ide ye göre commment list döndür
+    public List<Comment> getComments(long productID){// product ide ye göre commment list döndür DONE
 
         Statement stmt = null;
         ResultSet rs = null;
@@ -353,12 +402,12 @@ public class DatabaseManager extends MainManager {
             stmt = conn.createStatement();
             rs = stmt.executeQuery("SELECT Comments \n" + "" +
                     "                   FROM Productlist, Commentlist\n" +
-                                        "ON Productlist.prouctID = Commentlist.productID\n" +
-                                        "WHERE Productlist.userID IS NOT NULL AND Commentlist.productID IS NOT NULL;");
+                    "ON Productlist.prouctID = Commentlist.productID\n" +
+                    "WHERE Productlist.userID IS NOT NULL AND Commentlist.productID IS NOT NULL;");
             Array commentarr = rs.getArray("comments");
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                commentList = Collections.singletonList((Comment) commentarr);
-            }
+
+            commentList = Collections.singletonList((Comment) commentarr);//ARRAY TO LIST
+
 
         } catch (SQLException e) {
             e.printStackTrace();
@@ -371,7 +420,7 @@ public class DatabaseManager extends MainManager {
 
     }
 
-    void addComment (Base64 comment){ // userID + productID ekleniicek
+    void addComment (Base64 comment, long userID, long productID){ // userID + productID ekleniicek DONE
         Statement stmt = null;
         ResultSet rs = null;
         PreparedStatement pstmt = null;
@@ -380,8 +429,8 @@ public class DatabaseManager extends MainManager {
         try {
             stmt = conn.createStatement();
 
-            pstmt = conn.prepareStatement("INSERT INTO Commentlist (comment)\n"
-                    + "VALUES (" + comment + ");");
+            pstmt = conn.prepareStatement("INSERT INTO Commentlist (comment, userID, productID)\n"
+                    + "VALUES (" + comment + ", " + userID + ", " + productID + ";");
 
         } catch (SQLException e) {
             e.printStackTrace();
@@ -399,12 +448,12 @@ public class DatabaseManager extends MainManager {
                     "use MyCluster;\n" +
                     "create table if not exists Orderlist;\n" +
                     "create table Orderlist(\n" +
-                    "orderID long,\n" +
-                    "productID long,\n" +
-                    "userID long,\n" +
+                    "orderID BIGINT NOT NULL,\n" +
+                    "productID BIGINT NOT NULL,\n" +
+                    "userID BIGINT NOT NULL,\n" +
                     "remainingTime int,\n" +
-                    "productName varchar(50),\n" +
-                    "productImage varchar,\n" +
+                    "productName varchar(max),\n" +
+                    "productImage varchar(max),\n" +
                     "price double,\n" +
                     "primary key (orderID),\n" +
                     "foreign key (productID) references (Productlist),\n" +
@@ -414,6 +463,48 @@ public class DatabaseManager extends MainManager {
             e.printStackTrace();
         }
 
+    }
+    public int getColSize(String columnName){
+        Statement stmt = null;
+        try {
+            stmt = conn.createStatement();
+            ResultSet rs = stmt.executeQuery("SELECT * FROM " + columnName);
+
+            if(rs==null) return 0;
+
+            rs.last();
+            return rs.getRow();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+
+            return -1;
+        }
+
+
+    }
+    private Object[] table2array(ResultSet result){
+        int nCol;
+        List<String[]> table;
+        try {
+            nCol = result.getMetaData().getColumnCount();
+            table = new ArrayList<>();
+            while( result.next()) {
+                String[] row = new String[nCol];
+                for( int iCol = 1; iCol <= nCol; iCol++ ){
+                    Object obj = result.getObject( iCol );
+                    row[iCol-1] = (obj == null) ?null:obj.toString();
+                }
+                table.add( row );
+            }
+            return table.toArray();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+
+        return null;
     }
 
 
