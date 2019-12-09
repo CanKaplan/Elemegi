@@ -33,7 +33,7 @@ public class MainManager {
     public static void setUserProperties(String email) {
         //loginden gelen user setlenicek
        DatabaseManager.getInstance().createUserlistTable();
-       DatabaseManager.getInstance().insertUser("",email,"");
+       //DatabaseManager.getInstance().insertUser("",email,"");
     }
 
 
@@ -81,7 +81,7 @@ public class MainManager {
         // Bu oluşturulan user database e eklenmeli
         //Id olayı halledilmesi lazım
         DatabaseManager.getInstance().createUserlistTable();
-        DatabaseManager.getInstance().insertUser(name, email, password);
+       //DatabaseManager.getInstance().insertUser(name, email, password);
         //databaseManager.setUserID(email,password);
     }
 
