@@ -315,7 +315,7 @@ public class DatabaseManager extends MainManager {
 
     //get favorite list
     private List<Product> getFAV(long userID, long productID){
-        //TODO Fav table userID + productID -> productları çek -> return is implemented as list of products, Favlist should be created in Model
+        //TODO Fav table userID + productID -> productları çek -> return is implemented as list of products, "Favlist should be created in Model"
         //variables
         Statement stmt = null;
         ResultSet rs = null;
