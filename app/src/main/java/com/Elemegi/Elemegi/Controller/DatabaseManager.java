@@ -2,6 +2,7 @@ package com.Elemegi.Elemegi.Controller;
 
 import android.os.Build;
 import android.util.Base64;
+import android.util.Log;
 
 import com.Elemegi.Elemegi.Model.Comment;
 import com.Elemegi.Elemegi.Model.Product;
@@ -21,16 +22,16 @@ import java.util.Scanner;
 import java.util.concurrent.TimeUnit;
 
 
-public class DatabaseManager extends MainManager {
+public class DatabaseManager {
 
     private int userIDCounter;
-
+    private final static DatabaseManager instance = new DatabaseManager();
     private String url = "jdbc:mysql://remotemysql.com?useSSL=false"; //url address
     private String username = "4AvrqHFO4g"; // username
     private String password = "ItDNsJYW6V";
     private Connection conn;
 
-    public DatabaseManager() {
+    public void makeConnection() {
 
         try {
 
@@ -38,11 +39,17 @@ public class DatabaseManager extends MainManager {
 
             conn = DriverManager.getConnection(url, username, password); //connect to db server
             TimeUnit.SECONDS.sleep(1);
+            Log.d("aaaaaaa","AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
 
 
         }catch (Exception ex){
+            Log.d("aaaaaaa","BBBBBBBBBBBBBBBBBBBBBBBBBBBBBB");
             System.out.println("Error Message: " + ex);
         }
+    }
+
+    public static DatabaseManager getInstance() {
+        return instance;
     }
 
     void terminateDBConnection() throws InterruptedException {
@@ -194,14 +201,18 @@ public class DatabaseManager extends MainManager {
         Statement stmt = null;
         ResultSet rs = null;
         PreparedStatement pstmt = null;
+        int counter = 0;
         if(conn==null) return false;
 
         try {
-            stmt = conn.createStatement();
-            rs = pstmt.executeQuery("SELECT COUNT(*)\n" +
+            pstmt = conn.prepareStatement("SELECT COUNT(*)\n" +
                     "FROM Userlist\n" +
                     "WHERE email = '" + email + "AND password = '" + password + "';");
-
+            rs = pstmt.executeQuery();
+            while (rs.next()){
+                counter++;
+            }
+            Log.d("TTTTTTTTTTTTTTTTTTTT", String.valueOf(counter));
         } catch (SQLException e) {
             e.printStackTrace();
 

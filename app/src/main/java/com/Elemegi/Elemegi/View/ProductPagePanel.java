@@ -205,14 +205,12 @@ public class ProductPagePanel extends ViewManager implements BottomNavigationVie
 
     public void changeActivity(Class className) {
         startActivity(new Intent(act, className));
-        finish();
     }
 
     public void changeActivity(Class className, int id) {
         Intent myIntent = new Intent(act, className);
         myIntent.putExtra("id", id);
         startActivity(myIntent);
-        finish();
     }
 
     View.OnLayoutChangeListener onLayoutChangeListener_viewFlipper = new View.OnLayoutChangeListener() {

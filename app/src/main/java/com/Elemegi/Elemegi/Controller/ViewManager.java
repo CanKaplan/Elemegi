@@ -3,9 +3,11 @@ package com.Elemegi.Elemegi.Controller;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.widget.EditText;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.Elemegi.Elemegi.View.AddProductPanel;
 import com.Elemegi.Elemegi.View.ChangePasswordPanel;
 import com.Elemegi.Elemegi.View.CommentsPanel;
 import com.Elemegi.Elemegi.View.EditProfilePanel;
@@ -17,13 +19,13 @@ import com.Elemegi.Elemegi.View.ProductPagePanel;
 import com.Elemegi.Elemegi.View.ProfilePagePanel;
 import com.Elemegi.Elemegi.View.RegisterPanel;
 
-
+import java.io.File;
 
 public class ViewManager extends AppCompatActivity {
-
     private final static ViewManager instance = new ViewManager();
     protected MyApp myApp;
     private AppCompatActivity currentAct;
+
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         myApp = (MyApp)this.getApplicationContext();
@@ -64,8 +66,6 @@ public class ViewManager extends AppCompatActivity {
     public void openLoginPanel() {
         currentAct = myApp.getCurrentActivity();
         startActivity(new Intent(currentAct, LoginPanel.class));
-        finish();
-
     }
 
     public Class openForgotPasswordPanel() {
@@ -186,5 +186,74 @@ public class ViewManager extends AppCompatActivity {
     }
 
     public Class openMyOrdersPanel() { return MyOrdersPanel.class;
+    }
+
+    public void createNewUser(String tempText, String email, String password, String type) {
+        //MainManager.getInstance().createUser(tempText,type,password,email,null);
+    }
+
+    public boolean isExist(String email) {
+        //if(MainManager.getInstance().checkUser(email)){
+         //   return false;
+        //}
+        //else{
+            return true;
+        //}
+    }
+
+    public Class openAddProductPanel() {
+        return AddProductPanel.class;
+    }
+
+    public String controlNameProduct(String newName) {
+        if(newName.length() == 0){
+            return "Please enter your product name!";
+        }
+        for(int i = 0; i < newName.length(); i++){
+            if((int)(newName.toUpperCase().charAt(i)) > 90 || (int)(newName.toUpperCase().charAt(i)) < 65){
+                return "Name have to consist of only alphabetic characters!";
+            }
+        }
+        return "";
+    }
+
+    public String controlDescriptionProduct(String newDescription) {
+
+        if(newDescription.length() == 0){
+            return "Please enter your name!";
+        }
+        for(int i = 0; i < newDescription.length(); i++){
+            if((int)(newDescription.toUpperCase().charAt(i)) > 90 || (int)(newDescription.toUpperCase().charAt(i)) < 65){
+                return "Name have to consist of only alphabetic characters!";
+            }
+        }
+        return "";
+
+    }
+
+    public String controlPriceProduct(String newPrice) {
+        if(newPrice.length() == 0){
+            return "Please enter the price!";
+        }
+
+        for(int i = 0; i < newPrice.length(); i++){
+            if(!(newPrice.matches("[0-9]*\\,?[0-9]*"))){
+                return "Name have to consist of only numerical characters and ',' !";
+            }
+        }
+        return "";
+    }
+
+    public String controlDeliveryTimeProduct(String deliveryTime) {
+        if(deliveryTime.length() == 0){
+            return "Please enter the delivery time!";
+        }
+
+        for(int i = 0; i < deliveryTime.length(); i++){
+            if(!(deliveryTime.matches("[0-9]+"))){
+                return "Name have to consist of only numerical characters";
+            }
+        }
+        return "";
     }
 }

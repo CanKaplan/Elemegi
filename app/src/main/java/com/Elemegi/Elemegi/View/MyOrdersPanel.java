@@ -121,14 +121,12 @@ public class MyOrdersPanel extends ViewManager implements BottomNavigationView.O
 
     public void changeActivity(Class className) {
         startActivity(new Intent(act, className));
-        finish();
     }
 
     public void changeActivity(Class className, int id) {
         Intent myIntent = new Intent(act, className);
         myIntent.putExtra("id", id);
         startActivity(myIntent);
-        finish();
     }
 
 
