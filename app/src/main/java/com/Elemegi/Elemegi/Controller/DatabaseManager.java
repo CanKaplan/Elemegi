@@ -314,26 +314,23 @@ public class DatabaseManager extends MainManager {
     }
 
     //get favorite list
-    private Array getFAV(long userID, long productID){
-        //TODO Fav table userID + productID -> productları çek -> return will be implemented as list of user, Favlist should be created in Model
+    private List<Product> getFAV(long userID, long productID){
+        //TODO Fav table userID + productID -> productları çek -> return is implemented as list of products, Favlist should be created in Model
         //variables
         Statement stmt = null;
         ResultSet rs = null;
-
-        List<String> favlist;
 
         //connection
         if(conn==null) return null;
         try {
             //get from query
             stmt = conn.createStatement();
-            rs = stmt.executeQuery("SELECT prouctID\n" +
-                    "FROM Favlist\n" +
-                    "WHERE" + " AND userID = " + userID + ";");
-            Array favarr = rs.getArray("userID");
+            rs = stmt.executeQuery("SELECT productID\n" +
+                                        "FROM Favlist\n" +
+                                        "WHERE" + productID + " AND userID = " + userID + ";");
 
             //return the list
-            return favarr;
+            return Collections.singletonList((Product) rs.getArray("productID"));
         } catch (SQLException e) {
             e.printStackTrace();
 
@@ -345,7 +342,7 @@ public class DatabaseManager extends MainManager {
 
     }
 
-    //TODO here will be updated//
+    //add a product to favorites
     private boolean addFav(long userID, long productID){
         Statement stmt = null;
         ResultSet rs = null;
@@ -360,6 +357,7 @@ public class DatabaseManager extends MainManager {
 
             pstmt.execute();
 
+            //check whether added
             if(pstmt.executeUpdate()>0) return true;
 
         } catch (SQLException e) {
@@ -369,6 +367,7 @@ public class DatabaseManager extends MainManager {
 
         return false;} // userID + productID ye göre ekle->DONE
 
+    //remove a product from list
     private List<Product> removeFav(Product productID) { //return will be fixed -> DONE
         Statement stmt = null;
         try {
@@ -396,7 +395,7 @@ public class DatabaseManager extends MainManager {
 
 
             }
-            return null;
+            return Collections.singletonList((Product) rs.getArray("userID"));
         }
         catch (SQLException e) {
             e.printStackTrace();
@@ -405,8 +404,8 @@ public class DatabaseManager extends MainManager {
     }
 
 
-    //TODO commentlist table with parameters
-    public void createCommentlistTable(){ //description ekle
+    //commentlist table with parameters
+    public void createCommentlistTable(){ //description ekle -> will be added
         if(conn==null) return;
 
         PreparedStatement pstmt;
