@@ -16,11 +16,15 @@ public class MainManager {
     private List<Order> orders;
 
     //defined managers that will be controlled by MainManager
-    private DatabaseManager databaseManager = new DatabaseManager();
     private NetworkManager networkManager;
     private SearchManager searchManager;
 
     private final static MainManager instance = new MainManager();
+
+    public MainManager(){
+            DatabaseManager.getInstance().makeConnection();
+    }
+
 
     public static MainManager getInstance() {
         return instance;
@@ -28,8 +32,8 @@ public class MainManager {
 
     public static void setUserProperties(String email) {
         //loginden gelen user setlenicek
-        getInstance().databaseManager.createUserlistTable();
-        getInstance().databaseManager.insertUser("",email,"");
+       DatabaseManager.getInstance().createUserlistTable();
+       //DatabaseManager.getInstance().insertUser("",email,"");
     }
 
 
@@ -64,7 +68,7 @@ public class MainManager {
     }
 
     public boolean checkUser(String email, String password){
-        boolean statement = databaseManager.checkUser(email, password);
+        boolean statement = DatabaseManager.getInstance().checkUser(email, password);
         if (statement){
             return true;
         }
@@ -76,8 +80,8 @@ public class MainManager {
         users.add(user);
         // Bu oluşturulan user database e eklenmeli
         //Id olayı halledilmesi lazım
-        databaseManager.createUserlistTable();
-        databaseManager.insertUser(name, email, password);
+        DatabaseManager.getInstance().createUserlistTable();
+       //DatabaseManager.getInstance().insertUser(name, email, password);
         //databaseManager.setUserID(email,password);
     }
 
@@ -85,7 +89,7 @@ public class MainManager {
         Product product = new Product(productName, 0, userID, labels, image, price, deliverTime);
         products.add(product);
         // Bu oluşturulan product database e eklenmeli
-        databaseManager.createProductlistTable();
+        DatabaseManager.getInstance().createProductlistTable();
     }
 
     public Product deleteProduct(long productID) {
@@ -139,7 +143,7 @@ public class MainManager {
 
     //setPassword Methodu
     public void setPassword(String email, String pass){
-        databaseManager.changePassword(email, pass);
+        DatabaseManager.getInstance().changePassword(email, pass);
     }
     //remember me local file set method
 

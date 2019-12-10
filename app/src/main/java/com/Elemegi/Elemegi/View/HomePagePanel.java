@@ -297,14 +297,12 @@ public class HomePagePanel extends ViewManager implements BottomNavigationView.O
 
     public void changeActivity(Class className) {
         startActivity(new Intent(act, className));
-        finish();
     }
 
     public void changeActivity(Class className, int id) {
         Intent myIntent = new Intent(act, className);
         myIntent.putExtra("id", id);
         startActivity(myIntent);
-        finish();
     }
 
     View.OnLayoutChangeListener onLayoutChangeListener_viewFlipper = new View.OnLayoutChangeListener() {
@@ -354,7 +352,7 @@ public class HomePagePanel extends ViewManager implements BottomNavigationView.O
                 break;
             case R.id.nav_help:
                 //changeActivity(ViewManager.getInstance().openSettingsPanel());
-                changeActivity(ViewManager.getInstance().openLoginPanel1());
+                changeActivity(ViewManager.getInstance().openAddProductPanel());
                 break;
             case R.id.nav_logout:
                 //changeActivity(ViewManager.getInstance().openSettingsPanel());

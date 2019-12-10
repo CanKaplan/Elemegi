@@ -21,6 +21,7 @@ public class LoginPanel extends ViewManager {
     private String email;
     private String password;
     private boolean rememberMe;
+    private CheckBox rememberMeBox;
     private AppCompatActivity act;
 
     @Override
@@ -35,14 +36,14 @@ public class LoginPanel extends ViewManager {
         forgotPassword = (TextView) findViewById(R.id.forgotPasswordButton);
         email = (((EditText) findViewById(R.id.email)).getText().toString());
         password = ((EditText) findViewById(R.id.password)).getText().toString();
-        rememberMe = ((CheckBox) findViewById(R.id.rememberMe)).isChecked();
+        rememberMeBox = (CheckBox) findViewById(R.id.rememberMe);
 
 
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 //tara doğruysa
-                //MainManager.getInstance().setUserProperties(email);
+                ViewManager.getInstance().checkUserFromDatabase("can123@can.can","abcd1234");
                 changeActivity(ViewManager.getInstance().openHomePagePanel());
             }
         });
@@ -65,7 +66,6 @@ public class LoginPanel extends ViewManager {
 
     public void changeActivity(Class className) {
         startActivity(new Intent(act, className));
-        finish();
     }
 
 }

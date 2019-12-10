@@ -65,6 +65,7 @@ public class RegisterPanel extends ViewManager {
                 surname = surnameEdit.getText().toString();
                 email = emailEdit.getText().toString();
                 password = passwordEdit.getText().toString();
+                String type = "";
                 int counter = 0;
                 //name Check
                 if(ViewManager.getInstance().controlNameRegister(name).length() == 0){
@@ -95,14 +96,21 @@ public class RegisterPanel extends ViewManager {
                 int selectedButton = radioGroup.getCheckedRadioButtonId();
                 if(selectedButton != -1){
                     RadioButton selected = (RadioButton) findViewById(selectedButton);
-                    String type = selected.getText().toString();
+                     type = selected.getText().toString();
                     counter++;
                 }
 
                 //last Check
                 if(counter == 5){
-                    // kayıt yap
-                    changeActivity(ViewManager.getInstance().openLoginPanel1());
+                    if(ViewManager.getInstance().isExist(email)){
+                        emailEdit.setError("The email already exist in the system.");
+                        counter--;
+                    }
+                    else {
+                        String tempText = name + surname;
+                        ViewManager.getInstance().createNewUser(tempText, email, password, type);
+                        changeActivity(ViewManager.getInstance().openLoginPanel1());
+                    }
                 }
 
             }
@@ -110,7 +118,6 @@ public class RegisterPanel extends ViewManager {
     }
     public void changeActivity(Class className) {
         startActivity(new Intent(act, className));
-        finish();
     }
 
 }
