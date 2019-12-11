@@ -2,6 +2,7 @@ package com.Elemegi.Elemegi.View;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -18,7 +19,9 @@ public class LoginPanel extends ViewManager {
     private Button loginButton;
     private Button registerButton;
     private TextView forgotPassword;
+    private EditText emailEdit;
     private String email;
+    private EditText passwordEdit;
     private String password;
     private boolean rememberMe;
     private CheckBox rememberMeBox;
@@ -34,8 +37,9 @@ public class LoginPanel extends ViewManager {
         loginButton = (Button) findViewById(R.id.loginButton);
         registerButton = (Button) findViewById(R.id.registerButton);
         forgotPassword = (TextView) findViewById(R.id.forgotPasswordButton);
-        email = (((EditText) findViewById(R.id.email)).getText().toString());
-        password = ((EditText) findViewById(R.id.password)).getText().toString();
+        emailEdit = (EditText) findViewById(R.id.email);
+        passwordEdit = (EditText) findViewById(R.id.password);
+
         rememberMeBox = (CheckBox) findViewById(R.id.rememberMe);
 
 
@@ -43,7 +47,14 @@ public class LoginPanel extends ViewManager {
             @Override
             public void onClick(View v) {
                 //tara doğruysa
-                ViewManager.getInstance().checkUserFromDatabase("can123@can.can","abcd1234");
+
+                email = emailEdit.getText().toString();
+                password = passwordEdit.getText().toString();
+
+                Log.d("aaaaaaaaaaaa",email);
+                Log.d("bbbbbbbbbbbb",password);
+
+                ViewManager.getInstance().checkUserFromDatabase(email,password);
                 changeActivity(ViewManager.getInstance().openHomePagePanel());
             }
         });
