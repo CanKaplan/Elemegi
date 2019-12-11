@@ -6,6 +6,7 @@ import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
+import android.util.Base64;
 import android.util.Log;
 
 import java.io.BufferedReader;
@@ -80,6 +81,85 @@ public class DatabaseManager extends Activity {
         return result;
     }
 
+    public String getMyOrders(long ID){
+        BackgroundTask backgroundTask = new BackgroundTask();
+        String data_string = "ID=" + ID;
+        backgroundTask.setTaskContent("order.php",data_string);
+        String result = "";
+        try {
+            result = backgroundTask.execute().get();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        Log.d("XXXXXXXXXXX",result);
+        return result;
+    }
+
+    public String getFavourites(long ID){
+        BackgroundTask backgroundTask = new BackgroundTask();
+        String data_string = "ID=" + ID;
+        backgroundTask.setTaskContent("showFavourite.php",data_string);
+        String result = "";
+        try {
+            result = backgroundTask.execute().get();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        Log.d("XXXXXXXXXXX",result);
+        return result;
+    }
+
+    public String addFavourite(long userID, long productID){
+        BackgroundTask backgroundTask = new BackgroundTask();
+        String data_string = "ID=" + userID + "&ID=" + productID;
+        backgroundTask.setTaskContent("addfavourite.php",data_string);
+        String result = "";
+        try {
+            result = backgroundTask.execute().get();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        Log.d("XXXXXXXXXXX",result);
+        return result;
+    }
+
+    public String getProducts(String label1,String label2,String label3){
+        BackgroundTask backgroundTask = new BackgroundTask();
+        String data_string = "label1=" + label1 + "&label2=" + label2 + "&label3=" + label3;
+        backgroundTask.setTaskContent("register.php",data_string);
+        String result = "";
+        try {
+            result = backgroundTask.execute().get();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        Log.d("XXXXXXXXXXX",result);
+        return result;
+    }
+
+    public String updateProfile(Base64 image, String name, String email, String phone, String password, String address){
+        BackgroundTask backgroundTask = new BackgroundTask();
+        String data_string = "image=" + image + "&name=" + name + "&email=" + email + "&phone=" + phone + "&password=" + password + "&address=" + address;
+        backgroundTask.setTaskContent("updateProfile.php",data_string);
+        String result = "";
+        try {
+            result = backgroundTask.execute().get();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        Log.d("XXXXXXXXXXX",result);
+        return result;
+    }
 
     class BackgroundTask extends AsyncTask<Void,Void,String> {
 
