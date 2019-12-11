@@ -22,7 +22,7 @@ public class MainManager {
     private final static MainManager instance = new MainManager();
 
     public MainManager(){
-            DatabaseManager.getInstance().makeConnection();
+           // DatabaseManager.getInstance().makeConnection();
     }
 
 
@@ -32,7 +32,7 @@ public class MainManager {
 
     public static void setUserProperties(String email) {
         //loginden gelen user setlenicek
-       DatabaseManager.getInstance().createUserlistTable();
+       //DatabaseManager.getInstance().createUserlistTable();
        //DatabaseManager.getInstance().insertUser("",email,"");
     }
 
@@ -80,7 +80,7 @@ public class MainManager {
         users.add(user);
         // Bu oluşturulan user database e eklenmeli
         //Id olayı halledilmesi lazım
-        DatabaseManager.getInstance().createUserlistTable();
+        //DatabaseManager.getInstance().createUserlistTable();
        //DatabaseManager.getInstance().insertUser(name, email, password);
         //databaseManager.setUserID(email,password);
     }
@@ -89,7 +89,7 @@ public class MainManager {
         Product product = new Product(productName, 0, userID, labels, image, price, deliverTime);
         products.add(product);
         // Bu oluşturulan product database e eklenmeli
-        DatabaseManager.getInstance().createProductlistTable();
+        //DatabaseManager.getInstance().createProductlistTable();
     }
 
     public Product deleteProduct(long productID) {
@@ -143,7 +143,7 @@ public class MainManager {
 
     //setPassword Methodu
     public void setPassword(String email, String pass){
-        DatabaseManager.getInstance().changePassword(email, pass);
+        //DatabaseManager.getInstance().changePassword(email, pass);
     }
     //remember me local file set method
 

@@ -1,11 +1,13 @@
 package com.Elemegi.Elemegi.View;
 
 import android.content.Intent;
+import android.graphics.drawable.AnimationDrawable;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -16,6 +18,7 @@ import com.Elemegi.Elemegi.Controller.ViewManager;
 public class LoginPanel extends ViewManager {
 
     private Button loginButton;
+    private RelativeLayout layout;
     private Button registerButton;
     private TextView forgotPassword;
     private String email;
@@ -23,6 +26,7 @@ public class LoginPanel extends ViewManager {
     private boolean rememberMe;
     private CheckBox rememberMeBox;
     private AppCompatActivity act;
+    private AnimationDrawable anim;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,6 +35,11 @@ public class LoginPanel extends ViewManager {
         myApp.setCurrentActivity(this);
         act = myApp.getCurrentActivity();
 
+        layout=findViewById(R.id.layout);
+        anim=(AnimationDrawable)layout.getBackground();
+        anim.setEnterFadeDuration(2000);
+        anim.setExitFadeDuration(4000);
+        anim.start();
         loginButton = (Button) findViewById(R.id.loginButton);
         registerButton = (Button) findViewById(R.id.registerButton);
         forgotPassword = (TextView) findViewById(R.id.forgotPasswordButton);
