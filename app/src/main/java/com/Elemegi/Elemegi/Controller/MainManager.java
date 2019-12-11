@@ -74,13 +74,10 @@ public class MainManager {
         return false;
     }
 
-    public void createUser(String name, int roleType, String password, String email, String phoneNumber, String address, int age) {
-        User user = new User(name, roleType, password, email, phoneNumber, address);
-        users.add(user);
-        // Bu oluşturulan user database e eklenmeli
-        //Id olayı halledilmesi lazım
-        //DatabaseManager.getInstance().createUserlistTable();
-       //DatabaseManager.getInstance().insertUser(name, email, password);
+    public void registerUser(String name, String surname,String roleType, String email, String password) {
+
+        checkUserEmail(email);
+        DatabaseManager.getInstance().registerUser(name,surname,email, password, roleType);
         //databaseManager.setUserID(email,password);
     }
 
@@ -143,6 +140,13 @@ public class MainManager {
     //setPassword Methodu
     public void setPassword(String email, String pass){
         //DatabaseManager.getInstance().changePassword(email, pass);
+    }
+
+    public boolean checkUserEmail(String email) {
+        if(DatabaseManager.getInstance().checkUserRegistered(email).equals("FALSE")){
+            return true;
+        }
+        return false;
     }
     //remember me local file set method
 

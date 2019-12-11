@@ -48,6 +48,38 @@ public class DatabaseManager extends Activity {
         return result;
     }
 
+    public String checkUserRegistered(String email){
+        BackgroundTask backgroundTask = new BackgroundTask();
+        String data_string = "email=" + email;
+        backgroundTask.setTaskContent("checkUserRegistered.php",data_string);
+        String result = "";
+        try {
+            result = backgroundTask.execute().get();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        Log.d("XXXXXXXXXXX",result);
+        return result;
+    }
+
+    public String registerUser(String name, String surname, String email, String password, String roleType){
+        BackgroundTask backgroundTask = new BackgroundTask();
+        String data_string = "name=" + name + "&surname=" + surname + "&type=" + roleType + "&password=" + password + "&email=" + email;
+        backgroundTask.setTaskContent("register.php",data_string);
+        String result = "";
+        try {
+            result = backgroundTask.execute().get();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        Log.d("XXXXXXXXXXX",result);
+        return result;
+    }
+
 
     class BackgroundTask extends AsyncTask<Void,Void,String> {
 
