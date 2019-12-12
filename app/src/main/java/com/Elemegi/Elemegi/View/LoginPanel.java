@@ -2,7 +2,6 @@ package com.Elemegi.Elemegi.View;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -11,8 +10,8 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.Elemegi.Elemegi.R;
 import com.Elemegi.Elemegi.Controller.ViewManager;
+import com.Elemegi.Elemegi.R;
 
 public class LoginPanel extends ViewManager {
 
@@ -42,20 +41,23 @@ public class LoginPanel extends ViewManager {
 
         rememberMeBox = (CheckBox) findViewById(R.id.rememberMe);
 
+        email = emailEdit.getText().toString();
+        password = passwordEdit.getText().toString();
 
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //tara doğruysa
 
                 email = emailEdit.getText().toString();
                 password = passwordEdit.getText().toString();
 
-                Log.d("aaaaaaaaaaaa",email);
-                Log.d("bbbbbbbbbbbb",password);
-
-                ViewManager.getInstance().checkUserFromDatabase(email,password);
-                changeActivity(ViewManager.getInstance().openHomePagePanel());
+                if(ViewManager.getInstance().checkUserFromDatabase(email,password)){
+                    changeActivity(ViewManager.getInstance().openHomePagePanel());
+                }
+                else{
+                    emailEdit.setError("Wrong Email or Password");
+                    passwordEdit.setError("Wrong Email or Password");
+                }
             }
         });
         registerButton.setOnClickListener(new View.OnClickListener() {
@@ -68,10 +70,10 @@ public class LoginPanel extends ViewManager {
             @Override
             public void onClick(View v) {
                 changeActivity(ViewManager.getInstance().openForgotPasswordPanel());
-                //changeActivity(ViewManager.getInstance().openChangePasswordPanel());
             }
         });
 
+        //*********************rememberMe Yapılcak********************
 
     }
 

@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -19,6 +18,7 @@ public class ChangePasswordPanel extends ViewManager {
     private AppCompatActivity act;
     private EditText passwordEdit1;
     private EditText passwordEdit2;
+    private String email = "";  // Mailin kimden geldiği öğrenilicek
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

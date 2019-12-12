@@ -3,9 +3,11 @@ package com.Elemegi.Elemegi.Controller;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Base64;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.Elemegi.Elemegi.Model.Product;
 import com.Elemegi.Elemegi.View.AddProductPanel;
 import com.Elemegi.Elemegi.View.ChangePasswordPanel;
 import com.Elemegi.Elemegi.View.CommentsPanel;
@@ -196,6 +198,43 @@ public class ViewManager extends AppCompatActivity {
         else{
             return false;
         }
+    }
+    public static Base64[] createHomePageSliderContent(long id) {
+        Base64[] images = new Base64[3];
+        for (int i = 0; i < 3; i++){
+            images[i] = MainManager.getInstance().createHomePageSliderContent(id)[i].getImage().get(0);
+        }
+
+        return images;
+    }
+
+    public static Base64[] createHomePageImages(long id) {
+        Base64[] images = new Base64[18];
+        for (int i = 0; i < 18; i++){
+            images[i] = MainManager.getInstance().createHomePageImages(id)[i].getImage().get(0);
+        }
+
+        return images;
+    }
+    public static String[] createHomePageSliderNames(long id) {
+        String[] names = new String[3];
+        for (int i = 0; i < 3; i++){
+            names[i] = MainManager.getInstance().createHomePageSliderContent(id)[i].getName();
+        }
+        return names;
+    }
+
+    public static String[] createHomePageNames(long id) {
+        String[] names = new String[18];
+        for (int i = 0; i < 18; i++){
+            names[i] = MainManager.getInstance().createHomePageImages(id)[i].getName();
+        }
+        return names;
+    }
+
+    public static Product[] getMyProdList(long id) {
+        Product[] myProd = MainManager.getInstance().getMyProducts(id);
+        return myProd;
     }
 
     public Class openAddProductPanel() {

@@ -1,5 +1,7 @@
 package com.Elemegi.Elemegi.Model;
 
+import android.util.Base64;
+
 import java.util.List;
 
 public class Product {
@@ -7,13 +9,15 @@ public class Product {
     private  long productID;
     private long UserID;
     private List<String> labels;
-    private List<String> image;
+    private Base64[] image;
+
+    private String description;
     private double overallRating;
-    private  double price;
+    private double price;
     private int deliverTime;
     private List<Comment> comments;
 
-    public Product(String name, long productID, long userID, List<String> labels, List<String> image, double price, int deliverTime) {
+    public Product(String name, long productID, long userID, List<String> labels, Base64[] image, double price, int deliverTime) {
         this.name = name;
         this.productID = productID;
         UserID = userID;
@@ -33,6 +37,14 @@ public class Product {
 
     public long getProductID() {
         return productID;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public void setProductID(long productID) {
@@ -55,11 +67,11 @@ public class Product {
         this.labels = labels;
     }
 
-    public List<String> getImage() {
+    public Base64[] getImage() {
         return image;
     }
 
-    public void setImage(List<String> image) {
+    public void setImage(Base64[] image) {
         this.image = image;
     }
 
