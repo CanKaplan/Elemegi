@@ -3,7 +3,6 @@ package com.Elemegi.Elemegi.Controller;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.widget.EditText;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -18,8 +17,6 @@ import com.Elemegi.Elemegi.View.MyOrdersPanel;
 import com.Elemegi.Elemegi.View.ProductPagePanel;
 import com.Elemegi.Elemegi.View.ProfilePagePanel;
 import com.Elemegi.Elemegi.View.RegisterPanel;
-
-import java.io.File;
 
 public class ViewManager extends AppCompatActivity {
     private final static ViewManager instance = new ViewManager();
@@ -188,17 +185,17 @@ public class ViewManager extends AppCompatActivity {
     public Class openMyOrdersPanel() { return MyOrdersPanel.class;
     }
 
-    public void createNewUser(String tempText, String email, String password, String type) {
-        //MainManager.getInstance().createUser(tempText,type,password,email,null);
+    public void createNewUser(String name, String surname, String type, String email, String password) {
+        MainManager.getInstance().registerUser(name, surname, type, email, password);
     }
 
     public boolean isExist(String email) {
-        //if(MainManager.getInstance().checkUser(email)){
-         //   return false;
-        //}
-        //else{
+        if(MainManager.getInstance().checkUserEmail(email)){
             return true;
-        //}
+        }
+        else{
+            return false;
+        }
     }
 
     public Class openAddProductPanel() {
