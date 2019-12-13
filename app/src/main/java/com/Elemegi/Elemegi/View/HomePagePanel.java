@@ -70,9 +70,9 @@ public class HomePagePanel extends ViewManager implements BottomNavigationView.O
         }
         if(userType.equals("Customer")) {
             setContentView(R.layout.home_page_page);
-            Base64[] imagesForSlide = ViewManager.createHomePageSliderContent(MainManager.getInstance().getCurrentUser().getID());
+            String[] imagesForSlide = ViewManager.createHomePageSliderContent(MainManager.getInstance().getCurrentUser().getID());
             final String[] namesForSlide = ViewManager.createHomePageSliderNames(MainManager.getInstance().getCurrentUser().getID());
-            final Base64[] imagesForBottom = ViewManager.createHomePageImages(MainManager.getInstance().getCurrentUser().getID());
+            final String[] imagesForBottom = ViewManager.createHomePageImages(MainManager.getInstance().getCurrentUser().getID());
             final String[] namesForBottom = ViewManager.createHomePageNames(MainManager.getInstance().getCurrentUser().getID());
             navView2 = findViewById(R.id.nav_view_bottom);
             v_flipper = findViewById(R.id.v_flipper);
@@ -338,35 +338,34 @@ public class HomePagePanel extends ViewManager implements BottomNavigationView.O
                 tempTitle.setTextColor(Color.parseColor("#000F00"));
                 layoutToAdd.addView(tempTitle);
 
-                TextView prodDescription = new TextView(act); //Product Date Given
+                TextView prodDescription = new TextView(act); //Product Description
                 prodDescription.setText(myProducts[i].getDescription());
-                TableRow.LayoutParams paramText = new TableRow.LayoutParams(TableRow.LayoutParams.WRAP_CONTENT, TableRow.LayoutParams.WRAP_CONTENT,1f);
-                paramText.setMargins(50,30,0,30);
-                prodDescription.setLayoutParams(paramText);
+                TableRow.LayoutParams paramDescription = new TableRow.LayoutParams(TableRow.LayoutParams.WRAP_CONTENT, TableRow.LayoutParams.WRAP_CONTENT,1f);
+                paramDescription.setMargins(50,30,0,30);
+                prodDescription.setLayoutParams(paramDescription);
                 prodDescription.setTextColor(Color.parseColor("#000000"));
                 prodDescription.setTextAlignment(View.TEXT_ALIGNMENT_TEXT_START);
                 layoutToAdd.addView(prodDescription);
 
-                TextView prodPrice = new TextView(act); //Product Due Date
+                TextView prodPrice = new TextView(act); //Product Price
                 prodPrice.setText(String.valueOf(myProducts[i].getPrice()));
-                TableRow.LayoutParams paramText = new TableRow.LayoutParams(TableRow.LayoutParams.WRAP_CONTENT, TableRow.LayoutParams.WRAP_CONTENT,1f);
-                paramText.setMargins(50,30,0,30);
-                prodPrice.setLayoutParams(paramText);
+                TableRow.LayoutParams paramPrice = new TableRow.LayoutParams(TableRow.LayoutParams.WRAP_CONTENT, TableRow.LayoutParams.WRAP_CONTENT,1f);
+                paramPrice.setMargins(50,30,0,30);
+                prodPrice.setLayoutParams(paramPrice);
                 prodPrice.setTextColor(Color.parseColor("#000000"));
                 prodPrice.setTextAlignment(View.TEXT_ALIGNMENT_TEXT_START);
                 layoutToAdd.addView(prodPrice);
 
-                TextView tempPrice = new TextView(act); //Product Price
-            /*
-            tempText.setText(commentArray[i]);
-            TableRow.LayoutParams paramText = new TableRow.LayoutParams(TableRow.LayoutParams.WRAP_CONTENT, TableRow.LayoutParams.WRAP_CONTENT,1f);
-            paramText.setMargins(50,30,0,30);
-            tempText.setLayoutParams(paramText);
-            tempText.setTextColor(Color.parseColor("#000000"));
-            tempText.setTextAlignment(View.TEXT_ALIGNMENT_TEXT_START);
-            layoutToAdd.addView(tempText);
-            */
-                myOrderList.addView(layoutToAdd);
+                TextView prodDeliverTime = new TextView(act); //Product Deliver Time
+                prodDeliverTime.setText(myProducts[i].getDeliverTime());
+                TableRow.LayoutParams paramDeliverTime = new TableRow.LayoutParams(TableRow.LayoutParams.WRAP_CONTENT, TableRow.LayoutParams.WRAP_CONTENT,1f);
+                paramDeliverTime.setMargins(50,30,0,30);
+                prodDeliverTime.setLayoutParams(paramDeliverTime);
+                prodDeliverTime.setTextColor(Color.parseColor("#000000"));
+                prodDeliverTime.setTextAlignment(View.TEXT_ALIGNMENT_TEXT_START);
+                layoutToAdd.addView(prodDeliverTime);
+
+                myProductList.addView(layoutToAdd);
             }
         }
 
@@ -386,7 +385,7 @@ public class HomePagePanel extends ViewManager implements BottomNavigationView.O
 
     }
 
-    private Bitmap[] convertToBitmap(Base64[] images) {
+    private Bitmap[] convertToBitmap(String[] images) {
         Bitmap[] newBitmap = new Bitmap[images.length];
         for (int i = 0; i < images.length; i++) {
             byte[] decodedString = Base64.decode(String.valueOf(images[i]),Base64.DEFAULT);
@@ -435,27 +434,28 @@ public class HomePagePanel extends ViewManager implements BottomNavigationView.O
             case R.id.navigation_search:
                 //changeActivity(ViewManager.getInstance().openSearchPanel());
                 break;
+            case R.id.navigation_add:
+                changeActivity(ViewManager.getInstance().openAddProductPanel());
+                break;
             case R.id.navigation_settings:
                 //changeActivity(ViewManager.getInstance().openSettingsPanel());
                 break;
             case R.id.nav_categories:
                 //changeActivity(ViewManager.getInstance().openSettingsPanel());
-                changeActivity(ViewManager.getInstance().openLoginPanel1());
                 break;
             case R.id.nav_favourites:
                 //changeActivity(ViewManager.getInstance().openSettingsPanel());
-                changeActivity(ViewManager.getInstance().openLoginPanel1());
                 break;
             case R.id.nav_my_orders:
-                //changeActivity(ViewManager.getInstance().openSettingsPanel());
-                changeActivity(ViewManager.getInstance().openLoginPanel1());
+                changeActivity(ViewManager.getInstance().openMyOrdersPanel());
                 break;
             case R.id.nav_help:
                 //changeActivity(ViewManager.getInstance().openSettingsPanel());
-                changeActivity(ViewManager.getInstance().openAddProductPanel());
+                break;
+            case R.id.nav_orders:
+                //changeActivity(ViewManager.getInstance().openSettingsPanel());
                 break;
             case R.id.nav_logout:
-                //changeActivity(ViewManager.getInstance().openSettingsPanel());
                 changeActivity(ViewManager.getInstance().openLoginPanel1());
                 break;
         }

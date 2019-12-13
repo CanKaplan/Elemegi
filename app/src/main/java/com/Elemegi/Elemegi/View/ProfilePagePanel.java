@@ -6,7 +6,6 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.LinearLayout;
-import android.widget.ViewFlipper;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
@@ -95,10 +94,8 @@ public class ProfilePagePanel extends ViewManager implements NavigationView.OnNa
                 break;
             case R.id.nav_help:
                 //changeActivity(ViewManager.getInstance().openSettingsPanel());
-                changeActivity(ViewManager.getInstance().openLoginPanel1());
                 break;
             case R.id.nav_logout:
-                //changeActivity(ViewManager.getInstance().openSettingsPanel());
                 changeActivity(ViewManager.getInstance().openLoginPanel1());
                 break;
         }

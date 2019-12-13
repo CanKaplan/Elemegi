@@ -3,10 +3,10 @@ package com.Elemegi.Elemegi.Controller;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Base64;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.Elemegi.Elemegi.Model.Order;
 import com.Elemegi.Elemegi.Model.Product;
 import com.Elemegi.Elemegi.View.AddProductPanel;
 import com.Elemegi.Elemegi.View.ChangePasswordPanel;
@@ -20,10 +20,14 @@ import com.Elemegi.Elemegi.View.ProductPagePanel;
 import com.Elemegi.Elemegi.View.ProfilePagePanel;
 import com.Elemegi.Elemegi.View.RegisterPanel;
 
+import java.util.List;
+
 public class ViewManager extends AppCompatActivity {
     private final static ViewManager instance = new ViewManager();
     protected MyApp myApp;
     private AppCompatActivity currentAct;
+
+
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -199,19 +203,19 @@ public class ViewManager extends AppCompatActivity {
             return false;
         }
     }
-    public static Base64[] createHomePageSliderContent(long id) {
-        Base64[] images = new Base64[3];
+    public static String[] createHomePageSliderContent(long id) {
+        String[] images = new String[3];
         for (int i = 0; i < 3; i++){
-            images[i] = MainManager.getInstance().createHomePageSliderContent(id)[i].getImage().get(0);
+            images[i] = MainManager.getInstance().createHomePageSliderContent(id)[i].getImage()[0];
         }
 
         return images;
     }
 
-    public static Base64[] createHomePageImages(long id) {
-        Base64[] images = new Base64[18];
+    public static String[] createHomePageImages(long id) {
+        String[] images = new String[18];
         for (int i = 0; i < 18; i++){
-            images[i] = MainManager.getInstance().createHomePageImages(id)[i].getImage().get(0);
+            images[i] = MainManager.getInstance().createHomePageImages(id)[i].getImage()[0];
         }
 
         return images;
@@ -235,6 +239,11 @@ public class ViewManager extends AppCompatActivity {
     public static Product[] getMyProdList(long id) {
         Product[] myProd = MainManager.getInstance().getMyProducts(id);
         return myProd;
+    }
+
+    protected static Order[] getMyOrderList(long id) {
+        Order[] myOrders = MainManager.getInstance().getMyOrders(id);
+        return myOrders;
     }
 
     public Class openAddProductPanel() {
@@ -291,5 +300,20 @@ public class ViewManager extends AppCompatActivity {
             }
         }
         return "";
+    }
+
+    public String addProduct(String[] images, String nameString, String descriptionString, String deliveryTimeString, String priceString, List<String> labels) {
+        Product result;
+        result = MainManager.getInstance().addProduct(images,nameString,descriptionString,deliveryTimeString,priceString,labels);
+        if (result != null){
+            return String.valueOf(result.getProductID());
+        }
+        else
+            return "";
+    }
+
+    public List<String> getLabels(String[] images) {
+        List<String> labels = MainManager.getInstance().generateLabels(images);
+        return labels;
     }
 }
