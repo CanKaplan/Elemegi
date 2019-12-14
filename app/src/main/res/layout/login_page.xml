@@ -46,7 +46,6 @@
         android:layout_centerHorizontal="true"
         android:layout_marginTop="190dp"
         android:background="@drawable/ovalrectangle"></FrameLayout>
-
     <Button
         android:id="@+id/loginButton"
         android:layout_width="120dp"
@@ -59,6 +58,7 @@
         android:shape="rectangle"
         android:text="LOGIN"
         android:textColor="#F5F5F3" />
+
 
     <Button
         android:id="@+id/registerButton"
