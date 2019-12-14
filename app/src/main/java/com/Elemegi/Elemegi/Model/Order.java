@@ -1,28 +1,22 @@
 package com.Elemegi.Elemegi.Model;
 
-import java.util.Date;
-
 public class Order {
     private long orderID;
     private long productID;
     private long UserID;
-    private Date givenDate;
     private String productName;
     private String productImage;
     private double price;
-    private String description;
+    private int remainingTime;
 
-    public Order(long orderID, long productID, long userID, Date givenDate, String productName, double price) {
+    public Order(long orderID, long productID, long userID, String productImage , String productName, double price , int remainingTime ) {
         this.orderID = orderID;
         this.productID = productID;
         this.UserID = userID;
-        this.givenDate = givenDate;
         this.productName = productName;
         this.price = price;
-    }
-
-    public String getDescription() {
-        return description;
+        this.productImage = productImage;
+        this.remainingTime = remainingTime;
     }
 
     public long getOrderID() {
@@ -33,24 +27,41 @@ public class Order {
         return productID;
     }
 
+
     public long getUserID() {
         return UserID;
     }
 
-    public Date getGivenDate() {
-        return givenDate;
-    }
 
     public String getProductName() {
         return productName;
+    }
+
+    public void setProductName(String productName) {
+        this.productName = productName;
     }
 
     public String getProductImage() {
         return productImage;
     }
 
+    public void setProductImage(String productImages) {
+        this.productImage = productImages;
+    }
+
     public double getPrice() {
         return price;
     }
 
+    public void setPrice(double price) {
+        this.price = price;
+    }
+
+    public int getRemainingTime() {
+        return remainingTime;
+    }
+
+    public void setRemainingTime(int remainingTime) {
+        this.remainingTime = remainingTime;
+    }
 }

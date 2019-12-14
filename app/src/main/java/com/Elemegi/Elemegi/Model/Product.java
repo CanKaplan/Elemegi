@@ -4,22 +4,26 @@ import java.util.List;
 
 public class Product {
     private String name;
-    private  long productID;
+    private long productID;
     private long UserID;
     private List<String> labels;
-    private List<String> image;
+    private String[] image;
+    private String description;
     private double overallRating;
-    private  double price;
+    private double price;
     private int deliverTime;
     private List<Comment> comments;
 
-    public Product(String name, long productID, long userID, List<String> labels, List<String> image, double price, int deliverTime) {
+    public Product(String name, long productID, long userID, List<String> labels, String[] image, String description, double overallRating, double price, int deliverTime, List<Comment> comments) {
         this.name = name;
         this.productID = productID;
-        UserID = userID;
+        this.UserID = userID;
+        this.description  = description;
         this.labels = labels;
         this.image = image;
         this.price = price;
+        this.overallRating = overallRating;
+        this.comments = comments;
         this.deliverTime = deliverTime;
     }
 
@@ -35,16 +39,8 @@ public class Product {
         return productID;
     }
 
-    public void setProductID(long productID) {
-        this.productID = productID;
-    }
-
     public long getUserID() {
         return UserID;
-    }
-
-    public void setUserID(long userID) {
-        UserID = userID;
     }
 
     public List<String> getLabels() {
@@ -55,12 +51,20 @@ public class Product {
         this.labels = labels;
     }
 
-    public List<String> getImage() {
+    public String[] getImage() {
         return image;
     }
 
-    public void setImage(List<String> image) {
+    public void setImage(String[] image) {
         this.image = image;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public double getOverallRating() {

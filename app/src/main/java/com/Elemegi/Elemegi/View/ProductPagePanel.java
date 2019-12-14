@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.drawable.AnimationDrawable;
 import android.os.Bundle;
 import android.util.AttributeSet;
 import android.util.Log;
@@ -18,6 +19,7 @@ import android.view.animation.AnimationUtils;
 import android.widget.GridLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.ViewFlipper;
 
@@ -25,6 +27,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.content.ContextCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.navigation.ui.AppBarConfiguration;
@@ -40,6 +43,8 @@ public class ProductPagePanel extends ViewManager implements BottomNavigationVie
     NavigationView navigationView;
     ViewFlipper v_flipper;
     LinearLayout sliderDotspanel;
+    private ConstraintLayout layout;
+    private AnimationDrawable anim;
     private int dotscount;
     private ImageView[] dots;
     private float startX;
@@ -52,9 +57,19 @@ public class ProductPagePanel extends ViewManager implements BottomNavigationVie
     private TextView durationTime;
     private TextView commentsText;
     private boolean isFaved = false;
+
+    public ProductPagePanel() {
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        layout=findViewById(R.id.layout);
+        anim=(AnimationDrawable)layout.getBackground();
+        anim.setEnterFadeDuration(10);
+        anim.setExitFadeDuration(1000);
+        anim.start();
+
         setContentView(R.layout.product_page_page);
         navView2 = findViewById(R.id.nav_view_bottom);
         v_flipper = findViewById(R.id.v_flipper);

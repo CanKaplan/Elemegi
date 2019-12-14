@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#9E1212">
+    android:id="@+id/layout"
+    android:background="@drawable/gradientlist">
     <LinearLayout
         app:layout_constraintTop_toTopOf="parent"
         android:layout_width="match_parent"
@@ -125,7 +126,7 @@
             <ImageView
                 android:layout_width="30dp"
                 android:layout_height="30dp"
-                android:src="@drawable/homepage"
+                android:src="@drawable/password"
                 />
             <EditText
                 android:layout_width="match_parent"
@@ -150,7 +151,7 @@
             <ImageView
                 android:layout_width="30dp"
                 android:layout_height="30dp"
-                android:src="@drawable/homepage"
+                android:src="@drawable/password"
                 />
             <EditText
                 android:layout_width="match_parent"
@@ -203,15 +204,15 @@
         android:layout_marginStart="150dp"
         android:layout_marginTop="20dp"
         android:clickable="true"
-        android:background="#000000"
+        android:background="#FF5722"
         android:orientation="horizontal">
 
         <TextView
-            android:layout_width="40dp"
+            android:layout_width="50dp"
             android:layout_height="30dp"
             android:layout_marginTop="4dp"
             android:layout_marginLeft="3dp"
-            android:text="Save"
+            android:text="SAVE"
             android:textColor="#FFFFFF"
             android:textSize="18sp"/>
 

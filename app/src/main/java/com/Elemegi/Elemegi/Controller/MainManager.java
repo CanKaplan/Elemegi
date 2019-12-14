@@ -5,34 +5,26 @@ import com.Elemegi.Elemegi.Model.Order;
 import com.Elemegi.Elemegi.Model.Product;
 import com.Elemegi.Elemegi.Model.User;
 
-import java.util.Date;
 import java.util.List;
 
 public class MainManager {
+
     //Lists that keep data of the model package's layers
+    private User currentUser;
     private List<User> users;
-    private List<Product> products;
+    private Product[] myProducts;
+    private Product[] sliderProducts;
+    private Product[] bottomProducts;
     private List<Comment> comments;
-    private List<Order> orders;
+    private Order[] myOrders;
 
     //defined managers that will be controlled by MainManager
-    private NetworkManager networkManager;
     private SearchManager searchManager;
 
     private final static MainManager instance = new MainManager();
 
-    public MainManager(){
-    }
-
-
     public static MainManager getInstance() {
         return instance;
-    }
-
-    public static void setUserProperties(String email) {
-        //loginden gelen user setlenicek
-       //DatabaseManager.getInstance().createUserlistTable();
-       //DatabaseManager.getInstance().insertUser("",email,"");
     }
 
 
@@ -42,13 +34,6 @@ public class MainManager {
         this.users = users;
     }
 
-    public List<Product> getProducts() {
-        return products;
-    }
-
-    public void setProducts(List<Product> products) {
-        this.products = products;
-    }
 
     public List<Comment> getComments() {
         return comments;
@@ -58,20 +43,38 @@ public class MainManager {
         this.comments = comments;
     }
 
-    public List<Order> getOrders() {
-        return orders;
+    public Order[] getOrders() {
+        return myOrders;
     }
 
-    public void setOrders(List<Order> orders) {
-        this.orders = orders;
+    public void setOrders(Order[] orders) {
+        this.myOrders= orders;
+    }
+
+    public Product[] getSliderProducts() {
+        return sliderProducts;
+    }
+
+    public void setSliderProducts(Product[] sliderProducts) {
+        this.sliderProducts = sliderProducts;
+    }
+
+    public Product[] getBottomProducts() {
+        return bottomProducts;
+    }
+
+    public void setBottomProducts(Product[] bottomProducts) {
+        this.bottomProducts = bottomProducts;
     }
 
     public boolean checkUser(String email, String password){
-        String statement = DatabaseManager.getInstance().checkUser(email, password);
-        if (statement.length() > 2){
-            return true;
+        String result = DatabaseManager.getInstance().checkUser(email, password);
+        if (result.equals("false")){
+            return false;
         }
-        return false;
+        //currentUser = new User("can kaplan","Customer","can123456","cankaplan1007@gmail.com",null,null);
+        //RESULTTAN SANA USER STRING İ DONCEK ONLA currentUser ı setle **********************************************
+        return true;
     }
 
     public void registerUser(String name, String surname,String roleType, String email, String password) {
@@ -80,28 +83,28 @@ public class MainManager {
         DatabaseManager.getInstance().registerUser(name,surname,email, password, roleType);
         //databaseManager.setUserID(email,password);
     }
-
-    public void addProduct(String productName, long productID, long userID, List<String> labels, List<String> image, double price, int deliverTime) {
-        Product product = new Product(productName, 0, userID, labels, image, price, deliverTime);
-        products.add(product);
-        // Bu oluşturulan product database e eklenmeli
-        //DatabaseManager.getInstance().createProductlistTable();
-    }
-
-    public Product deleteProduct(long productID) {
-        int i = 0;
-        for (; i < products.size() && products.get(i).getProductID() != productID; i++) {
-
+    /*
+        public void addProduct(String productName, long productID, long userID, List<String> labels, List<Base64> image, double price, int deliverTime) {
+            Product product = new Product(productName, 0, userID, labels, image, price, deliverTime);
+            //products.add(product);
+            // Bu oluşturulan product database e eklenmeli
+            //DatabaseManager.getInstance().createProductlistTable();
         }
-        if(i < products.size()) {
-            Product deletedProduct = products.get(i);
-            products.remove(i);
-            //Database
-            return deletedProduct;
+
+        public Product deleteProduct(long productID) {
+            int i = 0;
+            for (; i < products.size() && products.get(i).getProductID() != productID; i++) {
+
+            }
+            if(i < products.size()) {
+                Product deletedProduct = products.get(i);
+                products.remove(i);
+                //Database
+                return deletedProduct;
+            }
+            else
+                return null;
         }
-        else
-            return null;
-    }
     public User deleteUser(long userID){
         int i = 0;
         for (; i < users.size() && users.get(i).getID() != userID; i++) {
@@ -136,7 +139,7 @@ public class MainManager {
         else
             return null;
     }
-
+*/
     //setPassword Methodu
     public void setPassword(String email, String pass){
         //DatabaseManager.getInstance().changePassword(email, pass);
@@ -148,6 +151,48 @@ public class MainManager {
         }
         return false;
     }
+
+    public User getCurrentUser() {
+        return currentUser;
+    }
+
+    public Product[] createHomePageSliderContent(long id) { // KARASIZIM BURDA PRODUCT ÇEKİP BURDA EŞİTLEYİP Mİ KULLANICAZ YOKSA DATABASEDEN RESİM Mİ ALICAZ
+
+        String sliderProductsString = DatabaseManager.getInstance().createHomePageSliderProducts(id);
+        // BURDAKİ STRINGLERI PRODUCT TİPİİNE ÇEVİR VE SLİDERPRODUCTS YAP  3 tane olacak
+        return sliderProducts;
+    }
+    public Product[] createHomePageImages(long id) {
+        String bottomProductsString = DatabaseManager.getInstance().createHomePageProducts(id);
+        // BURDAKİ STRINGLERI PRODUCT TİPİİNE ÇEVİR VE BOTTOMPRODUCTS YAP  18 tane olacak
+        return bottomProducts;
+    }
+
+    public Product[] getMyProducts(long id) {
+        String myProductString = DatabaseManager.getInstance().createMyProductsPage(id);
+        //BURDAKİ STRING SANA PRODUCTLARI DÖNDÜRCEK ONLARI PRODUCT ARRAYINE ÇEVİR
+        return myProducts; // bu sadece producer kullanılıyorsa kullanılıcak.
+    }
+
+    public Order[] getMyOrders(long id) {
+        String myOrdersString = DatabaseManager.getInstance().createMyOrdersPage(id);
+        //BURDAKİ STRING SANA ORDERLARI DÖNDÜRCEK ONLARI ORDER ARRAYINE ÇEVİR
+        return myOrders;
+    }
+
+    public List<String> generateLabels(String[] images) {
+        List<String> generatedStrings = null;
+        return generatedStrings;
+    }
+
+    public Product addProduct(String[] images, String nameString, String descriptionString, String deliveryTimeString, String priceString, List<String> labels) {
+        Product currentProduct = null;
+        String addProductString = DatabaseManager.getInstance().addProductPage(currentUser.getID(),images,nameString,descriptionString,deliveryTimeString,priceString,labels);
+        //Burada sana product bilgilerini dönecek bunla product page oluştur
+        return currentProduct;
+    }
+
+
     //remember me local file set method
 
     //get 3 product for homepage

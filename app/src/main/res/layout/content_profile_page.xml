@@ -4,7 +4,8 @@
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#DCBB1616"
+        android:id="@+id/layout"
+        android:background="@drawable/gradientlist"
         tools:showIn="@layout/app_bar_profile">
 
     <LinearLayout
@@ -118,7 +119,7 @@
         android:layout_marginStart="140dp"
         android:layout_marginTop="20dp"
         android:clickable="true"
-        android:background="#000000"
+        android:background="#FF5722"
         android:orientation="horizontal">
 
         <TextView
@@ -126,7 +127,7 @@
             android:layout_height="30dp"
             android:layout_marginTop="4dp"
             android:layout_marginLeft="3dp"
-            android:text="Edit"
+            android:text="EDIT"
             android:textColor="#FFFFFF"
             android:textSize="18sp"/>
 

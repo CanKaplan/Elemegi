@@ -1,12 +1,14 @@
 package com.Elemegi.Elemegi.View;
 
 import android.content.Intent;
+import android.graphics.drawable.AnimationDrawable;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -30,12 +32,18 @@ public class RegisterPanel extends ViewManager {
     private EditText surnameEdit;
     private EditText emailEdit;
     private EditText passwordEdit;
+    private RelativeLayout layout;
+    private AnimationDrawable anim;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.register_page);
-
+        layout=findViewById(R.id.layout);
+        anim=(AnimationDrawable)layout.getBackground();
+        anim.setEnterFadeDuration(10);
+        anim.setExitFadeDuration(1000);
+        anim.start();
         myApp.setCurrentActivity(this);
         act = myApp.getCurrentActivity();
 

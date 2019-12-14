@@ -3,7 +3,6 @@ package com.Elemegi.Elemegi.View;
 import android.content.Intent;
 import android.graphics.drawable.AnimationDrawable;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -13,13 +12,12 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.Elemegi.Elemegi.R;
 import com.Elemegi.Elemegi.Controller.ViewManager;
+import com.Elemegi.Elemegi.R;
 
 public class LoginPanel extends ViewManager {
 
     private Button loginButton;
-    private RelativeLayout layout;
     private Button registerButton;
     private TextView forgotPassword;
     private EditText emailEdit;
@@ -29,20 +27,20 @@ public class LoginPanel extends ViewManager {
     private boolean rememberMe;
     private CheckBox rememberMeBox;
     private AppCompatActivity act;
+    private RelativeLayout layout;
     private AnimationDrawable anim;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.login_page);
         myApp.setCurrentActivity(this);
         act = myApp.getCurrentActivity();
-
         layout=findViewById(R.id.layout);
         anim=(AnimationDrawable)layout.getBackground();
         anim.setEnterFadeDuration(10);
         anim.setExitFadeDuration(1000);
         anim.start();
+
         loginButton = (Button) findViewById(R.id.loginButton);
         registerButton = (Button) findViewById(R.id.registerButton);
         forgotPassword = (TextView) findViewById(R.id.forgotPasswordButton);
@@ -51,20 +49,23 @@ public class LoginPanel extends ViewManager {
 
         rememberMeBox = (CheckBox) findViewById(R.id.rememberMe);
 
+        email = emailEdit.getText().toString();
+        password = passwordEdit.getText().toString();
 
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //tara doğruysa
 
                 email = emailEdit.getText().toString();
                 password = passwordEdit.getText().toString();
 
-                Log.d("aaaaaaaaaaaa",email);
-                Log.d("bbbbbbbbbbbb",password);
-
-                ViewManager.getInstance().checkUserFromDatabase(email,password);
-                changeActivity(ViewManager.getInstance().openHomePagePanel());
+                if(ViewManager.getInstance().checkUserFromDatabase(email,password)){
+                    changeActivity(ViewManager.getInstance().openHomePagePanel());
+                }
+                else{
+                    emailEdit.setError("Wrong Email or Password");
+                    passwordEdit.setError("Wrong Email or Password");
+                }
             }
         });
         registerButton.setOnClickListener(new View.OnClickListener() {
@@ -77,10 +78,10 @@ public class LoginPanel extends ViewManager {
             @Override
             public void onClick(View v) {
                 changeActivity(ViewManager.getInstance().openForgotPasswordPanel());
-                //changeActivity(ViewManager.getInstance().openChangePasswordPanel());
             }
         });
 
+        //*********************rememberMe Yapılcak********************
 
     }
 

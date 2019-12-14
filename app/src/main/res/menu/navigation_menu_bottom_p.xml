@@ -4,26 +4,26 @@
     <item
         android:id="@+id/navigation_home"
         android:icon="@drawable/homepage"
-        android:title="@string/home_page" />
+        android:title="Home Page" />
 
     <item
         android:id="@+id/navigation_profile"
         android:icon="@drawable/profile"
-        android:title="@string/profile_page" />
+        android:title="Profile" />
 
     <item
         android:id="@+id/navigation_logo"
         android:icon="@drawable/logo"
-        android:title="@string/app_name" />
+        android:title="El Emegi" />
 
     <item
         android:id="@+id/navigation_add"
         android:icon="@drawable/search"
-        android:title="@string/add_page" />
+        android:title="Add" />
 
     <item
         android:id="@+id/navigation_settings"
         android:icon="@drawable/settings"
-        android:title="@string/settings_page" />
+        android:title="Settings" />
 
 </menu>

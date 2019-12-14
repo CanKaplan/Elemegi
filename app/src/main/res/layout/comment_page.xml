@@ -3,14 +3,15 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:background="#DCBB1616"
+    android:id="@+id/layout"
+    android:background="@drawable/gradientlist"
     >
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="35dp"
         android:layout_alignParentTop="true"
-        android:background="#DCBB1616"
+        android:background="#00000000"
         android:orientation="horizontal">
         <TextView
             android:layout_width="match_parent"

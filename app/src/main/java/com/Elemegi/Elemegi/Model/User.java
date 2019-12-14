@@ -3,7 +3,7 @@ package com.Elemegi.Elemegi.Model;
 public class User {
     private long ID;
     private String name;
-    private int roleType;
+    private String roleType;
     private String password;
     private String email;
     private String phoneNumber;
@@ -12,7 +12,7 @@ public class User {
     private long longtitude;
     private long latitude;
 
-    public User(String name, int roleType, String password, String email,String phoneNumber,String address){
+    public User(String name, String roleType, String password, String email,String phoneNumber,String address){
         this.name = name;
         this.roleType = roleType;
         this.password = password;
@@ -37,11 +37,11 @@ public class User {
         this.name = name;
     }
 
-    public int getRoleType() {
+    public String getRoleType() {
         return roleType;
     }
 
-    public void setRoleType(int roleType) {
+    public void setRoleType(String roleType) {
         this.roleType = roleType;
     }
 

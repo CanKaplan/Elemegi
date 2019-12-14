@@ -2,11 +2,13 @@ package com.Elemegi.Elemegi.View;
 
 
 import android.graphics.Color;
+import android.graphics.drawable.AnimationDrawable;
 import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
 
@@ -17,13 +19,19 @@ import com.Elemegi.Elemegi.R;
 
 public class CommentsPanel extends ViewManager {
     LinearLayout comments;
+    private RelativeLayout layout;
+    private AnimationDrawable anim;
     private AppCompatActivity act;
     String[] commentArray= {"aaaaaaaa","bbbbbbbbb","ccccccccc","dddddddd","eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee","fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff","aaaaaaaa","bbbbbbbbb","ccccccccc","dddddddd","eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee","fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff","aaaaaaaa","bbbbbbbbb","ccccccccc","dddddddd","eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee","fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff"};
     String[] nameArray= {"can","can1","can2","can3","can4","can5","can","can1","can2","can3","can4","can5","can","can1","can2","can3","can4","can5"};
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        layout=findViewById(R.id.layout);
+        anim=(AnimationDrawable)layout.getBackground();
+        anim.setEnterFadeDuration(10);
+        anim.setExitFadeDuration(1000);
+        anim.start();
         setContentView(R.layout.comment_page);
         myApp.setCurrentActivity(this);
         act = myApp.getCurrentActivity();
