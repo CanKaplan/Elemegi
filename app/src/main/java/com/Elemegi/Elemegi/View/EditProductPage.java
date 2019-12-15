@@ -107,7 +107,7 @@ public class EditProductPanel extends ViewManager implements NavigationView.OnNa
 
     private void selectImage(final int i) {
         final CharSequence[] options = { "Take Photo", "Choose from Gallery","Cancel" };
-        AlertDialog.Builder builder = new AlertDialog.Builder(AddProductPanel.this);
+        AlertDialog.Builder builder = new AlertDialog.Builder(EditProductPanel.this);
         builder.setTitle("Add Photo!");
 
         builder.setItems(options, new DialogInterface.OnClickListener() {
