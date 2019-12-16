@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.graphics.drawable.AnimationDrawable;
 import android.os.Bundle;
 import android.util.Base64;
 import android.util.Log;
@@ -22,6 +23,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.content.ContextCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
@@ -58,10 +60,18 @@ public class HomePagePanel extends ViewManager implements BottomNavigationView.O
     private TextView text5;
     private TextView text6;
     private TextView sliderNames;
+    private ConstraintLayout layout;
+    private AnimationDrawable anim;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        layout=findViewById(R.id.layout);
+        anim=(AnimationDrawable)layout.getBackground();
+        anim.setEnterFadeDuration(10);
+        anim.setExitFadeDuration(1000);
+        anim.start();
+
         if(MainManager.getInstance().getCurrentUser() != null) {
             userType = MainManager.getInstance().getCurrentUser().getRoleType(); // User Typeına göre işlem yap customersa home_oage_page otherwise home_page_page_p
         }
@@ -70,10 +80,32 @@ public class HomePagePanel extends ViewManager implements BottomNavigationView.O
         }
         if(userType.equals("Customer")) {
             setContentView(R.layout.home_page_page);
-            String[] imagesForSlide = ViewManager.createHomePageSliderContent(MainManager.getInstance().getCurrentUser().getID());
-            final String[] namesForSlide = ViewManager.createHomePageSliderNames(MainManager.getInstance().getCurrentUser().getID());
-            final String[] imagesForBottom = ViewManager.createHomePageImages(MainManager.getInstance().getCurrentUser().getID());
-            final String[] namesForBottom = ViewManager.createHomePageNames(MainManager.getInstance().getCurrentUser().getID());
+            Product[] sliderProds =  ViewManager.createHomePageSliderContent(MainManager.getInstance().getCurrentUser().getID());
+            Product[] bottomProds =  ViewManager.createHomePageImages(MainManager.getInstance().getCurrentUser().getID());
+            String[] tempImagesForSlide = new String[3];
+            String[] tempNamesForSlide = new String[3];
+            String[] tempImagesForBottom = new String[18];
+            String[] tempNamesForBottom = new String[18];
+
+            for(int i = 0; i < sliderProds.length; i++){
+                tempImagesForSlide[i] = sliderProds[i].getImage()[0];
+            }
+            for(int i = 0; i < sliderProds.length; i++){
+                tempNamesForSlide[i] = sliderProds[i].getName();
+            }
+            for(int i = 0; i < sliderProds.length; i++){
+                tempImagesForBottom[i] = bottomProds[i].getImage()[0];
+            }
+            for(int i = 0; i < sliderProds.length; i++){
+                tempNamesForBottom[i] = bottomProds[i].getName();
+            }
+
+
+            final String[] imagesForSlide = tempImagesForSlide;
+            final String[] namesForSlide = tempNamesForSlide;
+            final String[] imagesForBottom = tempImagesForBottom;
+            final String[] namesForBottom = tempNamesForBottom;
+            
             navView2 = findViewById(R.id.nav_view_bottom);
             v_flipper = findViewById(R.id.v_flipper);
             v_flipper_product = findViewById(R.id.v_flipper_big);
@@ -95,10 +127,13 @@ public class HomePagePanel extends ViewManager implements BottomNavigationView.O
             dotscount = 3;
             dots = new ImageView[dotscount];
 
-            Bitmap[] decodedBytesSlider;
-            final Bitmap[] decodedBytesBottom;
-            decodedBytesSlider = convertToBitmap(imagesForSlide);
-            decodedBytesBottom = convertToBitmap(imagesForBottom);
+            Bitmap[] tempDecodedBytesSlider;
+            Bitmap[] tempDecodedBytesBottom;
+
+            tempDecodedBytesSlider = convertToBitmap(imagesForSlide);
+            tempDecodedBytesBottom = convertToBitmap(imagesForBottom);
+            final Bitmap[] decodedBytesBottom = tempDecodedBytesBottom;
+            final Bitmap[] decodedBytesSlider = tempDecodedBytesSlider;
 
             image1.setImageBitmap(decodedBytesBottom[0]);
             image2.setImageBitmap(decodedBytesBottom[1]);
@@ -293,7 +328,7 @@ public class HomePagePanel extends ViewManager implements BottomNavigationView.O
             });
 
         }
-        else{
+        else if(userType.equals("Producer")){
             setContentView(R.layout.my_products_page_page);
 
             navView2 = findViewById(R.id.nav_view_bottom);
@@ -308,7 +343,7 @@ public class HomePagePanel extends ViewManager implements BottomNavigationView.O
             myProductList = (LinearLayout) findViewById(R.id.my_order_list);
             Bitmap[] imageBitMap = new Bitmap[myProducts.length];
             for(int i = 0; i < myProducts.length; i++){
-                 imageBitMap[i] = convertToBitmap(myProducts[i].getImage())[0];
+                 imageBitMap[i] = convertToBitmap(myProducts[i].getImage()[0]);
             }
             for (int i = 0; i < myProducts.length; i++){
                 LinearLayout layoutToAdd = new LinearLayout(act);
@@ -324,6 +359,7 @@ public class HomePagePanel extends ViewManager implements BottomNavigationView.O
                 }
                 layoutToAdd.setLayoutParams(params);
                 layoutToAdd.setWeightSum(1);
+
                 ImageView tempImage = new ImageView(act); //Product Image
                 tempImage.setImageBitmap(imageBitMap[i]);
                 TableRow.LayoutParams imageParam = new TableRow.LayoutParams(120,120);
@@ -394,6 +430,15 @@ public class HomePagePanel extends ViewManager implements BottomNavigationView.O
         }
         return newBitmap;
     }
+
+    private Bitmap convertToBitmap(String images) {
+        Bitmap newBitmap;
+        byte[] decodedString = Base64.decode(images,Base64.DEFAULT);
+        Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
+        newBitmap = decodedByte;
+        return newBitmap;
+    }
+
     public void changeActivity(Class className) {
         startActivity(new Intent(act, className));
     }

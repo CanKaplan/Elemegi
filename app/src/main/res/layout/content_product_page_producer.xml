@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:id="@+id/layout"
     android:background="@drawable/gradientlist"
-    tools:showIn="@layout/app_bar_product">
+    tools:showIn="@layout/app_bar_product_producer">
 
 
     <ViewFlipper
@@ -225,7 +225,6 @@
 
     <TextView
         android:id="@+id/descriptionText"
-        android:text="Aaaaaaaasdfasfasfasfafasfxfdadsdhjfgthtsssssgsergtaergaergaesssssrgarczxcaazxczxegaergsaerggfhghgsdfgarttudafgergaergae"
         android:layout_width="222dp"
         android:layout_height="100dp"
         android:textSize="15sp"
@@ -235,18 +234,54 @@
         android:layout_marginStart="20dp"
         android:layout_marginTop="405dp"
         />
+    <LinearLayout
+        android:id="@+id/layout2"
+        android:orientation="horizontal"
+        android:gravity="center_vertical|center_horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/descriptionText"
+    <Button
+        android:id="@+id/edit"
+        android:layout_width="90dp"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="90dp"
+        android:backgroundTint="#FF5722"
+        android:backgroundTintMode="src_in"
+        android:bufferType="normal"
+        android:shape="rectangle"
+        app:layout_constraintTop_toBottomOf="@id/layout2"
+        app:layout_constraintLeft_toLeftOf="@id/descriptionText"
+        android:text="EDIT"
+        android:textColor="#F5F5F3" />
+    <Button
+        android:id="@+id/delete"
+        android:layout_width="90dp"
+        android:layout_marginLeft="20dp"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:backgroundTint="#FF5722"
+        android:backgroundTintMode="src_in"
+        android:bufferType="normal"
+        android:shape="rectangle"
+        app:layout_constraintTop_toBottomOf="@id/layout2"
+        app:layout_constraintLeft_toLeftOf="@id/edit"
+        app:layout_constraintRight_toRightOf="parent"
+        android:text="DELETE"
+        android:textColor="#F5F5F3" />
 
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
-        android:id="@+id/nav_view_bottom"
+        android:id="@+id/nav_view_bottom_p"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:background="#F7D6B9"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-
-        app:menu="@menu/navigation_menu_bottom" />
+        app:menu="@menu/navigation_menu_bottom_p" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

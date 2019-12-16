@@ -34,12 +34,7 @@ import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.util.List;
 
-public class AddProductPanel extends ViewManager implements NavigationView.OnNavigationItemSelectedListener, BottomNavigationView.OnNavigationItemSelectedListener {
-    private static int imageCount  = 0;
-
-    private boolean check1 = false;
-    private boolean check2 = false;
-    private boolean check3 = false;
+public class EditProductPanel extends ViewManager implements NavigationView.OnNavigationItemSelectedListener, BottomNavigationView.OnNavigationItemSelectedListener {
 
     private AppCompatActivity act;
     private BottomNavigationView navView2;
@@ -68,7 +63,7 @@ public class AddProductPanel extends ViewManager implements NavigationView.OnNav
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.add_product_page);
+        setContentView(R.layout.edit_product_page);
         layout=findViewById(R.id.layout);
         anim=(AnimationDrawable)layout.getBackground();
         anim.setEnterFadeDuration(10);
@@ -87,111 +82,10 @@ public class AddProductPanel extends ViewManager implements NavigationView.OnNav
         newDeliveryTime = (EditText) findViewById(R.id.editProdDeliveryTime);
         newPrice = (EditText) findViewById(R.id.editProdPrice);
 
-        frame1 = (FrameLayout) findViewById(R.id.newFrame1);
-        frame2 = (FrameLayout) findViewById(R.id.newFrame2);
-        frame3 = (FrameLayout) findViewById(R.id.newFrame3);
-        frame4 = (FrameLayout) findViewById(R.id.addButton);
-
-        lin1 = (LinearLayout) findViewById(R.id.liner1);
-
-        frame1.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                selectImage(1);
-            }
-        });
-
-        frame2.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                selectImage(2);
-            }
-        });
-
-        frame3.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                selectImage(3);
-            }
-        });
-        frame4.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-             nameString = newName.getText().toString();
-             descriptionString = newDescription.getText().toString();
-             deliveryTimeString = newDeliveryTime.getText().toString();
-             priceString = newPrice.getText().toString();
-
-                int counter=0;
-                if(ViewManager.getInstance().controlNameProduct(nameString).length() == 0){
-                    counter++;
-                }else{
-                    newName.setError(ViewManager.getInstance().controlNameProduct(nameString));
-                }
-                if(ViewManager.getInstance().controlDescriptionProduct(descriptionString).length() == 0){
-                    counter++;
-                }
-                else{
-                    newDescription.setError(ViewManager.getInstance().controlDescriptionProduct(descriptionString));
-                }
-                if(ViewManager.getInstance().controlDeliveryTimeProduct(deliveryTimeString).length() == 0){
-                    counter++;
-                }
-                else{
-                    newDeliveryTime.setError(ViewManager.getInstance().controlDeliveryTimeProduct(deliveryTimeString));
-                }
-                if(ViewManager.getInstance().controlPriceProduct(priceString).length() == 0){
-                    counter++;
-                }
-                else{
-                    newPrice.setError(ViewManager.getInstance().controlPriceProduct(priceString));
-                }
-
-                if(counter == 4 && imageCount > 0){
-                    labels = ViewManager.getInstance().getLabels(images);
-                    String tempResult = ViewManager.getInstance().addProduct(images,nameString,descriptionString,deliveryTimeString,priceString,labels);
-                    if( tempResult!= "") {
-                        final CharSequence[] options = { "Yayy!" };
-                        AlertDialog.Builder builder = new AlertDialog.Builder(AddProductPanel.this);
-                        builder.setTitle("Congratulations! Product Succesfully Added into the System!");
-                        builder.setItems(options, new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int item) {
-                                if (options[item].equals("Yayy"))
-                                {
-                                    dialog.dismiss();
-                                }
-                            }
-                        });
-                        builder.show();
-                        changeActivity(ViewManager.getInstance().openProductPagePanel(),Integer.parseInt(tempResult));
-                    }
-                    else {
-                        final CharSequence[] options = { "Ok!" };
-                        AlertDialog.Builder builder = new AlertDialog.Builder(AddProductPanel.this);
-                        builder.setTitle("Please Upload or Take a Photo!");
-                        builder.setItems(options, new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int item) {
-                                if (options[item].equals("Ok"))
-                                {
-                                    dialog.dismiss();
-                                }
-                            }
-                        });
-                        builder.show();
-                    }
-                }
-            }
-        });
-
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
-
-
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
-
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this,drawer,toolbar,R.string.navigation_drawer_open,R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
         toggle.setDrawerIndicatorEnabled(true);
@@ -385,3 +279,4 @@ public class AddProductPanel extends ViewManager implements NavigationView.OnNav
         return selectedImage;
     }
 }
+

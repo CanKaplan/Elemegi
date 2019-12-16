@@ -9,6 +9,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.Elemegi.Elemegi.Model.Comment;
 import com.Elemegi.Elemegi.Model.Order;
 import com.Elemegi.Elemegi.Model.Product;
+import com.Elemegi.Elemegi.Model.User;
 import com.Elemegi.Elemegi.View.AddProductPanel;
 import com.Elemegi.Elemegi.View.ChangePasswordPanel;
 import com.Elemegi.Elemegi.View.CommentsPanel;
@@ -209,37 +210,14 @@ public class ViewManager extends AppCompatActivity {
             return false;
         }
     }
-    public static String[] createHomePageSliderContent(long id) {
-        String[] images = new String[3];
-        for (int i = 0; i < 3; i++){
-            images[i] = MainManager.getInstance().createHomePageSliderContent(id)[i].getImage()[0];
-        }
-
-        return images;
+    public static Product[] createHomePageSliderContent(long id) {
+        Product[] homeProds = MainManager.getInstance().createHomePageSliderContent(id);
+        return homeProds;
     }
 
-    public static String[] createHomePageImages(long id) {
-        String[] images = new String[18];
-        for (int i = 0; i < 18; i++){
-            images[i] = MainManager.getInstance().createHomePageImages(id)[i].getImage()[0];
-        }
-
-        return images;
-    }
-    public static String[] createHomePageSliderNames(long id) {
-        String[] names = new String[3];
-        for (int i = 0; i < 3; i++){
-            names[i] = MainManager.getInstance().createHomePageSliderContent(id)[i].getName();
-        }
-        return names;
-    }
-
-    public static String[] createHomePageNames(long id) {
-        String[] names = new String[18];
-        for (int i = 0; i < 18; i++){
-            names[i] = MainManager.getInstance().createHomePageImages(id)[i].getName();
-        }
-        return names;
+    public static Product[] createHomePageImages(long id) {
+        Product[] homeBProds = MainManager.getInstance().createHomePageImages(id);
+        return homeBProds;
     }
 
     public static Product[] getMyProdList(long id) {
@@ -321,5 +299,12 @@ public class ViewManager extends AppCompatActivity {
     public List<String> getLabels(String[] images) {
         List<String> labels = MainManager.getInstance().generateLabels(images);
         return labels;
+    }
+
+    public User getCurrentUser() {
+        if(MainManager.getInstance().getCurrentUser() != null)
+            return MainManager.getInstance().getCurrentUser();
+        else
+            return null;
     }
 }

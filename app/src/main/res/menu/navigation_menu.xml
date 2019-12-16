@@ -7,27 +7,27 @@
     <group android:checkableBehavior="single">
         <item
             android:id="@+id/nav_categories"
-            android:icon="@drawable/ic_menu_camera"
+            android:icon="@drawable/address"
             android:title="@string/menu_categories" />
         <item
             android:id="@+id/nav_my_orders"
-            android:icon="@drawable/ic_menu_camera"
+            android:icon="@drawable/order"
             android:title="@string/menu_my_orders" />
         <item
             android:id="@+id/nav_favourites"
-            android:icon="@drawable/ic_menu_camera"
+            android:icon="@drawable/fav"
             android:title="@string/menu_favourites" />
         <item
             android:id="@+id/nav_message"
-            android:icon="@drawable/ic_menu_camera"
+            android:icon="@drawable/message"
             android:title="@string/menu_message" />
         <item
             android:id="@+id/nav_help"
-            android:icon="@drawable/ic_menu_camera"
+            android:icon="@drawable/help"
             android:title="@string/menu_help" />
         <item
             android:id="@+id/nav_logout"
-            android:icon="@drawable/ic_menu_camera"
+            android:icon="@drawable/logout2"
             android:title="@string/menu_logout" />
     </group>
 

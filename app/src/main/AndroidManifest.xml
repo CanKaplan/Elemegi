@@ -66,6 +66,7 @@
             android:name=".View.ChangePasswordPanel"
             android:theme="@style/AppTheme.NoActionBar">
         </activity>
+        <activity android:name=".View.EditProductPanel" />
     </application>
     <uses-permission android:name="android.permission.INTERNET" />
 <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />

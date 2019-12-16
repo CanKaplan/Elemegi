@@ -182,7 +182,7 @@ public class DatabaseManager extends Activity {
 
         BackgroundTask backgroundTask = new BackgroundTask();
         String data_string = "u_ID=" + id;
-        backgroundTask.setTaskContent("homePageProducts.php",data_string);
+        backgroundTask.setTaskContent("homeProduct.php",data_string);
         String result = "";
         try {
             result = backgroundTask.execute().get();

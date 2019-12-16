@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.graphics.drawable.AnimationDrawable;
 import android.os.Bundle;
 import android.util.Base64;
 import android.view.MenuItem;
@@ -17,6 +18,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.drawerlayout.widget.DrawerLayout;
 
 import com.Elemegi.Elemegi.Controller.MainManager;
@@ -30,10 +32,17 @@ public class MyOrdersPanel extends ViewManager implements BottomNavigationView.O
     private AppCompatActivity act;
     BottomNavigationView navView2;
     NavigationView navigationView;
+    private ConstraintLayout layout;
+    private AnimationDrawable anim;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        layout=findViewById(R.id.layout);
+        anim=(AnimationDrawable)layout.getBackground();
+        anim.setEnterFadeDuration(10);
+        anim.setExitFadeDuration(1000);
+        anim.start();
         setContentView(R.layout.my_orders_page_page);
         navView2 = findViewById(R.id.nav_view_bottom);
         LinearLayout myOrderList;

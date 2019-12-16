@@ -25,19 +25,8 @@ public class MainManager {
         return instance;
     }
 
-
-    public List<User> getUsers() { return users; }
-
-    public void setUsers(List<User> users) {
-        this.users = users;
-    }
-
-    public Order[] getOrders() {
-        return myOrders;
-    }
-
-    public void setOrders(Order[] orders) {
-        this.myOrders= orders;
+    public void setCurrentUser(User currentUser) {
+        this.currentUser = currentUser;
     }
 
     public Product[] getSliderProducts() {

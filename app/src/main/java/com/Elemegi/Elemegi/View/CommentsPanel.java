@@ -3,10 +3,12 @@ package com.Elemegi.Elemegi.View;
 
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.drawable.AnimationDrawable;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
 
@@ -20,13 +22,19 @@ import com.Elemegi.Elemegi.R;
 public class CommentsPanel extends ViewManager {
     LinearLayout comments;
     private String userType = "";
+    private RelativeLayout layout;
+    private AnimationDrawable anim;
     private AppCompatActivity act;
     private LinearLayout sendLine;
     private long productID;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        layout=findViewById(R.id.layout);
+        anim=(AnimationDrawable)layout.getBackground();
+        anim.setEnterFadeDuration(10);
+        anim.setExitFadeDuration(1000);
+        anim.start();
         setContentView(R.layout.comment_page);
         sendLine = (LinearLayout) findViewById(R.id.writeComment);
 

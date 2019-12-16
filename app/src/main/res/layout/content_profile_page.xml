@@ -4,7 +4,8 @@
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#DCBB1616"
+        android:id="@+id/layout"
+        android:background="@drawable/gradientlist"
         tools:showIn="@layout/app_bar_profile">
 
     <LinearLayout
@@ -17,20 +18,20 @@
         app:layout_constraintTop_toTopOf="parent"
         >
         <ImageView
+            android:id="@+id/profileImage"
             android:layout_width="140dp"
             android:layout_height="140dp"
             android:src="@drawable/profile"/>
 
         <TextView
+            android:id="@+id/profileName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textStyle="bold"
             android:textColor="#FFFFFF"
             android:layout_marginTop="-20dp"
             android:textAlignment="center"
-            android:text="Can Kaplan"
             android:textSize="24sp"/>
-
     </LinearLayout>
 
 
@@ -56,11 +57,11 @@
                 android:src="@drawable/email"
             />
             <TextView
+                android:id="@+id/profileEmail"
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
                 android:layout_marginTop="10dp"
                 android:layout_marginLeft="7dp"
-                android:text="can.kaplan@ug.bilkent.edu.tr"
                 android:textStyle="bold"
                 android:textColor="#FFFFFF"
                 android:textSize="14sp"/>
@@ -77,14 +78,14 @@
                 android:src="@drawable/phone_number"
                 />
             <TextView
+                android:id="@+id/profilePhone"
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
                 android:textSize="14sp"
                 android:layout_marginLeft="10dp"
                 android:layout_marginTop="7dp"
                 android:textStyle="bold"
-                android:textColor="#FFFFFF"
-                android:text="0303094363564"/>
+                android:textColor="#FFFFFF"/>
         </LinearLayout>
         <LinearLayout
             android:layout_width="match_parent"
@@ -98,13 +99,13 @@
                 android:src="@drawable/homepage"
                 />
             <TextView
+                android:id="@+id/profileAddress"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textStyle="bold"
                 android:layout_marginTop="7dp"
                 android:layout_marginLeft="10dp"
                 android:textColor="#FFFFFF"
-                android:text="bilkentgds jgdfmmhhrdgfmhn dfg fhnb"
                 android:textSize="14sp"/>
         </LinearLayout>
 
@@ -118,7 +119,7 @@
         android:layout_marginStart="140dp"
         android:layout_marginTop="20dp"
         android:clickable="true"
-        android:background="#000000"
+        android:background="#FF5722"
         android:orientation="horizontal">
 
         <TextView
@@ -126,7 +127,7 @@
             android:layout_height="30dp"
             android:layout_marginTop="4dp"
             android:layout_marginLeft="3dp"
-            android:text="Edit"
+            android:text="EDIT"
             android:textColor="#FFFFFF"
             android:textSize="18sp"/>
 
