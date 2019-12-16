@@ -43,6 +43,7 @@
 
     </ScrollView>
     <LinearLayout
+        android:id="@+id/writeComment"
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:layout_alignParentBottom="true"
@@ -58,6 +59,7 @@
             android:textColorHint="#A6A8A5A5"
             android:textCursorDrawable="@android:color/holo_blue_light" />
         <ImageView
+            android:id="@+id/sendComment"
             android:layout_width="30dp"
             android:layout_height="30dp"
             android:clickable="true"

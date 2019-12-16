@@ -3,13 +3,13 @@ package com.Elemegi.Elemegi.Model;
 public class Comment {
     private long commentID;
     private long ProductID;
-    private long UserID;
+    private String customerName;
     private String comment;
 
-    public Comment(long commentID, long productID, long userID, String comment) {
+    public Comment(long commentID, long productID, String customerName, String comment) {
         this.commentID = commentID;
         ProductID = productID;
-        UserID = userID;
+        customerName = customerName;
         this.comment = comment;
     }
 
@@ -29,14 +29,13 @@ public class Comment {
         ProductID = productID;
     }
 
-    public long getUserID() {
-        return UserID;
+    public String getCustomerName() {
+        return customerName;
     }
 
-    public void setUserID(long userID) {
-        UserID = userID;
+    public void setCustomerName(String customerName) {
+        this.customerName = customerName;
     }
-
 
     public String getComment() {
         return comment;

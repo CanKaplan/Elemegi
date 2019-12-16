@@ -398,7 +398,7 @@ public class HomePagePanel extends ViewManager implements BottomNavigationView.O
         startActivity(new Intent(act, className));
     }
 
-    public void changeActivity(Class className, int id) {
+    public void changeActivity(Class className, long id) {
         Intent myIntent = new Intent(act, className);
         myIntent.putExtra("id", id);
         startActivity(myIntent);

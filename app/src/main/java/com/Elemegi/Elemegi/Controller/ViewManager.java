@@ -6,6 +6,7 @@ import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.Elemegi.Elemegi.Model.Comment;
 import com.Elemegi.Elemegi.Model.Order;
 import com.Elemegi.Elemegi.Model.Product;
 import com.Elemegi.Elemegi.View.AddProductPanel;
@@ -27,6 +28,11 @@ public class ViewManager extends AppCompatActivity {
     protected MyApp myApp;
     private AppCompatActivity currentAct;
 
+    protected static Comment[] getMyCommentList(long productID) {
+        Comment[] comments;
+        comments = MainManager.getInstance().getComments(productID);
+        return comments;
+    }
 
 
     protected void onCreate(Bundle savedInstanceState) {

@@ -12,10 +12,8 @@ public class MainManager {
     //Lists that keep data of the model package's layers
     private User currentUser;
     private List<User> users;
-    private Product[] myProducts;
     private Product[] sliderProducts;
     private Product[] bottomProducts;
-    private List<Comment> comments;
     private Order[] myOrders;
 
     //defined managers that will be controlled by MainManager
@@ -32,15 +30,6 @@ public class MainManager {
 
     public void setUsers(List<User> users) {
         this.users = users;
-    }
-
-
-    public List<Comment> getComments() {
-        return comments;
-    }
-
-    public void setComments(List<Comment> comments) {
-        this.comments = comments;
     }
 
     public Order[] getOrders() {
@@ -82,14 +71,7 @@ public class MainManager {
         checkUserEmail(email);
         DatabaseManager.getInstance().registerUser(name,surname,email, password, roleType);
         //databaseManager.setUserID(email,password);
-    }
-    /*
-        public void addProduct(String productName, long productID, long userID, List<String> labels, List<Base64> image, double price, int deliverTime) {
-            Product product = new Product(productName, 0, userID, labels, image, price, deliverTime);
-            //products.add(product);
-            // Bu oluşturulan product database e eklenmeli
-            //DatabaseManager.getInstance().createProductlistTable();
-        }
+    }/*
 
         public Product deleteProduct(long productID) {
             int i = 0;
@@ -169,6 +151,7 @@ public class MainManager {
     }
 
     public Product[] getMyProducts(long id) {
+        Product[] myProducts = null;
         String myProductString = DatabaseManager.getInstance().createMyProductsPage(id);
         //BURDAKİ STRING SANA PRODUCTLARI DÖNDÜRCEK ONLARI PRODUCT ARRAYINE ÇEVİR
         return myProducts; // bu sadece producer kullanılıyorsa kullanılıcak.
@@ -190,6 +173,14 @@ public class MainManager {
         String addProductString = DatabaseManager.getInstance().addProductPage(currentUser.getID(),images,nameString,descriptionString,deliveryTimeString,priceString,labels);
         //Burada sana product bilgilerini dönecek bunla product page oluştur
         return currentProduct;
+    }
+
+    public Comment[] getComments(long productID) {
+        Comment[] comments = null;
+        String commentString = DatabaseManager.getInstance().getComments(productID);
+
+        //Burdan Comments stringi gelicek onları alıp array yap salla aşağı
+        return comments;
     }
 
 

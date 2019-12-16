@@ -1,21 +1,13 @@
 package com.Elemegi.Elemegi.View;
 
-import android.annotation.SuppressLint;
-import android.content.Context;
 import android.content.Intent;
-import android.graphics.Canvas;
-import android.graphics.Color;
-import android.graphics.Paint;
 import android.os.Bundle;
-import android.util.AttributeSet;
 import android.util.Log;
-import android.view.GestureDetector;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
-import android.widget.GridLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -27,7 +19,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.content.ContextCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
-import androidx.navigation.ui.AppBarConfiguration;
 
 import com.Elemegi.Elemegi.Controller.ViewManager;
 import com.Elemegi.Elemegi.R;
@@ -52,6 +43,8 @@ public class ProductPagePanel extends ViewManager implements BottomNavigationVie
     private TextView durationTime;
     private TextView commentsText;
     private boolean isFaved = false;
+    private long productID;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -73,7 +66,8 @@ public class ProductPagePanel extends ViewManager implements BottomNavigationVie
         navView2.getMenu().getItem(3).setCheckable(false);
         navView2.getMenu().getItem(4).setCheckable(false);
 
-
+        Intent intent = getIntent();
+        productID = intent.getLongExtra("id",0);
         int images[] = {R.drawable.pic1, R.drawable.pic2, R.drawable.pic3};
         dotscount = images.length;
         dots = new ImageView[dotscount];
@@ -191,7 +185,7 @@ public class ProductPagePanel extends ViewManager implements BottomNavigationVie
         commentsIcon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                changeActivity(ViewManager.getInstance().openCommentsPanel());
+                changeActivity(ViewManager.getInstance().openCommentsPanel(),productID);
             }
         });
         commentsText.setOnClickListener(new View.OnClickListener() {
@@ -207,7 +201,7 @@ public class ProductPagePanel extends ViewManager implements BottomNavigationVie
         startActivity(new Intent(act, className));
     }
 
-    public void changeActivity(Class className, int id) {
+    public void changeActivity(Class className, long id) {
         Intent myIntent = new Intent(act, className);
         myIntent.putExtra("id", id);
         startActivity(myIntent);
