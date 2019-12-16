@@ -1,17 +1,10 @@
 package com.Elemegi.Elemegi.View;
 
 
-import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.drawable.AnimationDrawable;
-import android.net.Uri;
 import android.os.Bundle;
-import android.util.Base64;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
@@ -29,9 +22,6 @@ import com.Elemegi.Elemegi.R;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
 
-import java.io.ByteArrayOutputStream;
-import java.io.FileNotFoundException;
-import java.io.InputStream;
 import java.util.List;
 
 public class EditProductPanel extends ViewManager implements NavigationView.OnNavigationItemSelectedListener, BottomNavigationView.OnNavigationItemSelectedListener {
@@ -105,32 +95,6 @@ public class EditProductPanel extends ViewManager implements NavigationView.OnNa
         startActivity(myIntent);
     }
 
-    private void selectImage(final int i) {
-        final CharSequence[] options = { "Take Photo", "Choose from Gallery","Cancel" };
-        AlertDialog.Builder builder = new AlertDialog.Builder(AddProductPanel.this);
-        builder.setTitle("Add Photo!");
-
-        builder.setItems(options, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int item) {
-                if (options[item].equals("Take Photo"))
-                {
-                    Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
-                    startActivityForResult(cameraIntent, 1 + (10 * i));
-                }
-                else if (options[item].equals("Choose from Gallery"))
-                {
-                    Intent intent = new   Intent(Intent.ACTION_PICK,android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-                    startActivityForResult(intent, 2 + (10 * i));
-                }
-                else if (options[item].equals("Cancel")) {
-                    dialog.dismiss();
-                }
-            }
-        });
-        builder.show();
-    }
-
     public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
         switch(menuItem.getItemId()) {
             case R.id.navigation_home:
@@ -166,117 +130,6 @@ public class EditProductPanel extends ViewManager implements NavigationView.OnNa
                 break;
         }
         return true;
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-
-        if(resultCode == RESULT_OK){
-            if(requestCode % 10 ==  1){
-                Bitmap capturedImage = (Bitmap) data.getExtras().get("data");
-                if(requestCode / 10 == 1){
-                    image1.setVisibility(View.INVISIBLE);
-                    image1.setImageBitmap(capturedImage);
-                    image1.setVisibility(View.VISIBLE);
-                    image1.getLayoutParams().width = 330;
-                    image1.getLayoutParams().height = 320;
-                    if(!check1){
-                        check1 = true;
-                        imageCount++;
-                        images[1] = bitmapToBase64(capturedImage);
-                    }
-                }
-                else if(requestCode / 10 == 2){
-                    image2.setVisibility(View.INVISIBLE);
-                    image2.setImageBitmap(capturedImage);
-                    image2.setVisibility(View.VISIBLE);
-                    image2.getLayoutParams().width = 330;
-                    image2.getLayoutParams().height = 320;
-                    if(!check2){
-                        check2 = true;
-                        imageCount++;
-                        images[2] = bitmapToBase64(capturedImage);
-                    }
-                }
-                else{
-                    image3.setVisibility(View.INVISIBLE);
-                    image3.setImageBitmap(capturedImage);
-                    image3.setVisibility(View.VISIBLE);
-                    image3.getLayoutParams().width = 330;
-                    image3.getLayoutParams().height = 320;
-                    if(!check3){
-                        check3 = true;
-                        imageCount++;
-                        images[3] = bitmapToBase64(capturedImage);
-                    }
-                }
-            }
-            else{
-                Uri selectedImage = data.getData();
-
-                if(requestCode / 10 == 1){
-                    image1.setVisibility(View.INVISIBLE);
-                    image1.setImageURI(selectedImage);
-                    image1.setVisibility(View.VISIBLE);
-                    image1.getLayoutParams().width = 330;
-                    image1.getLayoutParams().height = 320;
-                    if(!check1){
-                        check1 = true;
-                        imageCount++;
-                        Bitmap tempBitmap = URIToBitmap(selectedImage);
-                        images[1] = bitmapToBase64(tempBitmap);
-                    }
-                }
-                else if(requestCode / 10 == 2){
-                    image2.setVisibility(View.INVISIBLE);
-                    image2.setImageURI(selectedImage);
-                    image2.setVisibility(View.VISIBLE);
-                    image2.getLayoutParams().width = 330;
-                    image2.getLayoutParams().height = 320;
-                    if(!check2){
-                        check2 = true;
-                        imageCount++;
-                        Bitmap tempBitmap = URIToBitmap(selectedImage);
-                        images[2] = bitmapToBase64(tempBitmap);
-                    }
-                }
-                else{
-                    image3.setVisibility(View.INVISIBLE);
-                    image3.setImageURI(selectedImage);
-                    image3.setVisibility(View.VISIBLE);
-                    image3.getLayoutParams().width = 330;
-                    image3.getLayoutParams().height = 320;
-                    if(!check3){
-                        check3 = true;
-                        imageCount++;
-                        Bitmap tempBitmap = URIToBitmap(selectedImage);
-                        images[3] = bitmapToBase64(tempBitmap);
-                    }
-                }
-            }
-        }
-    }
-
-    public String bitmapToBase64(Bitmap image){
-        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-        Bitmap resizedImage = Bitmap.createScaledBitmap(image,300,300,true);
-        resizedImage.compress(Bitmap.CompressFormat.PNG, 100, byteArrayOutputStream);
-        byte[] byteArray = byteArrayOutputStream .toByteArray();
-
-        String encoded = Base64.encodeToString(byteArray, Base64.DEFAULT);
-        return encoded;
-    }
-
-    public Bitmap URIToBitmap(Uri uriImage){
-        InputStream imageStream = null;
-        try {
-            imageStream = getContentResolver().openInputStream(uriImage);
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
-        Bitmap selectedImage = BitmapFactory.decodeStream(imageStream);
-        return selectedImage;
     }
 }
 

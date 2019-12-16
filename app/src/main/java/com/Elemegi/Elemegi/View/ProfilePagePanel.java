@@ -51,7 +51,7 @@ public class ProfilePagePanel extends ViewManager implements NavigationView.OnNa
         profileEmail.setText(ViewManager.getInstance().getCurrentUser().getEmail());
         profilePhone.setText(ViewManager.getInstance().getCurrentUser().getPhoneNumber());
         profileAddress.setText(ViewManager.getInstance().getCurrentUser().getAddress());
-        profileImage.setImageBitmap(convertToBitmap(ViewManager.getInstance().getCurrentUser().getImage()));
+//        profileImage.setImageBitmap(convertToBitmap(ViewManager.getInstance().getCurrentUser().getImage()));
 
         myApp.setCurrentActivity(this);
         act = myApp.getCurrentActivity();

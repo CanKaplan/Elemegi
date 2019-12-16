@@ -14,10 +14,12 @@ public class User {
     private String image;
 
     public User(String name, String roleType, String password, String email,String phoneNumber,String address,String image){
+        //this.ID = ID;
         this.name = name;
         this.roleType = roleType;
         this.password = password;
         this.email = email;
+        this.image = image;
         this.address = address;
         this.phoneNumber = phoneNumber;
     }

@@ -30,11 +30,14 @@ public class CommentsPanel extends ViewManager {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        /*
         layout=findViewById(R.id.layout);
         anim=(AnimationDrawable)layout.getBackground();
         anim.setEnterFadeDuration(10);
         anim.setExitFadeDuration(1000);
         anim.start();
+        */
+
         setContentView(R.layout.comment_page);
         sendLine = (LinearLayout) findViewById(R.id.writeComment);
 

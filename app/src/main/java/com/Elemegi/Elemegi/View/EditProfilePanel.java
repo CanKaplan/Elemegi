@@ -1,12 +1,7 @@
 package com.Elemegi.Elemegi.View;
 
-import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.drawable.AnimationDrawable;
-import android.net.Uri;
 import android.os.Bundle;
-import android.util.Base64;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -16,10 +11,6 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 
 import com.Elemegi.Elemegi.Controller.ViewManager;
 import com.Elemegi.Elemegi.R;
-
-import java.io.ByteArrayOutputStream;
-import java.io.FileNotFoundException;
-import java.io.InputStream;
 
 public class EditProfilePanel extends ViewManager {
     private ConstraintLayout layout;
@@ -77,7 +68,7 @@ public class EditProfilePanel extends ViewManager {
             }
         });
     }
-
+/*
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -187,5 +178,5 @@ public class EditProfilePanel extends ViewManager {
         }
         Bitmap selectedImage = BitmapFactory.decodeStream(imageStream);
         return selectedImage;
-    }
+    }*/
 }

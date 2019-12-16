@@ -242,7 +242,7 @@
         android:layout_height="wrap_content"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/descriptionText"
+        app:layout_constraintTop_toBottomOf="@id/descriptionText">
     <Button
         android:id="@+id/edit"
         android:layout_width="90dp"
@@ -271,7 +271,7 @@
         app:layout_constraintRight_toRightOf="parent"
         android:text="DELETE"
         android:textColor="#F5F5F3" />
-
+    </LinearLayout>
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/nav_view_bottom_p"

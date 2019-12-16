@@ -1,8 +1,12 @@
 package com.Elemegi.Elemegi.View;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.drawable.AnimationDrawable;
 import android.os.Bundle;
+import android.util.Base64;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.MotionEvent;
@@ -23,9 +27,12 @@ import androidx.core.content.ContextCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
 import com.Elemegi.Elemegi.Controller.ViewManager;
+import com.Elemegi.Elemegi.Model.Product;
 import com.Elemegi.Elemegi.R;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
+
+import java.util.List;
 
 public class ProductPagePanel extends ViewManager implements BottomNavigationView.OnNavigationItemSelectedListener, NavigationView.OnNavigationItemSelectedListener {
     private AppCompatActivity act;
@@ -50,14 +57,16 @@ public class ProductPagePanel extends ViewManager implements BottomNavigationVie
     private long productID;
 
 
+    @SuppressLint("ClickableViewAccessibility")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        /*
         layout=findViewById(R.id.layout);
         anim=(AnimationDrawable)layout.getBackground();
         anim.setEnterFadeDuration(10);
         anim.setExitFadeDuration(1000);
-        anim.start();
+        anim.start();*/
 
         setContentView(R.layout.product_page_page);
         navView2 = findViewById(R.id.nav_view_bottom);
@@ -79,11 +88,11 @@ public class ProductPagePanel extends ViewManager implements BottomNavigationVie
 
         Intent intent = getIntent();
         productID = intent.getLongExtra("id",0);
-        int images[] = {R.drawable.pic1, R.drawable.pic2, R.drawable.pic3};
-        dotscount = images.length;
-        dots = new ImageView[dotscount];
+        Product thisProduct = ViewManager.getInstance().getProductInfo(productID);
+        dots = new ImageView[3];
 
-        for(int i = 0; i < dotscount; i++){
+        Bitmap[] tempProductImages = convertToBitmap(thisProduct.getImage());;
+        for(int i = 0; i < 3; i++){
 
             dots[i] = new ImageView(this);
             dots[i].setImageDrawable(ContextCompat.getDrawable(getApplicationContext(), R.drawable.non_active_dot));
@@ -96,8 +105,8 @@ public class ProductPagePanel extends ViewManager implements BottomNavigationVie
 
         }
 
-        for (int i = 0; i < images.length; i++){
-            flipperImages(images[i]);
+        for (int i = 0; i < 3; i++){
+            flipperImages(tempProductImages[i]);
         }
         for(int i = 0; i< dotscount; i++){
             dots[i].setImageDrawable(ContextCompat.getDrawable(getApplicationContext(), R.drawable.non_active_dot));
@@ -228,9 +237,9 @@ public class ProductPagePanel extends ViewManager implements BottomNavigationVie
             dots[v_flipper.getDisplayedChild()].setImageDrawable(ContextCompat.getDrawable(getApplicationContext(), R.drawable.active_dot));
         }
     };
-    public void flipperImages(int image){
+    public void flipperImages(Bitmap image){
         ImageView imageView = new ImageView(this);
-        imageView.setBackgroundResource(image);
+        imageView.setImageBitmap(image);
         v_flipper.addView(imageView);
     }
 
@@ -272,5 +281,15 @@ public class ProductPagePanel extends ViewManager implements BottomNavigationVie
                 break;
         }
         return true;
+    }
+
+    private Bitmap[] convertToBitmap(List<String> images) {
+        Bitmap[] newBitmap = new Bitmap[images.size()];
+        for (int i = 0; i < images.size(); i++) {
+            byte[] decodedString = Base64.decode(images.get(i),Base64.DEFAULT);
+            Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
+            newBitmap[i] = decodedByte;
+        }
+        return newBitmap;
     }
 }

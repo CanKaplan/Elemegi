@@ -210,18 +210,18 @@ public class ViewManager extends AppCompatActivity {
             return false;
         }
     }
-    public static Product[] createHomePageSliderContent(long id) {
-        Product[] homeProds = MainManager.getInstance().createHomePageSliderContent(id);
+    public static List<Product> createHomePageSliderContent(long id) {
+        List<Product> homeProds = MainManager.getInstance().createHomePageSliderContent(id);
         return homeProds;
     }
 
-    public static Product[] createHomePageImages(long id) {
-        Product[] homeBProds = MainManager.getInstance().createHomePageImages(id);
+    public static List<Product> createHomePageImages(long id) {
+        List<Product> homeBProds = MainManager.getInstance().createHomePageImages(id);
         return homeBProds;
     }
 
-    public static Product[] getMyProdList(long id) {
-        Product[] myProd = MainManager.getInstance().getMyProducts(id);
+    public static List<Product> getMyProdList(long id) {
+        List<Product> myProd = MainManager.getInstance().getMyProducts(id);
         return myProd;
     }
 
@@ -306,5 +306,10 @@ public class ViewManager extends AppCompatActivity {
             return MainManager.getInstance().getCurrentUser();
         else
             return null;
+    }
+
+    public Product getProductInfo(long productID) {
+        Product myProduct = MainManager.getInstance().getProductInfo(productID);
+        return myProduct;
     }
 }
