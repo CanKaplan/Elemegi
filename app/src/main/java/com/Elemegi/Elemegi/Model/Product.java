@@ -7,14 +7,14 @@ public class Product {
     private long productID;
     private long UserID;
     private List<String> labels;
-    private String[] image;
+    private String image;
     private String description;
     private double overallRating;
     private double price;
     private int deliverTime;
     private List<Comment> comments;
 
-    public Product(String name, long productID, long userID, List<String> labels, String[] image, String description, double overallRating, double price, int deliverTime, List<Comment> comments) {
+    public Product(String name, long productID, long userID, List<String> labels, String image, String description, double overallRating, double price, int deliverTime, List<Comment> comments) {
         this.name = name;
         this.productID = productID;
         this.UserID = userID;
@@ -51,11 +51,11 @@ public class Product {
         this.labels = labels;
     }
 
-    public String[] getImage() {
+    public String getImage() {
         return image;
     }
 
-    public void setImage(String[] image) {
+    public void setImage(String image) {
         this.image = image;
     }
 

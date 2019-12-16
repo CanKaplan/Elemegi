@@ -5,6 +5,8 @@ import com.Elemegi.Elemegi.Model.Order;
 import com.Elemegi.Elemegi.Model.Product;
 import com.Elemegi.Elemegi.Model.User;
 
+import java.lang.reflect.Array;
+import java.util.ArrayList;
 import java.util.List;
 
 public class MainManager {
@@ -12,9 +14,9 @@ public class MainManager {
     //Lists that keep data of the model package's layers
     private User currentUser;
     private List<User> users;
-    private Product[] myProducts;
-    private Product[] sliderProducts;
-    private Product[] bottomProducts;
+    private List<Product> myProducts;
+    private List<Product> sliderProducts = new ArrayList<>();
+    private Product[] bottomProducts = new Product[18];
     private List<Comment> comments;
     private Order[] myOrders;
 
@@ -51,11 +53,11 @@ public class MainManager {
         this.myOrders= orders;
     }
 
-    public Product[] getSliderProducts() {
+    public List<Product> getSliderProducts() {
         return sliderProducts;
     }
 
-    public void setSliderProducts(Product[] sliderProducts) {
+    public void setSliderProducts(List<Product> sliderProducts) {
         this.sliderProducts = sliderProducts;
     }
 
@@ -72,8 +74,9 @@ public class MainManager {
         if (result.equals("false")){
             return false;
         }
-        //currentUser = new User("can kaplan","Customer","can123456","cankaplan1007@gmail.com",null,null);
-        //RESULTTAN SANA USER STRING İ DONCEK ONLA currentUser ı setle **********************************************
+        List<List<String>> converted = converter(result);
+        currentUser = new User(converted.get(0).get(1),converted.get(0).get(2),converted.get(0).get(4),converted.get(0).get(3),converted.get(0).get(5),converted.get(0).get(7));
+
         return true;
     }
 
@@ -156,21 +159,32 @@ public class MainManager {
         return currentUser;
     }
 
-    public Product[] createHomePageSliderContent(long id) { // KARASIZIM BURDA PRODUCT ÇEKİP BURDA EŞİTLEYİP Mİ KULLANICAZ YOKSA DATABASEDEN RESİM Mİ ALICAZ
+    public List<Product> createHomePageSliderContent(long id) { // KARASIZIM BURDA PRODUCT ÇEKİP BURDA EŞİTLEYİP Mİ KULLANICAZ YOKSA DATABASEDEN RESİM Mİ ALICAZ
 
         String sliderProductsString = DatabaseManager.getInstance().createHomePageSliderProducts(id);
-        // BURDAKİ STRINGLERI PRODUCT TİPİİNE ÇEVİR VE SLİDERPRODUCTS YAP  3 tane olacak
+        List<List<String>> converted = converter(sliderProductsString);
+        for(int i = 0 ; i < 3 ; i++){
+            sliderProducts.set(i,new Product(converted.get(i).get(1),Long.parseLong(converted.get(i).get(0)) , Long.parseLong(converted.get(i).get(2)), null,converted.get(i).get(6),null,0,Double.parseDouble(converted.get(i).get(4)),0,null));
+        }
+
         return sliderProducts;
     }
     public Product[] createHomePageImages(long id) {
         String bottomProductsString = DatabaseManager.getInstance().createHomePageProducts(id);
-        // BURDAKİ STRINGLERI PRODUCT TİPİİNE ÇEVİR VE BOTTOMPRODUCTS YAP  18 tane olacak
+        List<List<String>> converted = converter(bottomProductsString);
+        for(int i = 0 ; i < 18 ; i++){
+            bottomProducts[i] = new Product(converted.get(i).get(1),Long.parseLong(converted.get(i).get(0)) , Long.parseLong(converted.get(i).get(2)), null,converted.get(i).get(6),null,0,Double.parseDouble(converted.get(i).get(4)),0,null);
+        }
         return bottomProducts;
     }
 
-    public Product[] getMyProducts(long id) {
+    public List<Product> getMyProducts(long id) {
         String myProductString = DatabaseManager.getInstance().createMyProductsPage(id);
-        //BURDAKİ STRING SANA PRODUCTLARI DÖNDÜRCEK ONLARI PRODUCT ARRAYINE ÇEVİR
+        List<List<String>> converted = converter(myProductString);
+        int numberOfProducts = converted.size();
+        for (int i = 0; i < numberOfProducts ; i++){
+            myProducts.set(i, new Product(converted.get(i).get(1),Long.parseLong(converted.get(i).get(0)) , Long.parseLong(converted.get(i).get(2)), null,converted.get(i).get(6),null,0,Double.parseDouble(converted.get(i).get(4)),0,null));
+        }
         return myProducts; // bu sadece producer kullanılıyorsa kullanılıcak.
     }
 
@@ -200,4 +214,34 @@ public class MainManager {
     //get 18 product for homepage favourite
 
     //
+    private List<List<String>> converter(String data){
+        //List<String> inner = new ArrayList<String>();
+        boolean firstEn = true;
+        int column = 0;
+        int row = 0;
+        String tmp = "";
+        List<List<String>> listOfLists = new ArrayList<>();
+        for(int i = 0; i< data.length() ; i++){
+            if(data.charAt(i) == '"'){
+                if(!firstEn){
+                    firstEn = true;
+                    listOfLists.get(row).set(column,tmp);
+                    column++;
+                }
+                else
+                    firstEn = false;
+            }
+            if(firstEn){
+                tmp = tmp + data.charAt(i);
+            }
+            if(data.charAt(i) == 'n' && firstEn){
+                listOfLists.get(row).set(column,null);
+                column++;
+            }
+            if(data.charAt(i) == ']'){
+                row++;
+            }
+        }
+        return listOfLists;
+    }
 }
