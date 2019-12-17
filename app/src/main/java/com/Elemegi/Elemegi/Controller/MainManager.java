@@ -33,7 +33,7 @@ public class MainManager {
             return false;
         }
         List<List<String>> converted = converter(result);
-        currentUser = new User(converted.get(0).get(1),converted.get(0).get(2),converted.get(0).get(4),converted.get(0).get(3),converted.get(0).get(5),converted.get(0).get(7),converted.get(0).get(6));
+        currentUser = new User(Long.parseLong(converted.get(0).get(0)),converted.get(0).get(1),converted.get(0).get(2),converted.get(0).get(4),converted.get(0).get(3),converted.get(0).get(5),converted.get(0).get(7),converted.get(0).get(6));
 
         return true;
     }
@@ -61,7 +61,7 @@ public class MainManager {
         String sliderProductsString = DatabaseManager.getInstance().createHomePageSliderProducts(id);
         List<List<String>> converted = converter(sliderProductsString);
         for(int i = 0 ; i < 3 ; i++){
-            sliderProducts.add(i,new Product(converted.get(i).get(1),Long.parseLong(converted.get(i).get(0)) , Long.parseLong(converted.get(i).get(2)), null,converter2(converted.get(i).get(6)),null,0,Double.parseDouble(converted.get(i).get(4)),0,null));
+            sliderProducts.add(i,new Product(converted.get(i).get(1),Long.parseLong(converted.get(i).get(0)) , converted.get(i).get(2), null,converter2(converted.get(i).get(6)),null,0,Double.parseDouble(converted.get(i).get(4)),0,null));
         }
 
         return sliderProducts;
@@ -71,7 +71,7 @@ public class MainManager {
         String bottomProductsString = DatabaseManager.getInstance().createHomePageProducts(id);
         List<List<String>> converted = converter(bottomProductsString);
         for(int i = 0 ; i < 18 &&  converted.get(i) != null  ; i++){
-            bottomProducts.add(i,new Product(converted.get(i).get(1),Long.parseLong(converted.get(i).get(0)) , Long.parseLong(converted.get(i).get(2)), null,converter2(converted.get(i).get(6)),null,0,Double.parseDouble(converted.get(i).get(4)),0,null));
+            bottomProducts.add(i,new Product(converted.get(i).get(1),Long.parseLong(converted.get(i).get(0)) , converted.get(i).get(2), null,converter2(converted.get(i).get(6)),null,0,Double.parseDouble(converted.get(i).get(4)),0,null));
         }
         return bottomProducts;
     }
@@ -81,7 +81,7 @@ public class MainManager {
         List<List<String>> converted = converter(myProductString);
         int numberOfProducts = converted.size();
         for (int i = 0; i < numberOfProducts ; i++){
-            myProducts.add(i, new Product(converted.get(i).get(1),Long.parseLong(converted.get(i).get(0)) , Long.parseLong(converted.get(i).get(2)), null,converter2(converted.get(i).get(6)),null,0,Double.parseDouble(converted.get(i).get(4)),0,null));
+            myProducts.add(i, new Product(converted.get(i).get(1),Long.parseLong(converted.get(i).get(0)) , converted.get(i).get(2), null,converter2(converted.get(i).get(6)),null,0,Double.parseDouble(converted.get(i).get(4)),0,null));
         }
         return myProducts; // bu sadece producer kullanılıyorsa kullanılıcak.
     }
@@ -103,16 +103,6 @@ public class MainManager {
         //Burada sana product bilgilerini dönecek bunla product page oluştur
         return currentProduct;
     }
-
-    public Comment[] getComments(long productID) {
-        Comment[] comments = null;
-        String commentString = DatabaseManager.getInstance().getComments(productID);
-
-        //Burdan Comments stringi gelicek onları alıp array yap salla aşağı
-        return comments;
-    }
-
-
     //
     private List<List<String>> converter(String data){
         boolean firstEn = true;
@@ -171,9 +161,61 @@ public class MainManager {
 
     public Product getProductInfo(long productID) {
         String productInfoString = DatabaseManager.getInstance().getProductInfo(productID);
-        Product myProduct = null;
+        Product myProduct;
         List<List<String>> converted = converter(productInfoString);
-        new Product(converted.get(0).get(1),Long.parseLong(converted.get(0).get(0)) , Long.parseLong(converted.get(0).get(2)), null,converter2(converted.get(0).get(6)),null,0,Double.parseDouble(converted.get(0).get(4)),0,null);
+
+        String myCommentsString = DatabaseManager.getInstance().getComments(productID);
+        List<Comment> myComments = new ArrayList<>();
+        List<List<String>> convertedComments = converter(myCommentsString);
+
+        for (int i = 0; i < convertedComments.size(); i++) {
+            myComments.add(i,new Comment(convertedComments.get(i).get(0),convertedComments.get(i).get(1)));
+        }
+        double temp;
+        if(converted.get(0).get(7).equals("")){
+            temp = 0;
+        }
+        else{
+            temp = Double.parseDouble(converted.get(0).get(7));
+        }
+        myProduct = new Product(converted.get(0).get(1),Long.parseLong(converted.get(0).get(0)) , converted.get(0).get(2), null,converter2(converted.get(0).get(6)),converted.get(0).get(3),temp,Double.parseDouble(converted.get(0).get(4)),Integer.parseInt(converted.get(0).get(5)),myComments);
         return myProduct;
+    }
+
+    public void updateFav(long productID, long id) {
+        DatabaseManager.getInstance().updateFav(productID,id);
+    }
+
+    public boolean checkIfOrdered(long productID, long id) {
+        String productCheckString = DatabaseManager.getInstance().checkIfOrdered(productID,id);
+        if (productCheckString.equals("TRUE")){
+            return true;
+        }
+        else
+            return false;
+    }
+
+    public void sendComment(String commentAddString, long productID, long id) {
+        DatabaseManager.getInstance().sendComment(commentAddString,productID,id);
+    }
+
+    public List<Comment> updateComments(long productID) {
+        String myCommentsString = DatabaseManager.getInstance().getComments(productID);
+        List<Comment> myComments = new ArrayList<>();
+        List<List<String>> convertedComments = converter(myCommentsString);
+
+        for (int i = 0; i < convertedComments.size(); i++) {
+            myComments.add(i,new Comment(convertedComments.get(i).get(0),convertedComments.get(i).get(1)));
+        }
+        return myComments;
+    }
+
+    public boolean checkFav(long productID, long id) {
+        String checkFavString = DatabaseManager.getInstance().checkFav(productID,id);
+        if (checkFavString.equals("FAV")){
+            return true;
+        }
+        else
+            return false;
     }
 }

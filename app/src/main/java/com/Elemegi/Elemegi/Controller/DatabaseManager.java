@@ -260,7 +260,7 @@ public class DatabaseManager extends Activity {
     public String getComments(long productID) {
         BackgroundTask backgroundTask = new BackgroundTask();
         String data_string = "p_ID=" + productID;
-        backgroundTask.setTaskContent("????????.php",data_string);
+        backgroundTask.setTaskContent("comments.php",data_string);
         String result = "";
         try {
             result = backgroundTask.execute().get();
@@ -276,7 +276,69 @@ public class DatabaseManager extends Activity {
     public String getProductInfo(long productID) {
         BackgroundTask backgroundTask = new BackgroundTask();
         String data_string = "p_ID=" + productID;
-        backgroundTask.setTaskContent("????????.php",data_string);
+        backgroundTask.setTaskContent("productInfo.php",data_string);
+        String result = "";
+        try {
+            result = backgroundTask.execute().get();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        Log.d("XXXXXXXXXXX",result);
+        return result;
+    }
+
+    public void updateFav(long productID, long id) {
+        BackgroundTask backgroundTask = new BackgroundTask();
+        String data_string = "u_ID=" + id + "&p_ID=" + productID;
+        backgroundTask.setTaskContent("updateFavourite.php",data_string);
+        String result = "";
+        try {
+            result = backgroundTask.execute().get();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        Log.d("XXXXXXXXXXX",result);
+    }
+
+    public String checkIfOrdered(long productID, long id) {
+        BackgroundTask backgroundTask = new BackgroundTask();
+        String data_string = "u_ID=" + id + "&p_ID=" + productID;
+        backgroundTask.setTaskContent("checkOrder.php",data_string);
+        String result = "";
+        try {
+            result = backgroundTask.execute().get();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        Log.d("XXXXXXXXXXX",result);
+        return result;
+    }
+
+    public void sendComment(String commentAddString, long productID, long id) {
+        BackgroundTask backgroundTask = new BackgroundTask();
+        String data_string = "u_ID=" + id + "&p_ID=" + productID + "&comment=" + commentAddString;
+        backgroundTask.setTaskContent("addComment.php",data_string);
+        String result = "";
+        try {
+            result = backgroundTask.execute().get();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        Log.d("XXXXXXXXXXX",result);
+    }
+
+    public String checkFav(long productID, long id) {
+        BackgroundTask backgroundTask = new BackgroundTask();
+        String data_string = "u_ID=" + id + "&p_ID=" + productID;
+        backgroundTask.setTaskContent("favouriteCheck.php",data_string);
         String result = "";
         try {
             result = backgroundTask.execute().get();

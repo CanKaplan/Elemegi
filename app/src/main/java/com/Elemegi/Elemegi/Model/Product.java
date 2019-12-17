@@ -5,7 +5,7 @@ import java.util.List;
 public class Product {
     private String name;
     private long productID;
-    private long UserID;
+    private String producerName;
     private List<String> labels;
     private List<String> image;
     private String description;
@@ -14,10 +14,10 @@ public class Product {
     private int deliverTime;
     private List<Comment> comments;
 
-    public Product(String name, long productID, long userID, List<String> labels, List<String> image, String description, double overallRating, double price, int deliverTime, List<Comment> comments) {
+    public Product(String name, long productID, String producerName, List<String> labels, List<String> image, String description, double overallRating, double price, int deliverTime, List<Comment> comments) {
         this.name = name;
         this.productID = productID;
-        this.UserID = userID;
+        this.producerName = producerName;
         this.description  = description;
         this.labels = labels;
         this.image = image;
@@ -39,12 +39,12 @@ public class Product {
         return productID;
     }
 
-    public long getUserID() {
-        return UserID;
-    }
-
     public List<String> getLabels() {
         return labels;
+    }
+
+    public String getProducerName() {
+        return producerName;
     }
 
     public void setLabels(List<String> labels) {

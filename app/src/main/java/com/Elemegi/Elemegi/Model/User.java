@@ -13,8 +13,8 @@ public class User {
     private long latitude;
     private String image;
 
-    public User(String name, String roleType, String password, String email,String phoneNumber,String address,String image){
-        //this.ID = ID;
+    public User(long ID, String name, String roleType, String password, String email,String phoneNumber,String address,String image){
+        this.ID = ID;
         this.name = name;
         this.roleType = roleType;
         this.password = password;

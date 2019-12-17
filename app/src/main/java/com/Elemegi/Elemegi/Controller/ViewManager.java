@@ -29,12 +29,6 @@ public class ViewManager extends AppCompatActivity {
     protected MyApp myApp;
     private AppCompatActivity currentAct;
 
-    protected static Comment[] getMyCommentList(long productID) {
-        Comment[] comments;
-        comments = MainManager.getInstance().getComments(productID);
-        return comments;
-    }
-
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -311,5 +305,34 @@ public class ViewManager extends AppCompatActivity {
     public Product getProductInfo(long productID) {
         Product myProduct = MainManager.getInstance().getProductInfo(productID);
         return myProduct;
+    }
+
+    public void updateFav(long productID, long id) {
+        MainManager.getInstance().updateFav(productID,id);
+    }
+    public void sendComment(String commentAddString, long productID, long id) {
+        MainManager.getInstance().sendComment(commentAddString,productID,id);
+    }
+
+    public boolean checkIfOrdered(long productID, long id) {
+        if(MainManager.getInstance().checkIfOrdered(productID,id)){
+            return true;
+        }
+        else
+            return false;
+    }
+
+    public List<Comment> updateComments(long productID) {
+        List<Comment> updatedComments;
+        updatedComments = MainManager.getInstance().updateComments(productID);
+        return updatedComments;
+    }
+
+    public boolean checkFav(long productID, long id) {
+        if(MainManager.getInstance().checkFav(productID,id)){
+            return true;
+        }
+        else
+            return false;
     }
 }

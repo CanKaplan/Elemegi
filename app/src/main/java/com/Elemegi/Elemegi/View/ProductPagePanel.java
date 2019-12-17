@@ -7,7 +7,6 @@ import android.graphics.BitmapFactory;
 import android.graphics.drawable.AnimationDrawable;
 import android.os.Bundle;
 import android.util.Base64;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
@@ -27,6 +26,7 @@ import androidx.core.content.ContextCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
 import com.Elemegi.Elemegi.Controller.ViewManager;
+import com.Elemegi.Elemegi.Model.Comment;
 import com.Elemegi.Elemegi.Model.Product;
 import com.Elemegi.Elemegi.R;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -53,11 +53,14 @@ public class ProductPagePanel extends ViewManager implements BottomNavigationVie
     private TextView rate;
     private TextView durationTime;
     private TextView commentsText;
+    private TextView prodName;
+    private TextView producerName;
+
     private boolean isFaved = false;
     private long productID;
 
 
-    @SuppressLint("ClickableViewAccessibility")
+    @SuppressLint({"ClickableViewAccessibility", "SetTextI18n"})
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -80,6 +83,8 @@ public class ProductPagePanel extends ViewManager implements BottomNavigationVie
         commentsIcon = (ImageView) findViewById(R.id.commentsIcon);
         commentsText = (TextView) findViewById(R.id.commentsText);
         profImage = (ImageView) findViewById(R.id.profImage);
+        prodName = (TextView) findViewById(R.id.product_name_flipper);
+        producerName = (TextView) findViewById(R.id.producer_name);
         navView2.setSelectedItemId(R.id.navigation_logo);
         navView2.getMenu().getItem(0).setCheckable(false);
         navView2.getMenu().getItem(1).setCheckable(false);
@@ -88,11 +93,26 @@ public class ProductPagePanel extends ViewManager implements BottomNavigationVie
 
         Intent intent = getIntent();
         productID = intent.getLongExtra("id",0);
-        Product thisProduct = ViewManager.getInstance().getProductInfo(productID);
-        dots = new ImageView[3];
+        final Product thisProduct = ViewManager.getInstance().getProductInfo(productID);
 
-        Bitmap[] tempProductImages = convertToBitmap(thisProduct.getImage());;
-        for(int i = 0; i < 3; i++){
+        boolean checkStar = ViewManager.getInstance().checkFav(thisProduct.getProductID(),ViewManager.getInstance().getCurrentUser().getID());
+        if(checkStar){
+            starImage.setImageResource(R.drawable.star_full);
+
+        }
+        else{
+            starImage.setImageResource(R.drawable.star_empty);
+        }
+
+        description.setText(thisProduct.getDescription());
+        price.setText(Double.toString(thisProduct.getPrice()));
+        durationTime.setText(Integer.toString(thisProduct.getDeliverTime()));
+        rate.setText(Double.toString(thisProduct.getOverallRating()));
+        prodName.setText(thisProduct.getName());
+        producerName.setText(thisProduct.getProducerName());
+        Bitmap[] tempProductImages = convertToBitmap(thisProduct.getImage());
+        dots = new ImageView[tempProductImages.length];
+        for(int i = 0; i < tempProductImages.length; i++){
 
             dots[i] = new ImageView(this);
             dots[i].setImageDrawable(ContextCompat.getDrawable(getApplicationContext(), R.drawable.non_active_dot));
@@ -105,7 +125,7 @@ public class ProductPagePanel extends ViewManager implements BottomNavigationVie
 
         }
 
-        for (int i = 0; i < 3; i++){
+        for (int i = 0; i < tempProductImages.length; i++){
             flipperImages(tempProductImages[i]);
         }
         for(int i = 0; i< dotscount; i++){
@@ -136,11 +156,9 @@ public class ProductPagePanel extends ViewManager implements BottomNavigationVie
                 switch (action) {
                     case MotionEvent.ACTION_DOWN:
                         startX = event.getX();
-                        Log.d("asa", String.valueOf(startX));
                         break;
                     case MotionEvent.ACTION_UP:
                         float endX = event.getX();
-                        Log.d("asa", String.valueOf(endX));
 
                         float endY = event.getY();
 
@@ -192,12 +210,12 @@ public class ProductPagePanel extends ViewManager implements BottomNavigationVie
                 if(isFaved){
                     isFaved = false;
                     starImage.setImageResource(R.drawable.star_empty);
-                    //update databse
+                    ViewManager.getInstance().updateFav(thisProduct.getProductID(),ViewManager.getInstance().getCurrentUser().getID());
                 }
                 else{
                     isFaved = true;
                     starImage.setImageResource(R.drawable.star_full);
-                    //update databse
+                    ViewManager.getInstance().updateFav(thisProduct.getProductID(),ViewManager.getInstance().getCurrentUser().getID());
                 }
             }
         });
@@ -205,13 +223,13 @@ public class ProductPagePanel extends ViewManager implements BottomNavigationVie
         commentsIcon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                changeActivity(ViewManager.getInstance().openCommentsPanel(),productID);
+                changeActivity(ViewManager.getInstance().openCommentsPanel(),thisProduct.getComments());
             }
         });
         commentsText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                changeActivity(ViewManager.getInstance().openCommentsPanel());
+                changeActivity(ViewManager.getInstance().openCommentsPanel(),thisProduct.getComments());
             }
         });
 
@@ -221,9 +239,9 @@ public class ProductPagePanel extends ViewManager implements BottomNavigationVie
         startActivity(new Intent(act, className));
     }
 
-    public void changeActivity(Class className, long id) {
+    public void changeActivity(Class className, List<Comment> comments) {
         Intent myIntent = new Intent(act, className);
-        myIntent.putExtra("id", id);
+        myIntent.putExtra("id",productID);
         startActivity(myIntent);
     }
 
@@ -239,7 +257,7 @@ public class ProductPagePanel extends ViewManager implements BottomNavigationVie
     };
     public void flipperImages(Bitmap image){
         ImageView imageView = new ImageView(this);
-        imageView.setImageBitmap(image);
+        imageView.setImageBitmap(Bitmap.createScaledBitmap(image,600,580,true));
         v_flipper.addView(imageView);
     }
 

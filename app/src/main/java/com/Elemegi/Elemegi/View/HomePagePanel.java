@@ -140,18 +140,18 @@ public class HomePagePanel extends ViewManager implements BottomNavigationView.O
             final Bitmap[] decodedBytesBottom = tempDecodedBytesBottom;
             final Bitmap[] decodedBytesSlider = tempDecodedBytesSlider;
 
-            image1.setImageBitmap(Bitmap.createScaledBitmap(decodedBytesBottom[0],200,200,true));
-            image2.setImageBitmap(Bitmap.createScaledBitmap(decodedBytesBottom[1],200,200,true));
-            image3.setImageBitmap(Bitmap.createScaledBitmap(decodedBytesBottom[2],200,200,true));
-            image4.setImageBitmap(Bitmap.createScaledBitmap(decodedBytesBottom[3],200,200,true));
-            image5.setImageBitmap(Bitmap.createScaledBitmap(decodedBytesBottom[4],200,200,true));
-            image6.setImageBitmap(Bitmap.createScaledBitmap(decodedBytesBottom[5],200,200,true));
-            text1.setText(namesForBottom[0]);
-            text2.setText(namesForBottom[1]);
-            text3.setText(namesForBottom[2]);
-            text4.setText(namesForBottom[3]);
-            text5.setText(namesForBottom[4]);
-            text6.setText(namesForBottom[5]);
+            image1.setImageBitmap(Bitmap.createScaledBitmap(decodedBytesBottom[6],200,200,true));
+            image2.setImageBitmap(Bitmap.createScaledBitmap(decodedBytesBottom[7],200,200,true));
+            image3.setImageBitmap(Bitmap.createScaledBitmap(decodedBytesBottom[8],200,200,true));
+            image4.setImageBitmap(Bitmap.createScaledBitmap(decodedBytesBottom[9],200,200,true));
+            image5.setImageBitmap(Bitmap.createScaledBitmap(decodedBytesBottom[10],200,200,true));
+            image6.setImageBitmap(Bitmap.createScaledBitmap(decodedBytesBottom[11],200,200,true));
+            text1.setText(namesForBottom[6]);
+            text2.setText(namesForBottom[7]);
+            text3.setText(namesForBottom[8]);
+            text4.setText(namesForBottom[9]);
+            text5.setText(namesForBottom[10]);
+            text6.setText(namesForBottom[11]);
             for (int i = 0; i < dotscount; i++) {
 
                 dots[i] = new ImageView(this);
