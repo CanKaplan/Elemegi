@@ -61,7 +61,7 @@ public class HomePagePanel extends ViewManager implements BottomNavigationView.O
     private TextView text5;
     private TextView text6;
     private TextView sliderNames;
-    private ConstraintLayout layout;
+    private DrawerLayout layout;
     private AnimationDrawable anim;
 
     @Override

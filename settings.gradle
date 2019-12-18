@@ -1,2 +1,2 @@
-include ':app', ':mysql-connector'
+include ':app'
 rootProject.name='Elemegi'
