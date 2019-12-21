@@ -5,6 +5,7 @@ import com.Elemegi.Elemegi.Model.Order;
 import com.Elemegi.Elemegi.Model.Product;
 import com.Elemegi.Elemegi.Model.User;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class MainManager {
@@ -12,9 +13,7 @@ public class MainManager {
     //Lists that keep data of the model package's layers
     private User currentUser;
     private List<User> users;
-    private Product[] myProducts;
-    private Product[] sliderProducts;
-    private Product[] bottomProducts;
+    private List<Product> myProducts;
     private List<Comment> comments;
     private Order[] myOrders;
 
@@ -28,52 +27,14 @@ public class MainManager {
     }
 
 
-    public List<User> getUsers() { return users; }
-
-    public void setUsers(List<User> users) {
-        this.users = users;
-    }
-
-
-    public List<Comment> getComments() {
-        return comments;
-    }
-
-    public void setComments(List<Comment> comments) {
-        this.comments = comments;
-    }
-
-    public Order[] getOrders() {
-        return myOrders;
-    }
-
-    public void setOrders(Order[] orders) {
-        this.myOrders= orders;
-    }
-
-    public Product[] getSliderProducts() {
-        return sliderProducts;
-    }
-
-    public void setSliderProducts(Product[] sliderProducts) {
-        this.sliderProducts = sliderProducts;
-    }
-
-    public Product[] getBottomProducts() {
-        return bottomProducts;
-    }
-
-    public void setBottomProducts(Product[] bottomProducts) {
-        this.bottomProducts = bottomProducts;
-    }
-
     public boolean checkUser(String email, String password){
         String result = DatabaseManager.getInstance().checkUser(email, password);
         if (result.equals("false")){
             return false;
         }
-        //currentUser = new User("can kaplan","Customer","can123456","cankaplan1007@gmail.com",null,null);
-        //RESULTTAN SANA USER STRING İ DONCEK ONLA currentUser ı setle **********************************************
+        List<List<String>> converted = converter(result);
+        currentUser = new User(Long.parseLong(converted.get(0).get(0)),converted.get(0).get(1),converted.get(0).get(2),converted.get(0).get(4),converted.get(0).get(3),converted.get(0).get(5),converted.get(0).get(7),converted.get(0).get(6));
+
         return true;
     }
 
@@ -82,67 +43,6 @@ public class MainManager {
         checkUserEmail(email);
         DatabaseManager.getInstance().registerUser(name,surname,email, password, roleType);
         //databaseManager.setUserID(email,password);
-    }
-    /*
-        public void addProduct(String productName, long productID, long userID, List<String> labels, List<Base64> image, double price, int deliverTime) {
-            Product product = new Product(productName, 0, userID, labels, image, price, deliverTime);
-            //products.add(product);
-            // Bu oluşturulan product database e eklenmeli
-            //DatabaseManager.getInstance().createProductlistTable();
-        }
-
-        public Product deleteProduct(long productID) {
-            int i = 0;
-            for (; i < products.size() && products.get(i).getProductID() != productID; i++) {
-
-            }
-            if(i < products.size()) {
-                Product deletedProduct = products.get(i);
-                products.remove(i);
-                //Database
-                return deletedProduct;
-            }
-            else
-                return null;
-        }
-    public User deleteUser(long userID){
-        int i = 0;
-        for (; i < users.size() && users.get(i).getID() != userID; i++) {
-
-        }
-        if(i < users.size()) {
-            User deleteduser = users.get(i);
-            users.remove(i);
-            //Database
-            return deleteduser;
-        }
-        else
-            return null;
-    }
-    public void giveOrder(long orderID, long productID, long userID, String productName,double price,String description, Date givenDate){
-        Order order = new Order(orderID,productID,userID,givenDate,productName,price);
-        //order.setDescription(description);
-        //order.setRemainingTime(deliverTime);
-        orders.add(order);
-    }
-    public Order cancelOrder(long orderID){
-        int i = 0;
-        for (; i < orders.size() && orders.get(i).getOrderID() != orderID; i++) {
-
-        }
-        if(i < orders.size()) {
-            Order canceledorder = orders.get(i);
-            orders.remove(i);
-            //Database
-            return canceledorder;
-        }
-        else
-            return null;
-    }
-*/
-    //setPassword Methodu
-    public void setPassword(String email, String pass){
-        //DatabaseManager.getInstance().changePassword(email, pass);
     }
 
     public boolean checkUserEmail(String email) {
@@ -156,21 +56,33 @@ public class MainManager {
         return currentUser;
     }
 
-    public Product[] createHomePageSliderContent(long id) { // KARASIZIM BURDA PRODUCT ÇEKİP BURDA EŞİTLEYİP Mİ KULLANICAZ YOKSA DATABASEDEN RESİM Mİ ALICAZ
-
+    public List<Product> createHomePageSliderContent(long id) {
+        List<Product> sliderProducts = new ArrayList<>();
         String sliderProductsString = DatabaseManager.getInstance().createHomePageSliderProducts(id);
-        // BURDAKİ STRINGLERI PRODUCT TİPİİNE ÇEVİR VE SLİDERPRODUCTS YAP  3 tane olacak
+        List<List<String>> converted = converter(sliderProductsString);
+        for(int i = 0 ; i < 3 ; i++){
+            sliderProducts.add(i,new Product(converted.get(i).get(1),Long.parseLong(converted.get(i).get(0)) , converted.get(i).get(2), null,converter2(converted.get(i).get(6)),null,0,Double.parseDouble(converted.get(i).get(4)),0,null));
+        }
+
         return sliderProducts;
     }
-    public Product[] createHomePageImages(long id) {
+    public List<Product> createHomePageImages(long id) {
+        List<Product> bottomProducts = new ArrayList<>();
         String bottomProductsString = DatabaseManager.getInstance().createHomePageProducts(id);
-        // BURDAKİ STRINGLERI PRODUCT TİPİİNE ÇEVİR VE BOTTOMPRODUCTS YAP  18 tane olacak
+        List<List<String>> converted = converter(bottomProductsString);
+        for(int i = 0 ; i < 18 &&  converted.get(i) != null  ; i++){
+            bottomProducts.add(i,new Product(converted.get(i).get(1),Long.parseLong(converted.get(i).get(0)) , converted.get(i).get(2), null,converter2(converted.get(i).get(6)),null,0,Double.parseDouble(converted.get(i).get(4)),0,null));
+        }
         return bottomProducts;
     }
 
-    public Product[] getMyProducts(long id) {
+    public List<Product> getMyProducts(long id) {
         String myProductString = DatabaseManager.getInstance().createMyProductsPage(id);
-        //BURDAKİ STRING SANA PRODUCTLARI DÖNDÜRCEK ONLARI PRODUCT ARRAYINE ÇEVİR
+        List<List<String>> converted = converter(myProductString);
+        int numberOfProducts = converted.size();
+        for (int i = 0; i < numberOfProducts ; i++){
+            myProducts.add(i, new Product(converted.get(i).get(1),Long.parseLong(converted.get(i).get(0)) , converted.get(i).get(2), null,converter2(converted.get(i).get(6)),null,0,Double.parseDouble(converted.get(i).get(4)),0,null));
+        }
         return myProducts; // bu sadece producer kullanılıyorsa kullanılıcak.
     }
 
@@ -191,13 +103,119 @@ public class MainManager {
         //Burada sana product bilgilerini dönecek bunla product page oluştur
         return currentProduct;
     }
-
-
-    //remember me local file set method
-
-    //get 3 product for homepage
-
-    //get 18 product for homepage favourite
-
     //
+    private List<List<String>> converter(String data){
+        boolean firstEn = true;
+        int column = 0;
+        int row = 0;
+        StringBuilder tmp = new StringBuilder();
+        List<List<String>> listOfLists = new ArrayList<>();
+        for(int i = 0; i< data.length() ; i++){
+            char current = data.charAt(i);
+            if(current == '['){
+                listOfLists.add(new ArrayList<String>());
+            }
+            if(current == '"'){
+                if(!firstEn){
+                    firstEn = true;
+                    listOfLists.get(row).add(column, tmp.toString());
+                    tmp = new StringBuilder();
+                    column++;
+                }
+                else
+                    firstEn = false;
+            }
+            if(!firstEn && current != '"'){
+                tmp.append(current);
+            }
+            if(current == 'n' && data.charAt(i+1) == 'u' && firstEn){
+                listOfLists.get(row).add(column,"");
+                column++;
+            }
+            if(current == ']'){
+                row++;
+                column = 0;
+            }
+        }
+        return listOfLists;
+    }
+
+    private List<String> converter2(String data){
+        int y = 0;
+        StringBuilder tmp = new StringBuilder();
+        List<String> list= new ArrayList<>();
+        for(int i = 0; i< data.length() ; i++){
+            if(data.charAt(i) != ','){
+                tmp.append(data.charAt(i));
+            }
+            else{
+                list.add(y, tmp.toString());
+                y++;
+                tmp = new StringBuilder();
+            }
+        }
+        list.add(0,data);
+        return  list;
+    }
+
+
+    public Product getProductInfo(long productID) {
+        String productInfoString = DatabaseManager.getInstance().getProductInfo(productID);
+        Product myProduct;
+        List<List<String>> converted = converter(productInfoString);
+
+        String myCommentsString = DatabaseManager.getInstance().getComments(productID);
+        List<Comment> myComments = new ArrayList<>();
+        List<List<String>> convertedComments = converter(myCommentsString);
+
+        for (int i = 0; i < convertedComments.size(); i++) {
+            myComments.add(i,new Comment(convertedComments.get(i).get(0),convertedComments.get(i).get(1)));
+        }
+        double temp;
+        if(converted.get(0).get(7).equals("")){
+            temp = 0;
+        }
+        else{
+            temp = Double.parseDouble(converted.get(0).get(7));
+        }
+        myProduct = new Product(converted.get(0).get(1),Long.parseLong(converted.get(0).get(0)) , converted.get(0).get(2), null,converter2(converted.get(0).get(6)),converted.get(0).get(3),temp,Double.parseDouble(converted.get(0).get(4)),Integer.parseInt(converted.get(0).get(5)),myComments);
+        return myProduct;
+    }
+
+    public void updateFav(long productID, long id) {
+        DatabaseManager.getInstance().updateFav(productID,id);
+    }
+
+    public boolean checkIfOrdered(long productID, long id) {
+        String productCheckString = DatabaseManager.getInstance().checkIfOrdered(productID,id);
+        if (productCheckString.equals("TRUE")){
+            return true;
+        }
+        else
+            return false;
+    }
+
+    public void sendComment(String commentAddString, long productID, long id) {
+        DatabaseManager.getInstance().sendComment(commentAddString,productID,id);
+    }
+
+    public List<Comment> updateComments(long productID) {
+        String myCommentsString = DatabaseManager.getInstance().getComments(productID);
+        List<Comment> myComments = new ArrayList<>();
+        List<List<String>> convertedComments = converter(myCommentsString);
+
+        for (int i = 0; i < convertedComments.size(); i++) {
+            myComments.add(i,new Comment(convertedComments.get(i).get(0),convertedComments.get(i).get(1)));
+        }
+        return myComments;
+    }
+
+    public boolean checkFav(long productID, long id) {
+        String checkFavString = DatabaseManager.getInstance().checkFav(productID,id);
+        if (checkFavString.equals("FAV")){
+            return true;
+        }
+        else
+            return false;
+    }
 }

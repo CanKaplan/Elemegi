@@ -46,11 +46,7 @@ public class LoginPanel extends ViewManager {
         forgotPassword = (TextView) findViewById(R.id.forgotPasswordButton);
         emailEdit = (EditText) findViewById(R.id.email);
         passwordEdit = (EditText) findViewById(R.id.password);
-
         rememberMeBox = (CheckBox) findViewById(R.id.rememberMe);
-
-        email = emailEdit.getText().toString();
-        password = passwordEdit.getText().toString();
 
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override

@@ -1,5 +1,6 @@
 package com.Elemegi.Elemegi.View;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -15,7 +16,6 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
 import android.widget.ViewFlipper;
@@ -35,9 +35,10 @@ import com.Elemegi.Elemegi.R;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
 
+import java.util.List;
+
 public class HomePagePanel extends ViewManager implements BottomNavigationView.OnNavigationItemSelectedListener, NavigationView.OnNavigationItemSelectedListener {
     private int currentPosition = 1;
-    private String userType = "";
     private AppCompatActivity act;
     BottomNavigationView navView2;
     NavigationView navigationView;
@@ -64,15 +65,19 @@ public class HomePagePanel extends ViewManager implements BottomNavigationView.O
     private DrawerLayout layout;
     private AnimationDrawable anim;
 
+    @SuppressLint("ClickableViewAccessibility")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        layout=findViewById(R.id.layout);
+
+
+        /*layout=findViewById(R.id.drawer_layout);
         anim=(AnimationDrawable)layout.getBackground();
         anim.setEnterFadeDuration(10);
         anim.setExitFadeDuration(1000);
-        anim.start();
+        anim.start();*/
 
+        String userType = "";
         if(MainManager.getInstance().getCurrentUser() != null) {
             userType = MainManager.getInstance().getCurrentUser().getRoleType(); // User Typeına göre işlem yap customersa home_oage_page otherwise home_page_page_p
         }
@@ -81,10 +86,31 @@ public class HomePagePanel extends ViewManager implements BottomNavigationView.O
         }
         if(userType.equals("Customer")) {
             setContentView(R.layout.home_page_page);
-            String[] imagesForSlide = ViewManager.createHomePageSliderContent(MainManager.getInstance().getCurrentUser().getID());
-            final String[] namesForSlide = ViewManager.createHomePageSliderNames(MainManager.getInstance().getCurrentUser().getID());
-            final String[] imagesForBottom = ViewManager.createHomePageImages(MainManager.getInstance().getCurrentUser().getID());
-            final String[] namesForBottom = ViewManager.createHomePageNames(MainManager.getInstance().getCurrentUser().getID());
+            final List<Product> sliderProds =  ViewManager.createHomePageSliderContent(MainManager.getInstance().getCurrentUser().getID());
+            final List<Product> bottomProds =  ViewManager.createHomePageImages(MainManager.getInstance().getCurrentUser().getID());
+
+            String[] tempImagesForSlide = new String[3];
+            String[] tempNamesForSlide = new String[3];
+            String[] tempImagesForBottom = new String[18];
+            String[] tempNamesForBottom = new String[18];
+
+            for(int i = 0; i < sliderProds.size(); i++){
+                tempImagesForSlide[i] = sliderProds.get(i).getImage().get(0);
+            }
+            for(int i = 0; i < sliderProds.size(); i++){
+                tempNamesForSlide[i] = sliderProds.get(i).getName();
+            }
+            for(int i = 0; i < bottomProds.size(); i++){
+                tempImagesForBottom[i] = bottomProds.get(i).getImage().get(0);
+            }
+            for(int i = 0; i < bottomProds.size(); i++){
+                tempNamesForBottom[i] = bottomProds.get(i).getName();
+            }
+
+
+            final String[] namesForSlide = tempNamesForSlide;
+            final String[] namesForBottom = tempNamesForBottom;
+            
             navView2 = findViewById(R.id.nav_view_bottom);
             v_flipper = findViewById(R.id.v_flipper);
             v_flipper_product = findViewById(R.id.v_flipper_big);
@@ -106,23 +132,26 @@ public class HomePagePanel extends ViewManager implements BottomNavigationView.O
             dotscount = 3;
             dots = new ImageView[dotscount];
 
-            Bitmap[] decodedBytesSlider;
-            final Bitmap[] decodedBytesBottom;
-            decodedBytesSlider = convertToBitmap(imagesForSlide);
-            decodedBytesBottom = convertToBitmap(imagesForBottom);
+            Bitmap[] tempDecodedBytesSlider;
+            Bitmap[] tempDecodedBytesBottom;
 
-            image1.setImageBitmap(decodedBytesBottom[0]);
-            image2.setImageBitmap(decodedBytesBottom[1]);
-            image3.setImageBitmap(decodedBytesBottom[2]);
-            image4.setImageBitmap(decodedBytesBottom[3]);
-            image5.setImageBitmap(decodedBytesBottom[4]);
-            image6.setImageBitmap(decodedBytesBottom[5]);
-            text1.setText(namesForBottom[0]);
-            text2.setText(namesForBottom[1]);
-            text3.setText(namesForBottom[2]);
-            text4.setText(namesForBottom[3]);
-            text5.setText(namesForBottom[4]);
-            text6.setText(namesForBottom[5]);
+            tempDecodedBytesSlider = convertToBitmap(tempImagesForSlide);
+            tempDecodedBytesBottom = convertToBitmap(tempImagesForBottom);
+            final Bitmap[] decodedBytesBottom = tempDecodedBytesBottom;
+            final Bitmap[] decodedBytesSlider = tempDecodedBytesSlider;
+
+            image1.setImageBitmap(Bitmap.createScaledBitmap(decodedBytesBottom[6],200,200,true));
+            image2.setImageBitmap(Bitmap.createScaledBitmap(decodedBytesBottom[7],200,200,true));
+            image3.setImageBitmap(Bitmap.createScaledBitmap(decodedBytesBottom[8],200,200,true));
+            image4.setImageBitmap(Bitmap.createScaledBitmap(decodedBytesBottom[9],200,200,true));
+            image5.setImageBitmap(Bitmap.createScaledBitmap(decodedBytesBottom[10],200,200,true));
+            image6.setImageBitmap(Bitmap.createScaledBitmap(decodedBytesBottom[11],200,200,true));
+            text1.setText(namesForBottom[6]);
+            text2.setText(namesForBottom[7]);
+            text3.setText(namesForBottom[8]);
+            text4.setText(namesForBottom[9]);
+            text5.setText(namesForBottom[10]);
+            text6.setText(namesForBottom[11]);
             for (int i = 0; i < dotscount; i++) {
 
                 dots[i] = new ImageView(this);
@@ -176,13 +205,13 @@ public class HomePagePanel extends ViewManager implements BottomNavigationView.O
                                 v_flipper_product.setOutAnimation(imgAnimationOut);
                                 v_flipper_product.showPrevious();
                                 currentPosition--;
-                                image1.setImageBitmap(decodedBytesBottom[currentPosition * 6 + 0]);
-                                image2.setImageBitmap(decodedBytesBottom[currentPosition * 6 + 1]);
-                                image3.setImageBitmap(decodedBytesBottom[currentPosition * 6 + 2]);
-                                image4.setImageBitmap(decodedBytesBottom[currentPosition * 6 + 3]);
-                                image5.setImageBitmap(decodedBytesBottom[currentPosition * 6 + 4]);
-                                image6.setImageBitmap(decodedBytesBottom[currentPosition * 6 + 5]);
-                                text1.setText(namesForBottom[currentPosition * 6 + 0]);
+                                image1.setImageBitmap(Bitmap.createScaledBitmap(decodedBytesBottom[currentPosition * 6],200,200,true));
+                                image2.setImageBitmap(Bitmap.createScaledBitmap(decodedBytesBottom[currentPosition * 6 + 1],200,200,true));
+                                image3.setImageBitmap(Bitmap.createScaledBitmap(decodedBytesBottom[currentPosition * 6 + 2],200,200,true));
+                                image4.setImageBitmap(Bitmap.createScaledBitmap(decodedBytesBottom[currentPosition * 6 + 3],200,200,true));
+                                image5.setImageBitmap(Bitmap.createScaledBitmap(decodedBytesBottom[currentPosition * 6 + 4],200,200,true));
+                                image6.setImageBitmap(Bitmap.createScaledBitmap(decodedBytesBottom[currentPosition * 6 + 5],200,200,true));
+                                text1.setText(namesForBottom[currentPosition * 6]);
                                 text2.setText(namesForBottom[currentPosition * 6 + 1]);
                                 text3.setText(namesForBottom[currentPosition * 6 + 2]);
                                 text4.setText(namesForBottom[currentPosition * 6 + 3]);
@@ -195,13 +224,13 @@ public class HomePagePanel extends ViewManager implements BottomNavigationView.O
                                 v_flipper_product.setInAnimation(imgAnimationIn);
                                 v_flipper_product.showNext();
                                 currentPosition++;
-                                image1.setImageBitmap(decodedBytesBottom[currentPosition * 6 + 0]);
-                                image2.setImageBitmap(decodedBytesBottom[currentPosition * 6 + 1]);
-                                image3.setImageBitmap(decodedBytesBottom[currentPosition * 6 + 2]);
-                                image4.setImageBitmap(decodedBytesBottom[currentPosition * 6 + 3]);
-                                image5.setImageBitmap(decodedBytesBottom[currentPosition * 6 + 4]);
-                                image6.setImageBitmap(decodedBytesBottom[currentPosition * 6 + 5]);
-                                text1.setText(namesForBottom[currentPosition * 6 + 0]);
+                                image1.setImageBitmap(Bitmap.createScaledBitmap(decodedBytesBottom[currentPosition * 6],200,200,true));
+                                image2.setImageBitmap(Bitmap.createScaledBitmap(decodedBytesBottom[currentPosition * 6 + 1],200,200,true));
+                                image3.setImageBitmap(Bitmap.createScaledBitmap(decodedBytesBottom[currentPosition * 6 + 2],200,200,true));
+                                image4.setImageBitmap(Bitmap.createScaledBitmap(decodedBytesBottom[currentPosition * 6 + 3],200,200,true));
+                                image5.setImageBitmap(Bitmap.createScaledBitmap(decodedBytesBottom[currentPosition * 6 + 4],200,200,true));
+                                image6.setImageBitmap(Bitmap.createScaledBitmap(decodedBytesBottom[currentPosition * 6 + 5],200,200,true));
+                                text1.setText(namesForBottom[currentPosition * 6]);
                                 text2.setText(namesForBottom[currentPosition * 6 + 1]);
                                 text3.setText(namesForBottom[currentPosition * 6 + 2]);
                                 text4.setText(namesForBottom[currentPosition * 6 + 3]);
@@ -212,37 +241,28 @@ public class HomePagePanel extends ViewManager implements BottomNavigationView.O
 
                                 int[] locImage = new int[2];
                                 image1.getLocationOnScreen(locImage);
-                                Log.d("aaaaaaaaaaaaaaaaaaa", String.valueOf(locImage[1]));
-                                Log.d("bbbbbbbbbbbbbbbbbbb", String.valueOf(startY));
                                 if (startX >= locImage[0] && startX <= (locImage[0] + image1.getWidth()) && startY >= 50 && startY <= 50 + image1.getHeight()) {
-                                    Log.d("aaaaaaaaaaaaaaaaaaa", String.valueOf(locImage[1]));
-                                    Log.d("bbbbbbbbbbbbbbbbbbb", String.valueOf(startY));
-                                    changeActivity(ViewManager.getInstance().openProductPagePanel(), currentPosition * 6 + 0);
+                                    changeActivity(ViewManager.getInstance().openProductPagePanel(), bottomProds.get(currentPosition * 6).getProductID());
                                 }
                                 image2.getLocationOnScreen(locImage);
                                 if (startX >= locImage[0] && startX <= (locImage[0] + image1.getWidth()) && startY >= 50 && startY <= (50 + image2.getHeight())) {
-                                    Log.d("aaaaaaaaaaaaaaaaaaa", "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
-                                    changeActivity(ViewManager.getInstance().openProductPagePanel(), currentPosition * 6 + 1);
+                                    changeActivity(ViewManager.getInstance().openProductPagePanel(), bottomProds.get(currentPosition * 6 + 1).getProductID());
                                 }
                                 image3.getLocationOnScreen(locImage);
                                 if (startX >= locImage[0] && startX <= (locImage[0] + image1.getWidth()) && startY >= 50 && startY <= (50 + image3.getHeight())) {
-                                    Log.d("aaaaaaaaaaaaaaaaaaa", "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
-                                    changeActivity(ViewManager.getInstance().openProductPagePanel(), currentPosition * 6 + 2);
+                                    changeActivity(ViewManager.getInstance().openProductPagePanel(), bottomProds.get(currentPosition * 6 + 2).getProductID());
                                 }
                                 image4.getLocationOnScreen(locImage);
                                 if (startX >= locImage[0] && startX <= (locImage[0] + image1.getWidth()) && startY >= 360 && startY <= (360 + image4.getHeight())) {
-                                    Log.d("aaaaaaaaaaaaaaaaaaa", "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
-                                    changeActivity(ViewManager.getInstance().openProductPagePanel(), currentPosition * 6 + 3);
+                                    changeActivity(ViewManager.getInstance().openProductPagePanel(), bottomProds.get(currentPosition * 6 + 3).getProductID());
                                 }
                                 image5.getLocationOnScreen(locImage);
                                 if (startX >= locImage[0] && startX <= (locImage[0] + image1.getWidth()) && startY >= 360 && startY <= (360 + image5.getHeight())) {
-                                    Log.d("aaaaaaaaaaaaaaaaaaa", "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
-                                    changeActivity(ViewManager.getInstance().openProductPagePanel(), currentPosition * 6 + 4);
+                                    changeActivity(ViewManager.getInstance().openProductPagePanel(), bottomProds.get(currentPosition * 6 + 4).getProductID());
                                 }
                                 image6.getLocationOnScreen(locImage);
                                 if (startX >= locImage[0] && startX <= (locImage[0] + image6.getWidth()) && startY >= 360 && startY <= (360 + image6.getHeight())) {
-                                    Log.d("aaaaaaaaaaaaaaaaaaa", "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
-                                    changeActivity(ViewManager.getInstance().openProductPagePanel(), currentPosition * 6 + 5);
+                                    changeActivity(ViewManager.getInstance().openProductPagePanel(), bottomProds.get(currentPosition * 6 + 5).getProductID());
                                 }
                             }
                             break;
@@ -294,7 +314,7 @@ public class HomePagePanel extends ViewManager implements BottomNavigationView.O
                             sliderNames.setText(namesForSlide[v_flipper.getDisplayedChild()]);
                             dots[v_flipper.getDisplayedChild()].setImageDrawable(ContextCompat.getDrawable(getApplicationContext(), R.drawable.active_dot));
                             if (Math.abs(startX - endX) < 10) {
-                                changeActivity(ViewManager.getInstance().openProductPagePanel(), v_flipper.getDisplayedChild());
+                                changeActivity(ViewManager.getInstance().openProductPagePanel(), bottomProds.get(v_flipper.getDisplayedChild()).getProductID());
                             }
                             break;
                     }
@@ -304,7 +324,7 @@ public class HomePagePanel extends ViewManager implements BottomNavigationView.O
             });
 
         }
-        else{
+        else if(userType.equals("Producer")){
             setContentView(R.layout.my_products_page_page);
 
             navView2 = findViewById(R.id.nav_view_bottom);
@@ -312,16 +332,16 @@ public class HomePagePanel extends ViewManager implements BottomNavigationView.O
             myApp.setCurrentActivity(this);
             act = myApp.getCurrentActivity();
 
-            Product[] myProducts = ViewManager.getMyProdList(MainManager.getInstance().getCurrentUser().getID());
+            List<Product> myProducts = ViewManager.getMyProdList(MainManager.getInstance().getCurrentUser().getID());
 
 
             LinearLayout myProductList;
             myProductList = (LinearLayout) findViewById(R.id.my_order_list);
-            Bitmap[] imageBitMap = new Bitmap[myProducts.length];
-            for(int i = 0; i < myProducts.length; i++){
-                 imageBitMap[i] = convertToBitmap(myProducts[i].getImage())[0];
+            Bitmap[] imageBitMap = new Bitmap[myProducts.size()];
+            for(int i = 0; i < myProducts.size(); i++){
+                 imageBitMap[i] = convertToBitmap(myProducts.get(i).getImage().get(0));
             }
-            for (int i = 0; i < myProducts.length; i++){
+            for (int i = 0; i < myProducts.size(); i++){
                 LinearLayout layoutToAdd = new LinearLayout(act);
 
                 layoutToAdd.setBackgroundColor(Color.parseColor("#FFFFFF"));
@@ -335,6 +355,7 @@ public class HomePagePanel extends ViewManager implements BottomNavigationView.O
                 }
                 layoutToAdd.setLayoutParams(params);
                 layoutToAdd.setWeightSum(1);
+
                 ImageView tempImage = new ImageView(act); //Product Image
                 tempImage.setImageBitmap(imageBitMap[i]);
                 TableRow.LayoutParams imageParam = new TableRow.LayoutParams(120,120);
@@ -343,14 +364,14 @@ public class HomePagePanel extends ViewManager implements BottomNavigationView.O
                 layoutToAdd.addView(tempImage);
 
                 TextView tempTitle = new TextView(act); // Product Title
-                tempTitle.setText(myProducts[i].getName());
+                tempTitle.setText(myProducts.get(i).getName());
                 tempTitle.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.WRAP_CONTENT, TableRow.LayoutParams.WRAP_CONTENT));
                 tempTitle.setTextAlignment(View.TEXT_ALIGNMENT_TEXT_START);
                 tempTitle.setTextColor(Color.parseColor("#000F00"));
                 layoutToAdd.addView(tempTitle);
 
                 TextView prodDescription = new TextView(act); //Product Description
-                prodDescription.setText(myProducts[i].getDescription());
+                prodDescription.setText(myProducts.get(i).getDescription());
                 TableRow.LayoutParams paramDescription = new TableRow.LayoutParams(TableRow.LayoutParams.WRAP_CONTENT, TableRow.LayoutParams.WRAP_CONTENT,1f);
                 paramDescription.setMargins(50,30,0,30);
                 prodDescription.setLayoutParams(paramDescription);
@@ -359,7 +380,7 @@ public class HomePagePanel extends ViewManager implements BottomNavigationView.O
                 layoutToAdd.addView(prodDescription);
 
                 TextView prodPrice = new TextView(act); //Product Price
-                prodPrice.setText(String.valueOf(myProducts[i].getPrice()));
+                prodPrice.setText(String.valueOf(myProducts.get(i).getPrice()));
                 TableRow.LayoutParams paramPrice = new TableRow.LayoutParams(TableRow.LayoutParams.WRAP_CONTENT, TableRow.LayoutParams.WRAP_CONTENT,1f);
                 paramPrice.setMargins(50,30,0,30);
                 prodPrice.setLayoutParams(paramPrice);
@@ -368,7 +389,7 @@ public class HomePagePanel extends ViewManager implements BottomNavigationView.O
                 layoutToAdd.addView(prodPrice);
 
                 TextView prodDeliverTime = new TextView(act); //Product Deliver Time
-                prodDeliverTime.setText(myProducts[i].getDeliverTime());
+                prodDeliverTime.setText(myProducts.get(i).getDeliverTime());
                 TableRow.LayoutParams paramDeliverTime = new TableRow.LayoutParams(TableRow.LayoutParams.WRAP_CONTENT, TableRow.LayoutParams.WRAP_CONTENT,1f);
                 paramDeliverTime.setMargins(50,30,0,30);
                 prodDeliverTime.setLayoutParams(paramDeliverTime);
@@ -405,11 +426,19 @@ public class HomePagePanel extends ViewManager implements BottomNavigationView.O
         }
         return newBitmap;
     }
+
+    private Bitmap convertToBitmap(String images) {
+        Bitmap newBitmap;
+        byte[] decodedString = Base64.decode(images,Base64.DEFAULT);
+        newBitmap = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
+        return newBitmap;
+    }
+
     public void changeActivity(Class className) {
         startActivity(new Intent(act, className));
     }
 
-    public void changeActivity(Class className, int id) {
+    public void changeActivity(Class className, long id) {
         Intent myIntent = new Intent(act, className);
         myIntent.putExtra("id", id);
         startActivity(myIntent);
@@ -427,7 +456,7 @@ public class HomePagePanel extends ViewManager implements BottomNavigationView.O
     };
     public void flipperImages(Bitmap image){
         ImageView imageView = new ImageView(this);
-        imageView.setImageBitmap(image);
+        imageView.setImageBitmap(Bitmap.createScaledBitmap(image,600,580,true));
         v_flipper.addView(imageView);
         v_flipper.setAutoStart(true);
     }

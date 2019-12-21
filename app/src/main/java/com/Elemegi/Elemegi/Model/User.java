@@ -11,12 +11,15 @@ public class User {
     //image eklenecek
     private long longtitude;
     private long latitude;
+    private String image;
 
-    public User(String name, String roleType, String password, String email,String phoneNumber,String address){
+    public User(long ID, String name, String roleType, String password, String email,String phoneNumber,String address,String image){
+        this.ID = ID;
         this.name = name;
         this.roleType = roleType;
         this.password = password;
         this.email = email;
+        this.image = image;
         this.address = address;
         this.phoneNumber = phoneNumber;
     }
@@ -91,5 +94,13 @@ public class User {
 
     public void setLatitude(long latitude) {
         this.latitude = latitude;
+    }
+
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
     }
 }

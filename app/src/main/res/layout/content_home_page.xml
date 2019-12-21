@@ -54,6 +54,7 @@
         android:textSize="12dp"
         android:textStyle="bold"
         android:textColor="#FFFFFF"
+        app:layout_goneMarginTop="2dp"
         android:layout_marginLeft="13dp"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
@@ -81,24 +82,26 @@
             <ImageView
                 android:id="@+id/image1"
                 android:layout_columnWeight="10"
-                android:layout_height="100dp"
+                android:layout_height="80dp"
+                android:layout_marginTop="10dp"
                 android:layout_width="100dp"/>
 
             <ImageView
                 android:id="@+id/image2"
                 android:layout_columnWeight="10"
-                android:layout_height="100dp"
+                android:layout_height="80dp"
+                android:layout_marginTop="10dp"
                 android:layout_width="100dp"/>
 
             <ImageView
                 android:id="@+id/image3"
                 android:layout_columnWeight="10"
-                android:layout_height="100dp"
+                android:layout_height="80dp"
+                android:layout_marginTop="10dp"
                 android:layout_width="100dp"/>
 
             <TextView
                 android:id="@+id/text1"
-                android:layout_marginTop="-8dp"
                 android:layout_gravity="center_horizontal"
                 android:textAlignment="center"
                 android:textSize="10sp"
@@ -107,7 +110,6 @@
                 />
             <TextView
                 android:id="@+id/text2"
-                android:layout_marginTop="-8dp"
                 android:layout_gravity="center_horizontal"
                 android:textSize="10sp"
                 android:textStyle="bold"
@@ -115,7 +117,6 @@
                 />
             <TextView
                 android:id="@+id/text3"
-                android:layout_marginTop="-8dp"
                 android:layout_gravity="center_horizontal"
                 android:textSize="10sp"
                 android:textStyle="bold"
@@ -124,28 +125,24 @@
 
             <ImageView
                 android:id="@+id/image4"
-                android:layout_marginTop="-8dp"
                 android:layout_columnWeight="1"
-                android:layout_height="100dp"
+                android:layout_height="80dp"
                 android:layout_width="100dp"/>
 
             <ImageView
                 android:id="@+id/image5"
-                android:layout_marginTop="-8dp"
                 android:layout_columnWeight="1"
-                android:layout_height="100dp"
+                android:layout_height="80dp"
                 android:layout_width="100dp"/>
 
             <ImageView
                 android:id="@+id/image6"
-                android:layout_marginTop="-8dp"
                 android:layout_columnWeight="1"
-                android:layout_height="100dp"
+                android:layout_height="80dp"
                 android:layout_width="100dp"/>
 
             <TextView
                 android:id="@+id/text4"
-                android:layout_marginTop="-16dp"
                 android:layout_gravity="center_horizontal"
                 android:textSize="10dp"
                 android:textStyle="bold"
@@ -154,7 +151,6 @@
                 />
             <TextView
                 android:id="@+id/text5"
-                android:layout_marginTop="-16dp"
                 android:layout_gravity="center_horizontal"
                 android:textSize="10dp"
                 android:textStyle="bold"
@@ -163,7 +159,6 @@
                 />
             <TextView
                 android:id="@+id/text6"
-                android:layout_marginTop="-16dp"
                 android:layout_gravity="center_horizontal"
                 android:textSize="10dp"
                 android:textStyle="bold"

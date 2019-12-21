@@ -1,11 +1,16 @@
 package com.Elemegi.Elemegi.View;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.util.Base64;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
@@ -23,6 +28,11 @@ public class ProfilePagePanel extends ViewManager implements NavigationView.OnNa
     BottomNavigationView navView3;
     NavigationView navigationView;
     LinearLayout editButton;
+    TextView profileName;
+    TextView profileEmail;
+    TextView profilePhone;
+    TextView profileAddress;
+    ImageView profileImage;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -31,8 +41,21 @@ public class ProfilePagePanel extends ViewManager implements NavigationView.OnNa
         navView3.setSelectedItemId(R.id.navigation_profile);
         editButton = findViewById(R.id.layout3);
 
+        profileAddress = (TextView) findViewById(R.id.profileAddress);
+        profileName = (TextView) findViewById(R.id.profileName);
+        profileEmail = (TextView) findViewById(R.id.profileEmail);
+        profilePhone = (TextView) findViewById(R.id.profilePhone);
+        profileImage = (ImageView) findViewById(R.id.profileImage);
+
+        profileName.setText(ViewManager.getInstance().getCurrentUser().getName());
+        profileEmail.setText(ViewManager.getInstance().getCurrentUser().getEmail());
+        profilePhone.setText(ViewManager.getInstance().getCurrentUser().getPhoneNumber());
+        profileAddress.setText(ViewManager.getInstance().getCurrentUser().getAddress());
+//        profileImage.setImageBitmap(convertToBitmap(ViewManager.getInstance().getCurrentUser().getImage()));
+
         myApp.setCurrentActivity(this);
         act = myApp.getCurrentActivity();
+
         editButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -101,4 +124,13 @@ public class ProfilePagePanel extends ViewManager implements NavigationView.OnNa
         }
         return true;
     }
+
+    private Bitmap convertToBitmap(String images) {
+        Bitmap newBitmap;
+        byte[] decodedString = Base64.decode(images,Base64.DEFAULT);
+        Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
+        newBitmap = decodedByte;
+        return newBitmap;
+    }
+
 }

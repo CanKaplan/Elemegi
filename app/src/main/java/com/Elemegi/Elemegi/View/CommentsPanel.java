@@ -1,11 +1,12 @@
 package com.Elemegi.Elemegi.View;
 
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.AnimationDrawable;
 import android.os.Bundle;
 import android.view.View;
-import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -14,30 +15,55 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.Elemegi.Elemegi.Controller.MainManager;
 import com.Elemegi.Elemegi.Controller.ViewManager;
+import com.Elemegi.Elemegi.Model.Comment;
 import com.Elemegi.Elemegi.R;
+
+import java.util.List;
 
 public class CommentsPanel extends ViewManager {
     LinearLayout comments;
+    private String userType = "";
     private RelativeLayout layout;
     private AnimationDrawable anim;
     private AppCompatActivity act;
-    String[] commentArray= {"aaaaaaaa","bbbbbbbbb","ccccccccc","dddddddd","eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee","fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff","aaaaaaaa","bbbbbbbbb","ccccccccc","dddddddd","eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee","fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff","aaaaaaaa","bbbbbbbbb","ccccccccc","dddddddd","eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee","fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff"};
-    String[] nameArray= {"can","can1","can2","can3","can4","can5","can","can1","can2","can3","can4","can5","can","can1","can2","can3","can4","can5"};
+    private EditText commentAdd;
+    private String commentAddString;
+    private LinearLayout sendLine;
+    private ImageView sendImage;
+    private long productID;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        /*
         layout=findViewById(R.id.layout);
         anim=(AnimationDrawable)layout.getBackground();
         anim.setEnterFadeDuration(10);
         anim.setExitFadeDuration(1000);
         anim.start();
+        */
+        Intent intent = getIntent();
+        productID = intent.getLongExtra("id",0);
         setContentView(R.layout.comment_page);
+        sendLine = (LinearLayout) findViewById(R.id.writeComment);
+        List<Comment> commentObject = ViewManager.getInstance().updateComments(productID);
+        boolean statement = ViewManager.getInstance().checkIfOrdered(productID,ViewManager.getInstance().getCurrentUser().getID());
+        if(MainManager.getInstance().getCurrentUser() != null) {
+            userType = MainManager.getInstance().getCurrentUser().getRoleType(); // User Typeına göre işlem yap customersa home_oage_page otherwise home_page_page_p
+        }
+        else {
+            userType = "";
+        }
+        if(userType.equals("Producer") || !statement) {
+            sendLine.setVisibility(View.INVISIBLE);
+        }
         myApp.setCurrentActivity(this);
         act = myApp.getCurrentActivity();
         comments = (LinearLayout) findViewById(R.id.commentsList);
-
-        for (int i = 0; i < commentArray.length; i++){
+        commentAdd = (EditText) findViewById(R.id.commentSection);
+        sendImage = (ImageView) findViewById(R.id.sendComment);
+        for (int i = 0; i < commentObject.size(); i++){
             LinearLayout layoutToAdd = new LinearLayout(act);
 
             layoutToAdd.setBackgroundColor(Color.parseColor("#FFFFFF"));
@@ -51,21 +77,23 @@ public class CommentsPanel extends ViewManager {
             }
             layoutToAdd.setLayoutParams(params);
             layoutToAdd.setWeightSum(1);
+
             ImageView tempImage = new ImageView(act);
-            String text = "R.drawable.pic" + (i + 1);
             tempImage.setImageResource(R.drawable.comment_profile);
             TableRow.LayoutParams imageParam = new TableRow.LayoutParams(120,120);
             imageParam.setMargins(10,10,0,10);
             tempImage.setLayoutParams(imageParam);
             layoutToAdd.addView(tempImage);
+
             TextView tempName = new TextView(act);
-            tempName.setText(nameArray[i]);
+            tempName.setText(commentObject.get(i).getCustomerName());
             tempName.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.WRAP_CONTENT, TableRow.LayoutParams.WRAP_CONTENT));
             tempName.setTextAlignment(View.TEXT_ALIGNMENT_TEXT_START);
             tempName.setTextColor(Color.parseColor("#000F00"));
             layoutToAdd.addView(tempName);
+
             TextView tempText = new TextView(act);
-            tempText.setText(commentArray[i]);
+            tempText.setText(commentObject.get(i).getComment());
             TableRow.LayoutParams paramText = new TableRow.LayoutParams(TableRow.LayoutParams.WRAP_CONTENT, TableRow.LayoutParams.WRAP_CONTENT,1f);
             paramText.setMargins(50,30,0,30);
             tempText.setLayoutParams(paramText);
@@ -74,5 +102,21 @@ public class CommentsPanel extends ViewManager {
             layoutToAdd.addView(tempText);
             comments.addView(layoutToAdd);
         }
+        sendImage.bringToFront();
+        sendImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                commentAddString = commentAdd.getText().toString();
+                ViewManager.getInstance().sendComment(commentAddString,productID,ViewManager.getInstance().getCurrentUser().getID());
+
+                Intent myIntent = new Intent(act, CommentsPanel.class);
+                myIntent.putExtra("id",productID);
+                myIntent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+                finish();
+
+                startActivity(myIntent);
+
+            }
+        });
     }
 }

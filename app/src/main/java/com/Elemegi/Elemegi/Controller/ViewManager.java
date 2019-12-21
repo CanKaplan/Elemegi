@@ -6,8 +6,10 @@ import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.Elemegi.Elemegi.Model.Comment;
 import com.Elemegi.Elemegi.Model.Order;
 import com.Elemegi.Elemegi.Model.Product;
+import com.Elemegi.Elemegi.Model.User;
 import com.Elemegi.Elemegi.View.AddProductPanel;
 import com.Elemegi.Elemegi.View.ChangePasswordPanel;
 import com.Elemegi.Elemegi.View.CommentsPanel;
@@ -26,7 +28,6 @@ public class ViewManager extends AppCompatActivity {
     private final static ViewManager instance = new ViewManager();
     protected MyApp myApp;
     private AppCompatActivity currentAct;
-
 
 
     protected void onCreate(Bundle savedInstanceState) {
@@ -203,41 +204,18 @@ public class ViewManager extends AppCompatActivity {
             return false;
         }
     }
-    public static String[] createHomePageSliderContent(long id) {
-        String[] images = new String[3];
-        for (int i = 0; i < 3; i++){
-            images[i] = MainManager.getInstance().createHomePageSliderContent(id)[i].getImage()[0];
-        }
-
-        return images;
+    public static List<Product> createHomePageSliderContent(long id) {
+        List<Product> homeProds = MainManager.getInstance().createHomePageSliderContent(id);
+        return homeProds;
     }
 
-    public static String[] createHomePageImages(long id) {
-        String[] images = new String[18];
-        for (int i = 0; i < 18; i++){
-            images[i] = MainManager.getInstance().createHomePageImages(id)[i].getImage()[0];
-        }
-
-        return images;
-    }
-    public static String[] createHomePageSliderNames(long id) {
-        String[] names = new String[3];
-        for (int i = 0; i < 3; i++){
-            names[i] = MainManager.getInstance().createHomePageSliderContent(id)[i].getName();
-        }
-        return names;
+    public static List<Product> createHomePageImages(long id) {
+        List<Product> homeBProds = MainManager.getInstance().createHomePageImages(id);
+        return homeBProds;
     }
 
-    public static String[] createHomePageNames(long id) {
-        String[] names = new String[18];
-        for (int i = 0; i < 18; i++){
-            names[i] = MainManager.getInstance().createHomePageImages(id)[i].getName();
-        }
-        return names;
-    }
-
-    public static Product[] getMyProdList(long id) {
-        Product[] myProd = MainManager.getInstance().getMyProducts(id);
+    public static List<Product> getMyProdList(long id) {
+        List<Product> myProd = MainManager.getInstance().getMyProducts(id);
         return myProd;
     }
 
@@ -315,5 +293,46 @@ public class ViewManager extends AppCompatActivity {
     public List<String> getLabels(String[] images) {
         List<String> labels = MainManager.getInstance().generateLabels(images);
         return labels;
+    }
+
+    public User getCurrentUser() {
+        if(MainManager.getInstance().getCurrentUser() != null)
+            return MainManager.getInstance().getCurrentUser();
+        else
+            return null;
+    }
+
+    public Product getProductInfo(long productID) {
+        Product myProduct = MainManager.getInstance().getProductInfo(productID);
+        return myProduct;
+    }
+
+    public void updateFav(long productID, long id) {
+        MainManager.getInstance().updateFav(productID,id);
+    }
+    public void sendComment(String commentAddString, long productID, long id) {
+        MainManager.getInstance().sendComment(commentAddString,productID,id);
+    }
+
+    public boolean checkIfOrdered(long productID, long id) {
+        if(MainManager.getInstance().checkIfOrdered(productID,id)){
+            return true;
+        }
+        else
+            return false;
+    }
+
+    public List<Comment> updateComments(long productID) {
+        List<Comment> updatedComments;
+        updatedComments = MainManager.getInstance().updateComments(productID);
+        return updatedComments;
+    }
+
+    public boolean checkFav(long productID, long id) {
+        if(MainManager.getInstance().checkFav(productID,id)){
+            return true;
+        }
+        else
+            return false;
     }
 }

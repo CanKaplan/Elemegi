@@ -1,42 +1,22 @@
 package com.Elemegi.Elemegi.Model;
 
 public class Comment {
-    private long commentID;
-    private long ProductID;
-    private long UserID;
+
+    private String customerName;
     private String comment;
 
-    public Comment(long commentID, long productID, long userID, String comment) {
-        this.commentID = commentID;
-        ProductID = productID;
-        UserID = userID;
+    public Comment(String customerName, String comment) {
+        this.customerName = customerName;
         this.comment = comment;
     }
 
-    public long getCommentID() {
-        return commentID;
+    public String getCustomerName() {
+        return customerName;
     }
 
-    public void setCommentID(long commentID) {
-        this.commentID = commentID;
+    public void setCustomerName(String customerName) {
+        this.customerName = customerName;
     }
-
-    public long getProductID() {
-        return ProductID;
-    }
-
-    public void setProductID(long productID) {
-        ProductID = productID;
-    }
-
-    public long getUserID() {
-        return UserID;
-    }
-
-    public void setUserID(long userID) {
-        UserID = userID;
-    }
-
 
     public String getComment() {
         return comment;
@@ -45,4 +25,5 @@ public class Comment {
     public void setComment(String comment) {
         this.comment = comment;
     }
+
 }
