@@ -1,6 +1,8 @@
 package com.Elemegi.Elemegi.View;
 
 import android.annotation.SuppressLint;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -12,6 +14,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -55,7 +58,10 @@ public class ProductPagePanel extends ViewManager implements BottomNavigationVie
     private TextView commentsText;
     private TextView prodName;
     private TextView producerName;
-
+    private Button editButton;
+    private Button orderButton;
+    private Button deleteButton;
+    private boolean isProducer;
     private boolean isFaved = false;
     private long productID;
 
@@ -85,6 +91,9 @@ public class ProductPagePanel extends ViewManager implements BottomNavigationVie
         profImage = (ImageView) findViewById(R.id.profImage);
         prodName = (TextView) findViewById(R.id.product_name_flipper);
         producerName = (TextView) findViewById(R.id.producer_name);
+        deleteButton = findViewById(R.id.deleteButtonProduct);
+        editButton = findViewById(R.id.editButtonProduct);
+        orderButton = findViewById(R.id.orderButtonProduct);
         navView2.setSelectedItemId(R.id.navigation_logo);
         navView2.getMenu().getItem(0).setCheckable(false);
         navView2.getMenu().getItem(1).setCheckable(false);
@@ -94,14 +103,52 @@ public class ProductPagePanel extends ViewManager implements BottomNavigationVie
         Intent intent = getIntent();
         productID = intent.getLongExtra("id",0);
         final Product thisProduct = ViewManager.getInstance().getProductInfo(productID);
-
-        boolean checkStar = ViewManager.getInstance().checkFav(thisProduct.getProductID(),ViewManager.getInstance().getCurrentUser().getID());
-        if(checkStar){
-            starImage.setImageResource(R.drawable.star_full);
-
+        String userType = "";
+        if(ViewManager.getInstance().getCurrentUser() != null) {
+            userType = ViewManager.getInstance().getCurrentUser().getRoleType(); // User Typeına göre işlem yap customersa home_oage_page otherwise home_page_page_p
+        }
+        else {
+            userType = "";
+        }
+        if(userType.equals("Customer")){
+            starImage.setVisibility(View.VISIBLE);
+            boolean checkStar = ViewManager.getInstance().checkFav(thisProduct.getProductID(),ViewManager.getInstance().getCurrentUser().getID());
+            if(checkStar){
+                starImage.setImageResource(R.drawable.star_full);
+            }
+            else{
+                starImage.setImageResource(R.drawable.star_empty);
+            }
+            orderButton.setVisibility(View.VISIBLE);
+            deleteButton.setVisibility(View.INVISIBLE);
+            editButton.setVisibility(View.INVISIBLE);
+            ConstraintLayout.LayoutParams editParams = (ConstraintLayout.LayoutParams) editButton.getLayoutParams();
+            editParams.topMargin = 5000;
+            editParams.leftMargin = 5000;
+            editButton.setLayoutParams(editParams);
+            deleteButton.setLayoutParams(editParams);
+            ConstraintLayout.LayoutParams orderParams = (ConstraintLayout.LayoutParams) orderButton.getLayoutParams();
+            orderParams.topMargin = 1383;
+            orderParams.leftMargin = 425;
+            orderButton.setLayoutParams(orderParams);
         }
         else{
-            starImage.setImageResource(R.drawable.star_empty);
+            starImage.setVisibility(View.INVISIBLE);
+            orderButton.setVisibility(View.INVISIBLE);
+            deleteButton.setVisibility(View.VISIBLE);
+            editButton.setVisibility(View.VISIBLE);
+            ConstraintLayout.LayoutParams orderParams = (ConstraintLayout.LayoutParams) orderButton.getLayoutParams();
+            orderParams.topMargin = 5000;
+            orderParams.leftMargin = 5000;
+            orderButton.setLayoutParams(orderParams);
+            ConstraintLayout.LayoutParams editParams = (ConstraintLayout.LayoutParams) editButton.getLayoutParams();
+            editParams.topMargin = 1383;
+            editParams.leftMargin = 300;
+            editButton.setLayoutParams(editParams);
+            ConstraintLayout.LayoutParams deleteParams = (ConstraintLayout.LayoutParams) deleteButton.getLayoutParams();
+            deleteParams.topMargin = 1383;
+            deleteParams.leftMargin = 550;
+            deleteButton.setLayoutParams(deleteParams);
         }
 
         description.setText(thisProduct.getDescription());
@@ -204,22 +251,22 @@ public class ProductPagePanel extends ViewManager implements BottomNavigationVie
                 changeActivity(ViewManager.getInstance().openProfile());
             }
         });
-        starImage.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(isFaved){
-                    isFaved = false;
-                    starImage.setImageResource(R.drawable.star_empty);
-                    ViewManager.getInstance().updateFav(thisProduct.getProductID(),ViewManager.getInstance().getCurrentUser().getID());
+        if(userType.equals("Customer")) {
+            starImage.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (isFaved) {
+                        isFaved = false;
+                        starImage.setImageResource(R.drawable.star_empty);
+                        ViewManager.getInstance().updateFav(thisProduct.getProductID(), ViewManager.getInstance().getCurrentUser().getID());
+                    } else {
+                        isFaved = true;
+                        starImage.setImageResource(R.drawable.star_full);
+                        ViewManager.getInstance().updateFav(thisProduct.getProductID(), ViewManager.getInstance().getCurrentUser().getID());
+                    }
                 }
-                else{
-                    isFaved = true;
-                    starImage.setImageResource(R.drawable.star_full);
-                    ViewManager.getInstance().updateFav(thisProduct.getProductID(),ViewManager.getInstance().getCurrentUser().getID());
-                }
-            }
-        });
-
+            });
+        }
         commentsIcon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -232,6 +279,35 @@ public class ProductPagePanel extends ViewManager implements BottomNavigationVie
                 changeActivity(ViewManager.getInstance().openCommentsPanel(),thisProduct.getComments());
             }
         });
+        deleteButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                final CharSequence[] options = { "Delete Product", "Cancel" };
+                AlertDialog.Builder builder = new AlertDialog.Builder(ProductPagePanel.this);
+                builder.setTitle("Delete Product!");
+
+                builder.setItems(options, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int item) {
+                        if (options[item].equals("Delete Product"))
+                        {
+                            ViewManager.getInstance().deleteProduct(productID);
+                            changeActivity(ViewManager.getInstance().openHomePagePanel());
+                        }
+                        else if (options[item].equals("Cancel")) {
+                            dialog.dismiss();
+                        }
+                    }
+                });
+                builder.show();
+            }
+        });
+        editButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                changeActivity(ViewManager.getInstance().openEditProductPanel(),productID);
+            }
+        });
 
     }
 
@@ -240,6 +316,12 @@ public class ProductPagePanel extends ViewManager implements BottomNavigationVie
     }
 
     public void changeActivity(Class className, List<Comment> comments) {
+        Intent myIntent = new Intent(act, className);
+        myIntent.putExtra("id",productID);
+        startActivity(myIntent);
+    }
+
+    public void changeActivity(Class className, long id) {
         Intent myIntent = new Intent(act, className);
         myIntent.putExtra("id",productID);
         startActivity(myIntent);
@@ -257,6 +339,7 @@ public class ProductPagePanel extends ViewManager implements BottomNavigationVie
     };
     public void flipperImages(Bitmap image){
         ImageView imageView = new ImageView(this);
+        imageView.setImageBitmap(Bitmap.createScaledBitmap(image,600,580,true));
         imageView.setImageBitmap(Bitmap.createScaledBitmap(image,600,580,true));
         v_flipper.addView(imageView);
     }
@@ -304,7 +387,7 @@ public class ProductPagePanel extends ViewManager implements BottomNavigationVie
     private Bitmap[] convertToBitmap(List<String> images) {
         Bitmap[] newBitmap = new Bitmap[images.size()];
         for (int i = 0; i < images.size(); i++) {
-            byte[] decodedString = Base64.decode(images.get(i),Base64.DEFAULT);
+            byte[] decodedString = Base64.decode(images.get(i),Base64.NO_WRAP);
             Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
             newBitmap[i] = decodedByte;
         }

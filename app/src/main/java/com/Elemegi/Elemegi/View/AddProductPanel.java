@@ -60,7 +60,7 @@ public class AddProductPanel extends ViewManager implements NavigationView.OnNav
     private AnimationDrawable anim;
 
     private String nameString;
-    private String[] images;
+    private String[] images = new String[3];
     private String descriptionString;
     private String deliveryTimeString;
     private String priceString;
@@ -290,7 +290,7 @@ public class AddProductPanel extends ViewManager implements NavigationView.OnNav
                     if(!check1){
                         check1 = true;
                         imageCount++;
-                        images[1] = bitmapToBase64(capturedImage);
+                        images[0] = bitmapToBase64(capturedImage);
                     }
                 }
                 else if(requestCode / 10 == 2){
@@ -302,7 +302,7 @@ public class AddProductPanel extends ViewManager implements NavigationView.OnNav
                     if(!check2){
                         check2 = true;
                         imageCount++;
-                        images[2] = bitmapToBase64(capturedImage);
+                        images[1] = bitmapToBase64(capturedImage);
                     }
                 }
                 else{
@@ -314,7 +314,7 @@ public class AddProductPanel extends ViewManager implements NavigationView.OnNav
                     if(!check3){
                         check3 = true;
                         imageCount++;
-                        images[3] = bitmapToBase64(capturedImage);
+                        images[2] = bitmapToBase64(capturedImage);
                     }
                 }
             }
@@ -331,7 +331,7 @@ public class AddProductPanel extends ViewManager implements NavigationView.OnNav
                         check1 = true;
                         imageCount++;
                         Bitmap tempBitmap = URIToBitmap(selectedImage);
-                        images[1] = bitmapToBase64(tempBitmap);
+                        images[0] = bitmapToBase64(tempBitmap);
                     }
                 }
                 else if(requestCode / 10 == 2){
@@ -344,7 +344,7 @@ public class AddProductPanel extends ViewManager implements NavigationView.OnNav
                         check2 = true;
                         imageCount++;
                         Bitmap tempBitmap = URIToBitmap(selectedImage);
-                        images[2] = bitmapToBase64(tempBitmap);
+                        images[1] = bitmapToBase64(tempBitmap);
                     }
                 }
                 else{
@@ -357,7 +357,7 @@ public class AddProductPanel extends ViewManager implements NavigationView.OnNav
                         check3 = true;
                         imageCount++;
                         Bitmap tempBitmap = URIToBitmap(selectedImage);
-                        images[3] = bitmapToBase64(tempBitmap);
+                        images[2] = bitmapToBase64(tempBitmap);
                     }
                 }
             }

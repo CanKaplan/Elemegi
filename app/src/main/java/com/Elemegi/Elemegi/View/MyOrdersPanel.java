@@ -1,5 +1,6 @@
 package com.Elemegi.Elemegi.View;
 
+import android.app.Dialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -9,8 +10,10 @@ import android.os.Bundle;
 import android.util.Base64;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RatingBar;
 import android.widget.TableRow;
 import android.widget.TextView;
 
@@ -34,15 +37,21 @@ public class MyOrdersPanel extends ViewManager implements BottomNavigationView.O
     NavigationView navigationView;
     private ConstraintLayout layout;
     private AnimationDrawable anim;
+    private ImageView rateButton;
+    private Dialog rankDialog;
+    private RatingBar ratingBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        /*
         layout=findViewById(R.id.layout);
         anim=(AnimationDrawable)layout.getBackground();
         anim.setEnterFadeDuration(10);
         anim.setExitFadeDuration(1000);
         anim.start();
+
+         */
         setContentView(R.layout.my_orders_page_page);
         navView2 = findViewById(R.id.nav_view_bottom);
         LinearLayout myOrderList;
@@ -95,6 +104,14 @@ public class MyOrdersPanel extends ViewManager implements BottomNavigationView.O
             prodPrice.setTextAlignment(View.TEXT_ALIGNMENT_TEXT_START);
             layoutToAdd.addView(prodPrice);
 
+            ImageView prodRate = new ImageView(act); //Product rate button
+            prodRate.setId(R.id.rateButton);
+            prodRate.setImageResource(R.drawable.comment);
+            TableRow.LayoutParams imageProdParam = new TableRow.LayoutParams(120,120);
+            imageProdParam.setMargins(10,10,0,10);
+            prodRate.setLayoutParams(imageProdParam);
+            layoutToAdd.addView(prodRate);
+
             TextView prodRemainingTime = new TextView(act); //Product Remaining Time
             prodRemainingTime.setText(myOrders[i].getRemainingTime());
             TableRow.LayoutParams paramRemainingTime = new TableRow.LayoutParams(TableRow.LayoutParams.WRAP_CONTENT, TableRow.LayoutParams.WRAP_CONTENT,1f);
@@ -104,8 +121,39 @@ public class MyOrdersPanel extends ViewManager implements BottomNavigationView.O
             prodRemainingTime.setTextAlignment(View.TEXT_ALIGNMENT_TEXT_START);
             layoutToAdd.addView(prodRemainingTime);
 
+            if(myOrders[i].getRemainingTime() > 0)
+                prodRate.setVisibility(View.INVISIBLE);
+            else
+                prodRate.setVisibility(View.VISIBLE);
+
             myOrderList.addView(layoutToAdd);
         }
+
+        rateButton = (ImageView) findViewById(R.id.rateButton);
+
+        rateButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                rankDialog = new Dialog(MyOrdersPanel.this, R.style.FullHeightDialog);
+                rankDialog.setContentView(R.layout.rank_dialog);
+                rankDialog.setCancelable(true);
+                ratingBar = (RatingBar)rankDialog.findViewById(R.id.dialog_ratingbar);
+                ratingBar.setRating(5);
+
+                TextView text = (TextView) rankDialog.findViewById(R.id.rank_dialog_text1);
+                text.setText("Selam");
+
+                Button updateButton = (Button) rankDialog.findViewById(R.id.rank_dialog_button);
+                updateButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        rankDialog.dismiss();
+                    }
+                });
+                //now that the dialog is set up, it's time to show it
+                rankDialog.show();
+            }
+        });
 
 
         Toolbar toolbar = findViewById(R.id.toolbar);
