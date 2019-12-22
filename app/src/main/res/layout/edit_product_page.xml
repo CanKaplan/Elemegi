@@ -31,7 +31,7 @@
     <LinearLayout
         android:id="@+id/liner1"
         android:layout_width="match_parent"
-        android:layout_height="120dp"
+        android:layout_height="180dp"
         android:orientation="horizontal"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toTopOf="parent"
@@ -39,46 +39,19 @@
         >
 
         <FrameLayout
-            android:id="@+id/newFrame1"
-            android:layout_marginStart="32dp"
-            android:layout_width="80dp"
-            android:layout_height="80dp"
-            android:clickable="true"
-            android:background="@drawable/ovalrectangle">
-            <ImageView
-                android:id="@+id/newImage1"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                android:src="@drawable/add_image"
-                android:layout_gravity="center"/>
-        </FrameLayout>
-        <FrameLayout
             android:id="@+id/newFrame2"
             android:clickable="true"
-            android:layout_width="80dp"
-            android:layout_height="80dp"
-            android:layout_marginStart="32dp"
+            android:layout_width="180dp"
+            android:layout_height="150dp"
+            android:layout_marginStart="100dp"
             android:background="@drawable/ovalrectangle">
             <ImageView
                 android:id="@+id/newImage2"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
+                android:layout_width="180dp"
+                android:layout_height="150dp"
                 android:src="@drawable/add_image"
-                android:layout_gravity="center"/>
-        </FrameLayout>
-        <FrameLayout
-            android:id="@+id/newFrame3"
-            android:clickable="true"
-            android:layout_width="80dp"
-            android:layout_height="80dp"
-            android:layout_marginStart="32dp"
-            android:background="@drawable/ovalrectangle">
-            <ImageView
-                android:id="@+id/newImage3"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                android:src="@drawable/add_image"
-                android:layout_gravity="center"/>
+                android:layout_gravity="center"
+               />
         </FrameLayout>
 
     </LinearLayout>

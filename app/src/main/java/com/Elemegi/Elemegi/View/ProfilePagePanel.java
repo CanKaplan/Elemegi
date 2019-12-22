@@ -5,7 +5,6 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.util.Base64;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
@@ -16,9 +15,11 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.drawerlayout.widget.DrawerLayout;
 
 import com.Elemegi.Elemegi.Controller.ViewManager;
+import com.Elemegi.Elemegi.Model.User;
 import com.Elemegi.Elemegi.R;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
@@ -33,6 +34,9 @@ public class ProfilePagePanel extends ViewManager implements NavigationView.OnNa
     TextView profilePhone;
     TextView profileAddress;
     ImageView profileImage;
+    private User currentProfileUser;
+    private long producerID = 0L;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -47,15 +51,33 @@ public class ProfilePagePanel extends ViewManager implements NavigationView.OnNa
         profilePhone = (TextView) findViewById(R.id.profilePhone);
         profileImage = (ImageView) findViewById(R.id.profileImage);
 
-        profileName.setText(ViewManager.getInstance().getCurrentUser().getName());
-        profileEmail.setText(ViewManager.getInstance().getCurrentUser().getEmail());
-        profilePhone.setText(ViewManager.getInstance().getCurrentUser().getPhoneNumber());
-        profileAddress.setText(ViewManager.getInstance().getCurrentUser().getAddress());
-//        profileImage.setImageBitmap(convertToBitmap(ViewManager.getInstance().getCurrentUser().getImage()));
+        Intent intent = getIntent();
+        if(producerID != 0L){
+            producerID = intent.getLongExtra("id",0);
+            currentProfileUser = ViewManager.getInstance().getUserProfile(producerID);
+        }
+        else
+        {
+            currentProfileUser = ViewManager.getInstance().getCurrentUser();
+        }
+
+        Long currentUserID = ViewManager.getInstance().getCurrentUser().getID();
+        profileName.setText(currentProfileUser.getName());
+        profileEmail.setText(currentProfileUser.getEmail());
+        profilePhone.setText(currentProfileUser.getPhoneNumber());
+        profileAddress.setText(currentProfileUser.getAddress());
+        profileImage.setImageBitmap(convertToBitmap(currentProfileUser.getImage()));
 
         myApp.setCurrentActivity(this);
         act = myApp.getCurrentActivity();
 
+        if(currentUserID != currentProfileUser.getID()){
+            editButton.setVisibility(View.INVISIBLE);
+            ConstraintLayout.LayoutParams editParams = (ConstraintLayout.LayoutParams) editButton.getLayoutParams();
+            editParams.topMargin = 5000;
+            editParams.leftMargin = 5000;
+            editButton.setLayoutParams(editParams);
+        }
         editButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -95,28 +117,30 @@ public class ProfilePagePanel extends ViewManager implements NavigationView.OnNa
             case R.id.navigation_profile:
                 break;
             case R.id.navigation_logo:
-                Log.d("aaa","nbr");
                 break;
             case R.id.navigation_search:
                 //changeActivity(ViewManager.getInstance().openSearchPanel());
+                break;
+            case R.id.navigation_add:
+                changeActivity(ViewManager.getInstance().openAddProductPanel());
                 break;
             case R.id.navigation_settings:
                 //changeActivity(ViewManager.getInstance().openSettingsPanel());
                 break;
             case R.id.nav_categories:
                 //changeActivity(ViewManager.getInstance().openSettingsPanel());
-                changeActivity(ViewManager.getInstance().openLoginPanel1());
                 break;
             case R.id.nav_favourites:
                 //changeActivity(ViewManager.getInstance().openSettingsPanel());
-                changeActivity(ViewManager.getInstance().openLoginPanel1());
                 break;
             case R.id.nav_my_orders:
-                //changeActivity(ViewManager.getInstance().openSettingsPanel());
                 changeActivity(ViewManager.getInstance().openMyOrdersPanel());
                 break;
             case R.id.nav_help:
                 //changeActivity(ViewManager.getInstance().openSettingsPanel());
+                break;
+            case R.id.nav_orders:
+                changeActivity(ViewManager.getInstance().openMyOrdersPanel());
                 break;
             case R.id.nav_logout:
                 changeActivity(ViewManager.getInstance().openLoginPanel1());

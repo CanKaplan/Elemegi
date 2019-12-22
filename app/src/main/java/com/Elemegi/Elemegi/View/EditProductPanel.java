@@ -30,7 +30,6 @@ import com.google.android.material.navigation.NavigationView;
 import java.io.ByteArrayOutputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
-import java.util.ArrayList;
 import java.util.List;
 
 public class EditProductPanel extends ViewManager implements NavigationView.OnNavigationItemSelectedListener, BottomNavigationView.OnNavigationItemSelectedListener {
@@ -43,9 +42,7 @@ public class EditProductPanel extends ViewManager implements NavigationView.OnNa
     private AppCompatActivity act;
     private BottomNavigationView navView2;
     private NavigationView navigationView;
-    private ImageView image1;
     private ImageView image2;
-    private ImageView image3;
     private EditText newName;
     private EditText newDescription;
     private EditText newDeliveryTime;
@@ -54,8 +51,8 @@ public class EditProductPanel extends ViewManager implements NavigationView.OnNa
     private ConstraintLayout layout;
     private AnimationDrawable anim;
 
+    private String imageString;
     private String nameString;
-    private List<String> images = new ArrayList<>();
     private String descriptionString;
     private String deliveryTimeString;
     private String priceString;
@@ -75,9 +72,7 @@ public class EditProductPanel extends ViewManager implements NavigationView.OnNa
 
         myApp.setCurrentActivity(this);
         act = myApp.getCurrentActivity();
-        image1 = (ImageView) findViewById(R.id.newImage1);
         image2 = (ImageView) findViewById(R.id.newImage2);
-        image3 = (ImageView) findViewById(R.id.newImage3);
 
         saveButton = (FrameLayout) findViewById(R.id.saveButton);
         newName = (EditText) findViewById(R.id.editProdName);
@@ -89,45 +84,21 @@ public class EditProductPanel extends ViewManager implements NavigationView.OnNa
         productID = intent.getLongExtra("id",0);
 
         Product currentProduct = ViewManager.getInstance().getProductInfo(productID);
-        Bitmap[] tempProductImages = convertToBitmap(currentProduct.getImage());
+        imageString = currentProduct.getImage();
+        Bitmap tempProductImages = convertToBitmap(imageString);
 
-        image1.setImageBitmap(tempProductImages[0]);
-
-        if(tempProductImages.length > 1){
-            image2.setImageBitmap(tempProductImages[1]);
-        }
-        if(tempProductImages.length > 2){
-            image3.setImageBitmap(tempProductImages[2]);
-        }
+        image2.setImageBitmap(tempProductImages);
 
         newName.setHint(currentProduct.getName());
         newDescription.setHint(currentProduct.getDescription());
         newDeliveryTime.setHint(String.valueOf(currentProduct.getDeliverTime()));
         newPrice.setHint(String.valueOf(currentProduct.getPrice()));
-        for (int i = 0; i < tempProductImages.length; i++) {
-            images.add(i,bitmapToBase64(tempProductImages[i]));
-        }
-        image1.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                selectImage(1);
-            }
-        });
-
         image2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                selectImage(2);
+                selectImage();
             }
         });
-
-        image3.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                selectImage(3);
-            }
-        });
-
         saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -152,11 +123,8 @@ public class EditProductPanel extends ViewManager implements NavigationView.OnNa
                     newPrice.setText(newPrice.getHint().toString());
                     priceString = newPrice.getText().toString();
                 }
-
-                if(imageCount > 0){
-                    ViewManager.getInstance().updateProduct(productID,nameString,descriptionString,Double.parseDouble(priceString),Integer.parseInt(deliveryTimeString),images);
-                    changeActivity(ViewManager.getInstance().openProductPagePanel(),productID);
-                }
+                ViewManager.getInstance().updateProduct(productID,nameString,descriptionString,Double.parseDouble(priceString),Integer.parseInt(deliveryTimeString),imageString);
+                changeActivity(ViewManager.getInstance().openProductPagePanel(),productID);
 
 
             }
@@ -174,17 +142,14 @@ public class EditProductPanel extends ViewManager implements NavigationView.OnNa
         startActivity(myIntent);
     }
 
-    private Bitmap[] convertToBitmap(List<String> images) {
-        Bitmap[] newBitmap = new Bitmap[images.size()];
-        for (int i = 0; i < images.size(); i++) {
-            byte[] decodedString = Base64.decode(images.get(i),Base64.NO_WRAP);
-            Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
-            newBitmap[i] = decodedByte;
-        }
+    private Bitmap convertToBitmap(String images) {
+        Bitmap newBitmap = null;
+        byte[] decodedString = Base64.decode(images,Base64.NO_WRAP);
+        newBitmap = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
         return newBitmap;
     }
 
-    private void selectImage(final int i) {
+    private void selectImage() {
         final CharSequence[] options = { "Take Photo", "Choose from Gallery","Cancel" };
         AlertDialog.Builder builder = new AlertDialog.Builder(EditProductPanel.this);
         builder.setTitle("Add Photo!");
@@ -195,12 +160,12 @@ public class EditProductPanel extends ViewManager implements NavigationView.OnNa
                 if (options[item].equals("Take Photo"))
                 {
                     Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
-                    startActivityForResult(cameraIntent, 1 + (10 * i));
+                    startActivityForResult(cameraIntent, 1 );
                 }
                 else if (options[item].equals("Choose from Gallery"))
                 {
                     Intent intent = new   Intent(Intent.ACTION_PICK,android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-                    startActivityForResult(intent, 2 + (10 * i));
+                    startActivityForResult(intent, 0);
                 }
                 else if (options[item].equals("Cancel")) {
                     dialog.dismiss();
@@ -215,84 +180,28 @@ public class EditProductPanel extends ViewManager implements NavigationView.OnNa
         super.onActivityResult(requestCode, resultCode, data);
 
         if(resultCode == RESULT_OK){
-            if(requestCode % 10 ==  1){
+            if(requestCode ==  1){
                 Bitmap capturedImage = (Bitmap) data.getExtras().get("data");
-                if(requestCode / 10 == 1){
-                    image1.setVisibility(View.INVISIBLE);
-                    image1.setImageBitmap(capturedImage);
-                    image1.setVisibility(View.VISIBLE);
-                    image1.getLayoutParams().width = 330;
-                    image1.getLayoutParams().height = 320;
-                    if(!check1){
-                        check1 = true;
-                        images.add(0,bitmapToBase64(capturedImage));
-                    }
-                }
-                else if(requestCode / 10 == 2){
-                    image2.setVisibility(View.INVISIBLE);
-                    image2.setImageBitmap(capturedImage);
-                    image2.setVisibility(View.VISIBLE);
-                    image2.getLayoutParams().width = 330;
-                    image2.getLayoutParams().height = 320;
-                    if(!check2){
-                        check2 = true;
-                        imageCount++;
-                        images.add(1,bitmapToBase64(capturedImage));
-                    }
-                }
-                else{
-                    image3.setVisibility(View.INVISIBLE);
-                    image3.setImageBitmap(capturedImage);
-                    image3.setVisibility(View.VISIBLE);
-                    image3.getLayoutParams().width = 330;
-                    image3.getLayoutParams().height = 320;
-                    if(!check3){
-                        check3 = true;
-                        imageCount++;
-                        images.add(2,bitmapToBase64(capturedImage));
-                    }
+                Bitmap scaledBitmap = Bitmap.createScaledBitmap(capturedImage,200,200,true);
+                image2.setVisibility(View.INVISIBLE);
+                image2.setImageBitmap(scaledBitmap);
+                image2.setVisibility(View.VISIBLE);
+                if(!check1){
+                    check1 = true;
+                    imageString = bitmapToBase64(scaledBitmap);
                 }
             }
             else{
                 Uri selectedImage = data.getData();
+                Bitmap tempBitmap = URIToBitmap(selectedImage);
+                Bitmap scaledBitmap = Bitmap.createScaledBitmap(tempBitmap,200,200,true);
+                image2.setVisibility(View.INVISIBLE);
+                image2.setImageBitmap(scaledBitmap);
+                image2.setVisibility(View.VISIBLE);
+                if(!check1){
+                    check1 = true;
 
-                if(requestCode / 10 == 1){
-                    image1.setVisibility(View.INVISIBLE);
-                    image1.setImageURI(selectedImage);
-                    image1.setVisibility(View.VISIBLE);
-                    image1.getLayoutParams().width = 330;
-                    image1.getLayoutParams().height = 320;
-                    if(!check1){
-                        check1 = true;
-                        Bitmap tempBitmap = URIToBitmap(selectedImage);
-                        images.add(0, bitmapToBase64(tempBitmap));
-                    }
-                }
-                else if(requestCode / 10 == 2){
-                    image2.setVisibility(View.INVISIBLE);
-                    image2.setImageURI(selectedImage);
-                    image2.setVisibility(View.VISIBLE);
-                    image2.getLayoutParams().width = 330;
-                    image2.getLayoutParams().height = 320;
-                    if(!check2){
-                        check2 = true;
-                        imageCount++;
-                        Bitmap tempBitmap = URIToBitmap(selectedImage);
-                        images.add(1,bitmapToBase64(tempBitmap));
-                    }
-                }
-                else{
-                    image3.setVisibility(View.INVISIBLE);
-                    image3.setImageURI(selectedImage);
-                    image3.setVisibility(View.VISIBLE);
-                    image3.getLayoutParams().width = 330;
-                    image3.getLayoutParams().height = 320;
-                    if(!check3){
-                        check3 = true;
-                        imageCount++;
-                        Bitmap tempBitmap = URIToBitmap(selectedImage);
-                        images.add(2, bitmapToBase64(tempBitmap));
-                    }
+                    imageString = bitmapToBase64(scaledBitmap);
                 }
             }
         }
@@ -300,7 +209,7 @@ public class EditProductPanel extends ViewManager implements NavigationView.OnNa
 
     public String bitmapToBase64(Bitmap image){
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-        image.compress(Bitmap.CompressFormat.PNG, 30, byteArrayOutputStream);
+        image.compress(Bitmap.CompressFormat.JPEG, 20, byteArrayOutputStream);
         byte[] byteArray = byteArrayOutputStream.toByteArray();
 
         return Base64.encodeToString(byteArray, Base64.NO_WRAP);
@@ -313,13 +222,13 @@ public class EditProductPanel extends ViewManager implements NavigationView.OnNa
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
-        Bitmap selectedImage = BitmapFactory.decodeStream(imageStream);
-        return selectedImage;
+        return BitmapFactory.decodeStream(imageStream);
     }
 
     public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
         switch(menuItem.getItemId()) {
             case R.id.navigation_home:
+                changeActivity(ViewManager.getInstance().openHomePagePanel());
                 break;
             case R.id.navigation_profile:
                 changeActivity(ViewManager.getInstance().openProfile());
@@ -329,23 +238,26 @@ public class EditProductPanel extends ViewManager implements NavigationView.OnNa
             case R.id.navigation_search:
                 //changeActivity(ViewManager.getInstance().openSearchPanel());
                 break;
+            case R.id.navigation_add:
+                changeActivity(ViewManager.getInstance().openAddProductPanel());
+                break;
             case R.id.navigation_settings:
                 //changeActivity(ViewManager.getInstance().openSettingsPanel());
                 break;
             case R.id.nav_categories:
                 //changeActivity(ViewManager.getInstance().openSettingsPanel());
-                changeActivity(ViewManager.getInstance().openLoginPanel1());
                 break;
             case R.id.nav_favourites:
                 //changeActivity(ViewManager.getInstance().openSettingsPanel());
-                changeActivity(ViewManager.getInstance().openLoginPanel1());
                 break;
             case R.id.nav_my_orders:
-                //changeActivity(ViewManager.getInstance().openSettingsPanel());
                 changeActivity(ViewManager.getInstance().openMyOrdersPanel());
                 break;
             case R.id.nav_help:
                 //changeActivity(ViewManager.getInstance().openSettingsPanel());
+                break;
+            case R.id.nav_orders:
+                changeActivity(ViewManager.getInstance().openMyOrdersPanel());
                 break;
             case R.id.nav_logout:
                 changeActivity(ViewManager.getInstance().openLoginPanel1());

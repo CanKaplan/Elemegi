@@ -11,52 +11,24 @@
     <LinearLayout
         android:id="@+id/liner1"
         android:layout_width="match_parent"
-        android:layout_height="120dp"
+        android:layout_height="160dp"
         android:orientation="horizontal"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        android:layout_marginTop="70dp"
+        android:layout_marginTop="60dp"
         >
 
         <FrameLayout
-            android:id="@+id/newFrame1"
-            android:layout_marginStart="32dp"
-            android:layout_width="80dp"
-            android:layout_height="80dp"
-            android:clickable="true"
-            android:background="@drawable/ovalrectangle">
-            <ImageView
-                android:id="@+id/newImage1"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                android:src="@drawable/add_image"
-                android:layout_gravity="center"/>
-        </FrameLayout>
-        <FrameLayout
             android:id="@+id/newFrame2"
             android:clickable="true"
-            android:layout_width="80dp"
-            android:layout_height="80dp"
-            android:layout_marginStart="32dp"
+            android:layout_width="160dp"
+            android:layout_height="130dp"
+            android:layout_marginStart="100dp"
             android:background="@drawable/ovalrectangle">
             <ImageView
                 android:id="@+id/newImage2"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                android:src="@drawable/add_image"
-                android:layout_gravity="center"/>
-        </FrameLayout>
-        <FrameLayout
-            android:id="@+id/newFrame3"
-            android:clickable="true"
-            android:layout_width="80dp"
-            android:layout_height="80dp"
-            android:layout_marginStart="32dp"
-            android:background="@drawable/ovalrectangle">
-            <ImageView
-                android:id="@+id/newImage3"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
+                android:layout_width="160dp"
+                android:layout_height="130dp"
                 android:src="@drawable/add_image"
                 android:layout_gravity="center"/>
         </FrameLayout>
@@ -69,8 +41,9 @@
         android:layout_height="wrap_content"
         android:text="Name:"
         android:textColor="#FFFFFF"
+        android:layout_marginTop="190dp"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/liner1"
+        app:layout_constraintTop_toTopOf="parent"
         android:layout_marginStart="27dp"/>
     <FrameLayout
         android:id="@+id/nameFrame"

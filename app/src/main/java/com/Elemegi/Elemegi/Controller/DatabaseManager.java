@@ -230,20 +230,10 @@ public class DatabaseManager extends Activity {
 
     }
 
-    public String addProductPage(long id, String[] images, String nameString, String descriptionString, String deliveryTimeString, String priceString, List<String> labels) {
+    public String addProductPage(long id, String nameString, String descriptionString, String deliveryTimeString, String priceString, List<String> labels) {
         BackgroundTask backgroundTask = new BackgroundTask();
-        String[] tempImage = new String[3];
-        for(int i = 0; i < 3; i++){
-            if(images[i] != ""){
-                tempImage[i] = images[i];
-            }
-            else{
-                tempImage[i] = "";
-            }
-        }
-        String data_string = "u_ID=" + id + "&p_name" + nameString + "&description" + descriptionString + "&price" + priceString + "&deliveryTime" + deliveryTimeString
-                + "&image" + tempImage[0] + "," + tempImage[1] + "," + tempImage[2] + "&label" + labels.get(0) + "," + labels.get(1) + ","
-                + labels.get(2) + "," + labels.get(3) + "," + labels.get(4);
+        String data_string = "u_ID=" + id + "&p_name=" + nameString + "&description=" + descriptionString + "&price=" + priceString + "&deliveryTime="
+                + deliveryTimeString + "&label=" + "";
         backgroundTask.setTaskContent("addproduct.php",data_string);
         String result = "";
         try {
@@ -395,6 +385,22 @@ public class DatabaseManager extends Activity {
             e.printStackTrace();
         }
         Log.d("XXXXXXXXXXX",result);
+    }
+
+    public String getProducerInfo(long producerID) {
+        BackgroundTask backgroundTask = new BackgroundTask();
+        String data_string = "&u_ID=" + producerID;
+        backgroundTask.setTaskContent("currentUser.php",data_string);
+        String result = "";
+        try {
+            result = backgroundTask.execute().get();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        Log.d("XXXXXXXXXXX",result);
+        return result;
     }
 
     class BackgroundTask extends AsyncTask<Void,Void,String> {

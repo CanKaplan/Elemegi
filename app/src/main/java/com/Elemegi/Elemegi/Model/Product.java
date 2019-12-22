@@ -7,14 +7,15 @@ public class Product {
     private long productID;
     private String producerName;
     private List<String> labels;
-    private List<String> image;
+    private String image;
     private String description;
     private double overallRating;
     private double price;
     private int deliverTime;
     private List<Comment> comments;
+    private long producerID;
 
-    public Product(String name, long productID, String producerName, List<String> labels, List<String> image, String description, double overallRating, double price, int deliverTime, List<Comment> comments) {
+    public Product(String name, long productID, String producerName, List<String> labels, String image, String description, double overallRating, double price, int deliverTime, List<Comment> comments,Long producerID) {
         this.name = name;
         this.productID = productID;
         this.producerName = producerName;
@@ -25,6 +26,7 @@ public class Product {
         this.overallRating = overallRating;
         this.comments = comments;
         this.deliverTime = deliverTime;
+        this.producerID = producerID;
     }
 
     public String getName() {
@@ -51,11 +53,11 @@ public class Product {
         this.labels = labels;
     }
 
-    public List<String> getImage() {
+    public String getImage() {
         return image;
     }
 
-    public void setImage(List<String> image) {
+    public void setImage(String image) {
         this.image = image;
     }
 
@@ -97,5 +99,9 @@ public class Product {
 
     public void setComments(List<Comment> comments) {
         this.comments = comments;
+    }
+
+    public long getProducerId() {
+        return producerID;
     }
 }
