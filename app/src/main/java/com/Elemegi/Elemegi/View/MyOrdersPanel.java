@@ -221,7 +221,6 @@ public class MyOrdersPanel extends ViewManager implements BottomNavigationView.O
                 //changeActivity(ViewManager.getInstance().openSettingsPanel());
                 break;
             case R.id.nav_orders:
-                //changeActivity(ViewManager.getInstance().openSettingsPanel());
                 break;
             case R.id.nav_logout:
                 changeActivity(ViewManager.getInstance().openLoginPanel1());

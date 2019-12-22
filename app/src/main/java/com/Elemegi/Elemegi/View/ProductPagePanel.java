@@ -10,10 +10,7 @@ import android.graphics.drawable.AnimationDrawable;
 import android.os.Bundle;
 import android.util.Base64;
 import android.view.MenuItem;
-import android.view.MotionEvent;
 import android.view.View;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -25,7 +22,6 @@ import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.constraintlayout.widget.ConstraintLayout;
-import androidx.core.content.ContextCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
 import com.Elemegi.Elemegi.Controller.ViewManager;
@@ -45,9 +41,6 @@ public class ProductPagePanel extends ViewManager implements BottomNavigationVie
     LinearLayout sliderDotspanel;
     private ConstraintLayout layout;
     private AnimationDrawable anim;
-    private int dotscount;
-    private ImageView[] dots;
-    private float startX;
     private ImageView starImage;
     private ImageView commentsIcon;
     private ImageView profImage;
@@ -61,9 +54,9 @@ public class ProductPagePanel extends ViewManager implements BottomNavigationVie
     private Button editButton;
     private Button orderButton;
     private Button deleteButton;
-    private boolean isProducer;
     private boolean isFaved = false;
     private long productID;
+    private ImageView productImage;
 
 
     @SuppressLint({"ClickableViewAccessibility", "SetTextI18n"})
@@ -78,6 +71,7 @@ public class ProductPagePanel extends ViewManager implements BottomNavigationVie
         anim.start();*/
 
         setContentView(R.layout.product_page_page);
+        navigationView = (NavigationView) findViewById(R.id.nav_view);
         navView2 = findViewById(R.id.nav_view_bottom);
         v_flipper = findViewById(R.id.v_flipper);
         sliderDotspanel = (LinearLayout) findViewById(R.id.SliderDots);
@@ -95,6 +89,7 @@ public class ProductPagePanel extends ViewManager implements BottomNavigationVie
         editButton = findViewById(R.id.editButtonProduct);
         orderButton = findViewById(R.id.orderButtonProduct);
         navView2.setSelectedItemId(R.id.navigation_logo);
+        productImage = (ImageView) findViewById(R.id.productImageID);
         navView2.getMenu().getItem(0).setCheckable(false);
         navView2.getMenu().getItem(1).setCheckable(false);
         navView2.getMenu().getItem(3).setCheckable(false);
@@ -133,6 +128,10 @@ public class ProductPagePanel extends ViewManager implements BottomNavigationVie
             orderButton.setLayoutParams(orderParams);
         }
         else{
+            navigationView.getMenu().clear();
+            navigationView.inflateMenu(R.menu.navigation_menu_p);
+            navView2.getMenu().clear();
+            navView2.inflateMenu(R.menu.navigation_menu_bottom_p);
             starImage.setVisibility(View.INVISIBLE);
             orderButton.setVisibility(View.INVISIBLE);
             deleteButton.setVisibility(View.VISIBLE);
@@ -157,80 +156,14 @@ public class ProductPagePanel extends ViewManager implements BottomNavigationVie
         rate.setText(Double.toString(thisProduct.getOverallRating()));
         prodName.setText(thisProduct.getName());
         producerName.setText(thisProduct.getProducerName());
-        Bitmap[] tempProductImages = convertToBitmap(thisProduct.getImage());
-        dots = new ImageView[tempProductImages.length];
-        for(int i = 0; i < tempProductImages.length; i++){
-
-            dots[i] = new ImageView(this);
-            dots[i].setImageDrawable(ContextCompat.getDrawable(getApplicationContext(), R.drawable.non_active_dot));
-
-            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-
-            params.setMargins(8, 0, 8, 0);
-
-            sliderDotspanel.addView(dots[i], params);
-
-        }
-
-        for (int i = 0; i < tempProductImages.length; i++){
-            flipperImages(tempProductImages[i]);
-        }
-        for(int i = 0; i< dotscount; i++){
-            dots[i].setImageDrawable(ContextCompat.getDrawable(getApplicationContext(), R.drawable.non_active_dot));
-        }
-
-        dots[v_flipper.getDisplayedChild()].setImageDrawable(ContextCompat.getDrawable(getApplicationContext(), R.drawable.active_dot));
+        Bitmap tempProductImages = convertToBitmap(thisProduct.getImage());
+        Bitmap scaledBitmap = Bitmap.createScaledBitmap(tempProductImages,600,600,true);
+        productImage.setImageBitmap(scaledBitmap);
 
         myApp.setCurrentActivity(this);
         act = myApp.getCurrentActivity();
 
-        v_flipper.addOnLayoutChangeListener(onLayoutChangeListener_viewFlipper);
 
-
-        v_flipper.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View view, MotionEvent event) {
-                Animation imgAnimationIn = AnimationUtils.
-                        loadAnimation(act, android.R.anim.slide_in_left);
-                imgAnimationIn.setDuration(700);
-                v_flipper.setInAnimation(imgAnimationIn);
-
-                Animation imgAnimationOut = AnimationUtils.
-                        loadAnimation(act, android.R.anim.slide_out_right);
-                imgAnimationOut.setDuration(700);
-                int action = event.getActionMasked();
-
-                switch (action) {
-                    case MotionEvent.ACTION_DOWN:
-                        startX = event.getX();
-                        break;
-                    case MotionEvent.ACTION_UP:
-                        float endX = event.getX();
-
-                        float endY = event.getY();
-
-                        //swipe right
-                        if (startX < endX && Math.abs(startX-endX) >= 10) {
-                            v_flipper.setOutAnimation(imgAnimationOut);
-                            v_flipper.showNext();
-                        }
-
-                        //swipe left
-                        if (startX > endX && Math.abs(startX-endX) >= 10) {
-                            v_flipper.setInAnimation(imgAnimationIn);
-                            v_flipper.showPrevious();
-                        }
-                        for(int i = 0; i< dotscount; i++){
-                            dots[i].setImageDrawable(ContextCompat.getDrawable(getApplicationContext(), R.drawable.non_active_dot));
-                        }
-
-                        dots[v_flipper.getDisplayedChild()].setImageDrawable(ContextCompat.getDrawable(getApplicationContext(), R.drawable.active_dot));
-                        break;
-                }
-
-                return true;
-            }
-        });
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -242,13 +175,12 @@ public class ProductPagePanel extends ViewManager implements BottomNavigationVie
         drawer.addDrawerListener(toggle);
         toggle.setDrawerIndicatorEnabled(true);
         toggle.syncState();
-        navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
         navView2.setOnNavigationItemSelectedListener(this);
         profImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                changeActivity(ViewManager.getInstance().openProfile());
+                changeActivity(ViewManager.getInstance().openProfile(),thisProduct.getProducerId());
             }
         });
         if(userType.equals("Customer")) {
@@ -323,25 +255,8 @@ public class ProductPagePanel extends ViewManager implements BottomNavigationVie
 
     public void changeActivity(Class className, long id) {
         Intent myIntent = new Intent(act, className);
-        myIntent.putExtra("id",productID);
+        myIntent.putExtra("id",id);
         startActivity(myIntent);
-    }
-
-    View.OnLayoutChangeListener onLayoutChangeListener_viewFlipper = new View.OnLayoutChangeListener() {
-        @Override
-        public void onLayoutChange(View v, int left, int top, int right, int bottom, int oldLeft, int oldTop, int oldRight, int oldBottom) {
-            for(int i = 0; i< dotscount; i++){
-                dots[i].setImageDrawable(ContextCompat.getDrawable(getApplicationContext(), R.drawable.non_active_dot));
-            }
-
-            dots[v_flipper.getDisplayedChild()].setImageDrawable(ContextCompat.getDrawable(getApplicationContext(), R.drawable.active_dot));
-        }
-    };
-    public void flipperImages(Bitmap image){
-        ImageView imageView = new ImageView(this);
-        imageView.setImageBitmap(Bitmap.createScaledBitmap(image,600,580,true));
-        imageView.setImageBitmap(Bitmap.createScaledBitmap(image,600,580,true));
-        v_flipper.addView(imageView);
     }
 
 
@@ -358,24 +273,26 @@ public class ProductPagePanel extends ViewManager implements BottomNavigationVie
             case R.id.navigation_search:
                 //changeActivity(ViewManager.getInstance().openSearchPanel());
                 break;
+            case R.id.navigation_add:
+                changeActivity(ViewManager.getInstance().openAddProductPanel());
+                break;
             case R.id.navigation_settings:
                 //changeActivity(ViewManager.getInstance().openSettingsPanel());
                 break;
             case R.id.nav_categories:
                 //changeActivity(ViewManager.getInstance().openSettingsPanel());
-                changeActivity(ViewManager.getInstance().openLoginPanel1());
                 break;
             case R.id.nav_favourites:
                 //changeActivity(ViewManager.getInstance().openSettingsPanel());
-                changeActivity(ViewManager.getInstance().openLoginPanel1());
                 break;
             case R.id.nav_my_orders:
-                //changeActivity(ViewManager.getInstance().openSettingsPanel());
-                changeActivity(ViewManager.getInstance().openLoginPanel1());
+                changeActivity(ViewManager.getInstance().openMyOrdersPanel());
                 break;
             case R.id.nav_help:
                 //changeActivity(ViewManager.getInstance().openSettingsPanel());
-                changeActivity(ViewManager.getInstance().openLoginPanel1());
+                break;
+            case R.id.nav_orders:
+                changeActivity(ViewManager.getInstance().openMyOrdersPanel());
                 break;
             case R.id.nav_logout:
                 changeActivity(ViewManager.getInstance().openLoginPanel1());
@@ -384,13 +301,11 @@ public class ProductPagePanel extends ViewManager implements BottomNavigationVie
         return true;
     }
 
-    private Bitmap[] convertToBitmap(List<String> images) {
-        Bitmap[] newBitmap = new Bitmap[images.size()];
-        for (int i = 0; i < images.size(); i++) {
-            byte[] decodedString = Base64.decode(images.get(i),Base64.NO_WRAP);
-            Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
-            newBitmap[i] = decodedByte;
-        }
+    private Bitmap convertToBitmap(String images) {
+        Bitmap newBitmap;
+        byte[] decodedString = Base64.decode(images,Base64.NO_WRAP);
+        Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
+        newBitmap = decodedByte;
         return newBitmap;
     }
 }

@@ -95,13 +95,13 @@ public class HomePagePanel extends ViewManager implements BottomNavigationView.O
             String[] tempNamesForBottom = new String[18];
 
             for(int i = 0; i < sliderProds.size(); i++){
-                tempImagesForSlide[i] = sliderProds.get(i).getImage().get(0);
+                tempImagesForSlide[i] = sliderProds.get(i).getImage();
             }
             for(int i = 0; i < sliderProds.size(); i++){
                 tempNamesForSlide[i] = sliderProds.get(i).getName();
             }
             for(int i = 0; i < bottomProds.size(); i++){
-                tempImagesForBottom[i] = bottomProds.get(i).getImage().get(0);
+                tempImagesForBottom[i] = bottomProds.get(i).getImage();
             }
             for(int i = 0; i < bottomProds.size(); i++){
                 tempNamesForBottom[i] = bottomProds.get(i).getName();
@@ -339,7 +339,7 @@ public class HomePagePanel extends ViewManager implements BottomNavigationView.O
             myProductList = (LinearLayout) findViewById(R.id.my_order_list);
             Bitmap[] imageBitMap = new Bitmap[myProducts.size()];
             for(int i = 0; i < myProducts.size(); i++){
-                 imageBitMap[i] = convertToBitmap(myProducts.get(i).getImage().get(0));
+                 imageBitMap[i] = convertToBitmap(myProducts.get(i).getImage());
             }
             for (int i = 0; i < myProducts.size(); i++){
                 LinearLayout layoutToAdd = new LinearLayout(act);
@@ -502,7 +502,7 @@ public class HomePagePanel extends ViewManager implements BottomNavigationView.O
                 //changeActivity(ViewManager.getInstance().openSettingsPanel());
                 break;
             case R.id.nav_orders:
-                //changeActivity(ViewManager.getInstance().openSettingsPanel());
+                changeActivity(ViewManager.getInstance().openMyOrdersPanel());
                 break;
             case R.id.nav_logout:
                 changeActivity(ViewManager.getInstance().openLoginPanel1());

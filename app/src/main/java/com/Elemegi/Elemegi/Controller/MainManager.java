@@ -33,7 +33,7 @@ public class MainManager {
             return false;
         }
         List<List<String>> converted = converter(result);
-        currentUser = new User(Long.parseLong(converted.get(0).get(0)),converted.get(0).get(1),converted.get(0).get(2),converted.get(0).get(4),converted.get(0).get(3),converted.get(0).get(5),converted.get(0).get(7),converted.get(0).get(6));
+        currentUser = new User(Long.parseLong(converted.get(0).get(0)),converted.get(0).get(1),converted.get(0).get(2),converted.get(0).get(3),converted.get(0).get(5),converted.get(0).get(7),converted.get(0).get(6));
 
         return true;
     }
@@ -61,7 +61,7 @@ public class MainManager {
         String sliderProductsString = DatabaseManager.getInstance().createHomePageSliderProducts(id);
         List<List<String>> converted = converter(sliderProductsString);
         for(int i = 0 ; i < 3 ; i++){
-            sliderProducts.add(i,new Product(converted.get(i).get(1),Long.parseLong(converted.get(i).get(0)) , converted.get(i).get(2), null,converter2(converted.get(i).get(6)),null,0,Double.parseDouble(converted.get(i).get(4)),0,null));
+            sliderProducts.add(i,new Product(converted.get(i).get(1),Long.parseLong(converted.get(i).get(0)) , converted.get(i).get(2), null,converted.get(i).get(6),null,0,Double.parseDouble(converted.get(i).get(4)),0,null,0L));
         }
 
         return sliderProducts;
@@ -71,7 +71,7 @@ public class MainManager {
         String bottomProductsString = DatabaseManager.getInstance().createHomePageProducts(id);
         List<List<String>> converted = converter(bottomProductsString);
         for(int i = 0 ; i < 18 &&  converted.get(i) != null  ; i++){
-            bottomProducts.add(i,new Product(converted.get(i).get(1),Long.parseLong(converted.get(i).get(0)) , converted.get(i).get(2), null,converter2(converted.get(i).get(6)),null,0,Double.parseDouble(converted.get(i).get(4)),0,null));
+            bottomProducts.add(i,new Product(converted.get(i).get(1),Long.parseLong(converted.get(i).get(0)) , converted.get(i).get(2), null,converted.get(i).get(6),null,0,Double.parseDouble(converted.get(i).get(4)),0,null,0L));
         }
         return bottomProducts;
     }
@@ -82,7 +82,7 @@ public class MainManager {
         List<List<String>> converted = converter(myProductString);
         int numberOfProducts = converted.size();
         for (int i = 0; i < numberOfProducts &&  converted.get(i) != null; i++) {
-            myProducts.add(i, new Product(converted.get(i).get(1), Long.parseLong(converted.get(i).get(2)), getCurrentUser().getName(), null, converter2(converted.get(i).get(0)), converted.get(i).get(3), 0, Double.parseDouble(converted.get(i).get(4)), Integer.parseInt(converted.get(i).get(5)), null));
+            myProducts.add(i, new Product(converted.get(i).get(1), Long.parseLong(converted.get(i).get(2)), getCurrentUser().getName(), null, converted.get(i).get(0), converted.get(i).get(3), 0, Double.parseDouble(converted.get(i).get(4)), Integer.parseInt(converted.get(i).get(5)), null,0L));
         }
         return myProducts; // bu sadece producer kullanılıyorsa kullanılıcak.
     }
@@ -93,18 +93,23 @@ public class MainManager {
         return myOrders;
     }
 
-    public List<String> generateLabels(String[] images) {
+    public List<String> generateLabels(String images) {
         List<String> generatedStrings = null;
         return generatedStrings;
     }
 
-    public Product addProduct(String[] images, String nameString, String descriptionString, String deliveryTimeString, String priceString, List<String> labels) {
-        Product currentProduct = null;
-        String addProductString = DatabaseManager.getInstance().addProductPage(currentUser.getID(),images,nameString,descriptionString,deliveryTimeString,priceString,labels);
-        //Burada sana product bilgilerini dönecek bunla product page oluştur
-        return currentProduct;
+    public Long addProduct(String images, String nameString, String descriptionString, String deliveryTimeString, String priceString, List<String> labels) {
+        String addProductString = DatabaseManager.getInstance().addProductPage(currentUser.getID(),nameString,descriptionString,deliveryTimeString,priceString,labels);
+        int stringCount = images.length() / 3000;
+        Long productID = Long.parseLong(addProductString);
+        for (int i = 0; i < stringCount ; i++) {
+            String tmpImage = images.substring(i*3000,(i+1)*3000);
+            DatabaseManager.getInstance().imageAddition(productID,tmpImage);
+        }
+        DatabaseManager.getInstance().imageAddition(productID,images.substring((stringCount)*3000));
+        return productID;
     }
-    //
+
     private List<List<String>> converter(String data){
         boolean firstEn = true;
         int column = 0;
@@ -173,13 +178,13 @@ public class MainManager {
             myComments.add(i,new Comment(convertedComments.get(i).get(0),convertedComments.get(i).get(1)));
         }
         double temp;
-        if(converted.get(0).get(7).equals("")){
+        if(converted.get(0).get(8).equals("")){
             temp = 0;
         }
         else{
-            temp = Double.parseDouble(converted.get(0).get(7));
+            temp = Double.parseDouble(converted.get(0).get(8));
         }
-        myProduct = new Product(converted.get(0).get(1),Long.parseLong(converted.get(0).get(0)) , converted.get(0).get(2), null,converter2(converted.get(0).get(6)),converted.get(0).get(3),temp,Double.parseDouble(converted.get(0).get(4)),Integer.parseInt(converted.get(0).get(5)),myComments);
+        myProduct = new Product(converted.get(0).get(1),Long.parseLong(converted.get(0).get(0)) , converted.get(0).get(2), null,converted.get(0).get(6),converted.get(0).get(3),temp,Double.parseDouble(converted.get(0).get(4)),Integer.parseInt(converted.get(0).get(5)),myComments,Long.parseLong(converted.get(0).get(7)));
         return myProduct;
     }
 
@@ -224,22 +229,28 @@ public class MainManager {
         DatabaseManager.getInstance().deleteProduct(productID);
     }
 
-    public void updateProduct(long productID, String nameString, String descriptionString, double price, int deliveryTime, List<String> images) {
-        StringBuilder newImageString = new StringBuilder();
-        for (int i = 0; i < images.size() - 1 ; i++) {
-            newImageString.append(images.get(i)).append(",");
-        }
-        newImageString.append(images.get((images.size()-1)));
+    public void updateProduct(long productID, String nameString, String descriptionString, double price, int deliveryTime, String images) {
+
         descriptionString = descriptionString.replace(' ', '-');
         nameString = nameString.replace(' ', '-');
-        String imageString = newImageString.toString();
-        int stringCount = imageString.length() / 3000;
+
+        int stringCount = images.length() / 3000;
         DatabaseManager.getInstance().updateProduct(productID,nameString,descriptionString,price,deliveryTime);
         for (int i = 0; i < stringCount ; i++) {
-            String tmpImage = imageString.substring(i*3000,(i+1)*3000);
+            String tmpImage = images.substring(i*3000,(i+1)*3000);
             DatabaseManager.getInstance().imageAddition(productID,tmpImage);
         }
-        DatabaseManager.getInstance().imageAddition(productID,imageString.substring((stringCount)*3000));
+        DatabaseManager.getInstance().imageAddition(productID,images.substring((stringCount)*3000));
 
+    }
+
+    public User getUserProfile(long producerID) {
+
+        String producerInfoString = DatabaseManager.getInstance().getProducerInfo(producerID);
+        User newUser;
+        List<List<String>> converted = converter(producerInfoString);
+        newUser = new User(producerID,converted.get(0).get(1),null,converted.get(0).get(3),converted.get(0).get(5),converted.get(0).get(7),converted.get(0).get(6));
+
+        return newUser;
     }
 }

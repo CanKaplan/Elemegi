@@ -34,10 +34,10 @@ public class EditProfilePanel extends ViewManager {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         layout=findViewById(R.id.layout);
-        anim=(AnimationDrawable)layout.getBackground();
+        /*anim=(AnimationDrawable)layout.getBackground();
         anim.setEnterFadeDuration(10);
         anim.setExitFadeDuration(1000);
-        anim.start();
+        anim.start();*/
         setContentView(R.layout.edit_profile_page);
 
         profAddress = (EditText) findViewById(R.id.editProfAddress);

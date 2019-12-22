@@ -234,7 +234,7 @@ public class ViewManager extends AppCompatActivity {
             return "Please enter your product name!";
         }
         for(int i = 0; i < newName.length(); i++){
-            if((int)(newName.toUpperCase().charAt(i)) > 90 || (int)(newName.toUpperCase().charAt(i)) < 65){
+            if(((int)(newName.toUpperCase().charAt(i)) != 32) && ((int)(newName.toUpperCase().charAt(i)) > 90 || ((int)(newName.toUpperCase().charAt(i)) < 65))){
                 return "Name have to consist of only alphabetic characters!";
             }
         }
@@ -247,7 +247,7 @@ public class ViewManager extends AppCompatActivity {
             return "Please enter your name!";
         }
         for(int i = 0; i < newDescription.length(); i++){
-            if((int)(newDescription.toUpperCase().charAt(i)) > 90 || (int)(newDescription.toUpperCase().charAt(i)) < 65){
+            if(((int)(newDescription.toUpperCase().charAt(i)) != 32) && ((int)(newDescription.toUpperCase().charAt(i)) > 90 || ((int)(newDescription.toUpperCase().charAt(i)) < 65))){
                 return "Name have to consist of only alphabetic characters!";
             }
         }
@@ -261,8 +261,8 @@ public class ViewManager extends AppCompatActivity {
         }
 
         for(int i = 0; i < newPrice.length(); i++){
-            if(!(newPrice.matches("[0-9]*\\,?[0-9]*"))){
-                return "Name have to consist of only numerical characters and ',' !";
+            if(!(newPrice.matches("[0-9]*\\.?[0-9]*"))){
+                return "Name have to consist of only numerical characters and '.' !";
             }
         }
         return "";
@@ -281,17 +281,17 @@ public class ViewManager extends AppCompatActivity {
         return "";
     }
 
-    public String addProduct(String[] images, String nameString, String descriptionString, String deliveryTimeString, String priceString, List<String> labels) {
-        Product result;
+    public Long addProduct(String images, String nameString, String descriptionString, String deliveryTimeString, String priceString, List<String> labels) {
+        Long result;
         result = MainManager.getInstance().addProduct(images,nameString,descriptionString,deliveryTimeString,priceString,labels);
         if (result != null){
-            return String.valueOf(result.getProductID());
+            return result;
         }
         else
-            return "";
+            return 0L;
     }
 
-    public List<String> getLabels(String[] images) {
+    public List<String> getLabels(String images) {
         List<String> labels = MainManager.getInstance().generateLabels(images);
         return labels;
     }
@@ -345,7 +345,12 @@ public class ViewManager extends AppCompatActivity {
         return EditProductPanel.class;
     }
 
-    public void updateProduct(long productID, String nameString, String descriptionString, double price, int deliveryTime, List<String> images) {
+    public void updateProduct(long productID, String nameString, String descriptionString, double price, int deliveryTime, String images) {
         MainManager.getInstance().updateProduct(productID,nameString,descriptionString,price,deliveryTime,images);
+    }
+
+    public User getUserProfile(long producerID) {
+        User newUser = MainManager.getInstance().getUserProfile(producerID);
+        return newUser;
     }
 }
