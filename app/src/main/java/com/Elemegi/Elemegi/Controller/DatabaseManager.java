@@ -351,6 +351,52 @@ public class DatabaseManager extends Activity {
         return result;
     }
 
+    public void deleteProduct(long productID) {
+        BackgroundTask backgroundTask = new BackgroundTask();
+        String data_string = "p_ID=" + productID;
+        backgroundTask.setTaskContent("deleteproduct.php",data_string);
+        String result = "";
+        try {
+            result = backgroundTask.execute().get();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void updateProduct(long productID, String nameString, String descriptionString, double price, int deliveryTime) {
+        BackgroundTask backgroundTask = new BackgroundTask();
+        String data_string ="p_ID=" + productID + "&p_name=" + nameString + "&description=" + descriptionString + "&price=" + price + "&deliveryTime="
+                + deliveryTime ;
+        Log.d("YYYYYYYYYYY",data_string);
+        backgroundTask.setTaskContent("updateProduct.php",data_string);
+        String result = "";
+        try {
+            result = backgroundTask.execute().get();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void imageAddition(long productID, String substring) {
+        BackgroundTask backgroundTask = new BackgroundTask();
+        String data_string ="p_ID=" + productID + "&image=" + substring ;
+        Log.d("YYYYYYYYYYY",data_string);
+        backgroundTask.setTaskContent("image.php",data_string);
+        String result = "";
+        try {
+            result = backgroundTask.execute().get();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        Log.d("XXXXXXXXXXX",result);
+    }
+
     class BackgroundTask extends AsyncTask<Void,Void,String> {
 
         private String add_info_url;

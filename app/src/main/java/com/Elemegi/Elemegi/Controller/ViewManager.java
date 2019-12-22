@@ -13,6 +13,7 @@ import com.Elemegi.Elemegi.Model.User;
 import com.Elemegi.Elemegi.View.AddProductPanel;
 import com.Elemegi.Elemegi.View.ChangePasswordPanel;
 import com.Elemegi.Elemegi.View.CommentsPanel;
+import com.Elemegi.Elemegi.View.EditProductPanel;
 import com.Elemegi.Elemegi.View.EditProfilePanel;
 import com.Elemegi.Elemegi.View.ForgotPasswordPanel;
 import com.Elemegi.Elemegi.View.HomePagePanel;
@@ -334,5 +335,17 @@ public class ViewManager extends AppCompatActivity {
         }
         else
             return false;
+    }
+
+    public void deleteProduct(long productID) {
+        MainManager.getInstance().deleteProduct(productID);
+    }
+
+    public Class openEditProductPanel() {
+        return EditProductPanel.class;
+    }
+
+    public void updateProduct(long productID, String nameString, String descriptionString, double price, int deliveryTime, List<String> images) {
+        MainManager.getInstance().updateProduct(productID,nameString,descriptionString,price,deliveryTime,images);
     }
 }

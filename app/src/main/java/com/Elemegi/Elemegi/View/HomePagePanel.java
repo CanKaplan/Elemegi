@@ -332,7 +332,7 @@ public class HomePagePanel extends ViewManager implements BottomNavigationView.O
             myApp.setCurrentActivity(this);
             act = myApp.getCurrentActivity();
 
-            List<Product> myProducts = ViewManager.getMyProdList(MainManager.getInstance().getCurrentUser().getID());
+            final List<Product> myProducts = ViewManager.getMyProdList(MainManager.getInstance().getCurrentUser().getID());
 
 
             LinearLayout myProductList;
@@ -346,19 +346,20 @@ public class HomePagePanel extends ViewManager implements BottomNavigationView.O
 
                 layoutToAdd.setBackgroundColor(Color.parseColor("#FFFFFF"));
                 layoutToAdd.setOrientation(LinearLayout.HORIZONTAL);
+                layoutToAdd.setClickable(true);
                 LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT,1f);
                 if(i == 0){
-                    params.setMargins(0, 1, 0, 0);
+                    params.setMargins(0, 12, 0, 0);
                 }
                 else{
-                    params.setMargins(0, 1, 0, 0);
+                    params.setMargins(0, 2, 0, 0);
                 }
                 layoutToAdd.setLayoutParams(params);
                 layoutToAdd.setWeightSum(1);
 
                 ImageView tempImage = new ImageView(act); //Product Image
                 tempImage.setImageBitmap(imageBitMap[i]);
-                TableRow.LayoutParams imageParam = new TableRow.LayoutParams(120,120);
+                TableRow.LayoutParams imageParam = new TableRow.LayoutParams(150,150);
                 imageParam.setMargins(10,10,0,10);
                 tempImage.setLayoutParams(imageParam);
                 layoutToAdd.addView(tempImage);
@@ -382,22 +383,30 @@ public class HomePagePanel extends ViewManager implements BottomNavigationView.O
                 TextView prodPrice = new TextView(act); //Product Price
                 prodPrice.setText(String.valueOf(myProducts.get(i).getPrice()));
                 TableRow.LayoutParams paramPrice = new TableRow.LayoutParams(TableRow.LayoutParams.WRAP_CONTENT, TableRow.LayoutParams.WRAP_CONTENT,1f);
-                paramPrice.setMargins(50,30,0,30);
+                paramPrice.setMargins(50,30,40,30);
                 prodPrice.setLayoutParams(paramPrice);
                 prodPrice.setTextColor(Color.parseColor("#000000"));
                 prodPrice.setTextAlignment(View.TEXT_ALIGNMENT_TEXT_START);
                 layoutToAdd.addView(prodPrice);
 
                 TextView prodDeliverTime = new TextView(act); //Product Deliver Time
-                prodDeliverTime.setText(myProducts.get(i).getDeliverTime());
+                prodDeliverTime.setText(String.valueOf(myProducts.get(i).getDeliverTime()));
                 TableRow.LayoutParams paramDeliverTime = new TableRow.LayoutParams(TableRow.LayoutParams.WRAP_CONTENT, TableRow.LayoutParams.WRAP_CONTENT,1f);
-                paramDeliverTime.setMargins(50,30,0,30);
+                paramDeliverTime.setMargins(50,30,50,30);
                 prodDeliverTime.setLayoutParams(paramDeliverTime);
                 prodDeliverTime.setTextColor(Color.parseColor("#000000"));
                 prodDeliverTime.setTextAlignment(View.TEXT_ALIGNMENT_TEXT_START);
                 layoutToAdd.addView(prodDeliverTime);
 
                 myProductList.addView(layoutToAdd);
+
+                final int finalI = i;
+                layoutToAdd.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        changeActivity(ViewManager.getInstance().openProductPagePanel(),myProducts.get(finalI).getProductID());
+                    }
+                });
             }
         }
 

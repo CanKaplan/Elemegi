@@ -13,7 +13,7 @@ public class MainManager {
     //Lists that keep data of the model package's layers
     private User currentUser;
     private List<User> users;
-    private List<Product> myProducts;
+
     private List<Comment> comments;
     private Order[] myOrders;
 
@@ -77,11 +77,12 @@ public class MainManager {
     }
 
     public List<Product> getMyProducts(long id) {
+        List<Product> myProducts = new ArrayList<>();
         String myProductString = DatabaseManager.getInstance().createMyProductsPage(id);
         List<List<String>> converted = converter(myProductString);
         int numberOfProducts = converted.size();
-        for (int i = 0; i < numberOfProducts ; i++){
-            myProducts.add(i, new Product(converted.get(i).get(1),Long.parseLong(converted.get(i).get(0)) , converted.get(i).get(2), null,converter2(converted.get(i).get(6)),null,0,Double.parseDouble(converted.get(i).get(4)),0,null));
+        for (int i = 0; i < numberOfProducts &&  converted.get(i) != null; i++) {
+            myProducts.add(i, new Product(converted.get(i).get(1), Long.parseLong(converted.get(i).get(2)), getCurrentUser().getName(), null, converter2(converted.get(i).get(0)), converted.get(i).get(3), 0, Double.parseDouble(converted.get(i).get(4)), Integer.parseInt(converted.get(i).get(5)), null));
         }
         return myProducts; // bu sadece producer kullanılıyorsa kullanılıcak.
     }
@@ -217,5 +218,28 @@ public class MainManager {
         }
         else
             return false;
+    }
+
+    public void deleteProduct(long productID) {
+        DatabaseManager.getInstance().deleteProduct(productID);
+    }
+
+    public void updateProduct(long productID, String nameString, String descriptionString, double price, int deliveryTime, List<String> images) {
+        StringBuilder newImageString = new StringBuilder();
+        for (int i = 0; i < images.size() - 1 ; i++) {
+            newImageString.append(images.get(i)).append(",");
+        }
+        newImageString.append(images.get((images.size()-1)));
+        descriptionString = descriptionString.replace(' ', '-');
+        nameString = nameString.replace(' ', '-');
+        String imageString = newImageString.toString();
+        int stringCount = imageString.length() / 3000;
+        DatabaseManager.getInstance().updateProduct(productID,nameString,descriptionString,price,deliveryTime);
+        for (int i = 0; i < stringCount ; i++) {
+            String tmpImage = imageString.substring(i*3000,(i+1)*3000);
+            DatabaseManager.getInstance().imageAddition(productID,tmpImage);
+        }
+        DatabaseManager.getInstance().imageAddition(productID,imageString.substring((stringCount)*3000));
+
     }
 }
