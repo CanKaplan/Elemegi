@@ -27,10 +27,6 @@
         </LinearLayout>
 
     </ScrollView>
-
-
-
-
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/nav_view_bottom"
         android:layout_width="0dp"

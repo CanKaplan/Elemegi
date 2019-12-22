@@ -6,11 +6,10 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
-    android:background="@drawable/gradientlist"
     tools:openDrawer="start">
 
     <include
-        layout="@layout/app_bar_main"
+        layout="@layout/app_bar_my_orders"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
@@ -25,7 +24,6 @@
         app:menu="@menu/navigation_menu" >
 
     </com.google.android.material.navigation.NavigationView>
-
 
 
 

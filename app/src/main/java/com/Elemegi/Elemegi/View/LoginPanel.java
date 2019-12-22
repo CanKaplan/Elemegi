@@ -57,6 +57,7 @@ public class LoginPanel extends ViewManager {
 
                 if(ViewManager.getInstance().checkUserFromDatabase(email,password)){
                     changeActivity(ViewManager.getInstance().openHomePagePanel());
+                    //changeActivity(ViewManager.getInstance().openFavouritePanel());
                 }
                 else{
                     emailEdit.setError("Wrong Email or Password");

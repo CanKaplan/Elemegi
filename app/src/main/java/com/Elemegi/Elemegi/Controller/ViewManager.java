@@ -15,6 +15,7 @@ import com.Elemegi.Elemegi.View.ChangePasswordPanel;
 import com.Elemegi.Elemegi.View.CommentsPanel;
 import com.Elemegi.Elemegi.View.EditProductPanel;
 import com.Elemegi.Elemegi.View.EditProfilePanel;
+import com.Elemegi.Elemegi.View.FavouritePagePanel;
 import com.Elemegi.Elemegi.View.ForgotPasswordPanel;
 import com.Elemegi.Elemegi.View.HomePagePanel;
 import com.Elemegi.Elemegi.View.LoginPanel;
@@ -29,6 +30,8 @@ public class ViewManager extends AppCompatActivity {
     private final static ViewManager instance = new ViewManager();
     protected MyApp myApp;
     private AppCompatActivity currentAct;
+
+
 
 
     protected void onCreate(Bundle savedInstanceState) {
@@ -209,6 +212,10 @@ public class ViewManager extends AppCompatActivity {
         List<Product> homeProds = MainManager.getInstance().createHomePageSliderContent(id);
         return homeProds;
     }
+    public static List<Product> getFavProdList(long ıd) {
+        List<Product> myProd = MainManager.getInstance().getMyFavs(ıd);
+        return myProd;
+    }
 
     public static List<Product> createHomePageImages(long id) {
         List<Product> homeBProds = MainManager.getInstance().createHomePageImages(id);
@@ -352,5 +359,9 @@ public class ViewManager extends AppCompatActivity {
     public User getUserProfile(long producerID) {
         User newUser = MainManager.getInstance().getUserProfile(producerID);
         return newUser;
+    }
+
+    public Class openFavouritePanel() {
+        return FavouritePagePanel.class;
     }
 }

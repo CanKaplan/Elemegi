@@ -17,10 +17,7 @@
             android:id="@+id/nav_favourites"
             android:icon="@drawable/fav"
             android:title="@string/menu_favourites" />
-        <item
-            android:id="@+id/nav_message"
-            android:icon="@drawable/message"
-            android:title="@string/menu_message" />
+
         <item
             android:id="@+id/nav_help"
             android:icon="@drawable/help"

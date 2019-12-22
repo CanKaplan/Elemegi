@@ -253,4 +253,16 @@ public class MainManager {
 
         return newUser;
     }
+
+    public List<Product> getMyFavs(long ıd) {
+        List<Product> myProducts = new ArrayList<>();
+        String myProductString = DatabaseManager.getInstance().createMyFavPage(ıd);
+        List<List<String>> converted = converter(myProductString);
+        int numberOfProducts = converted.size();
+        for (int i = 0; i < numberOfProducts &&  converted.get(i) != null; i++) {
+            myProducts.add(i, new Product(converted.get(i).get(1), Long.parseLong(converted.get(i).get(2)), getCurrentUser().getName(), null, converted.get(i).get(0), converted.get(i).get(3), 0, Double.parseDouble(converted.get(i).get(4)), Integer.parseInt(converted.get(i).get(5)), null,0L));
+        }
+        return myProducts;
+
+    }
 }

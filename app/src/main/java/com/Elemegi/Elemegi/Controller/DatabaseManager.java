@@ -403,6 +403,23 @@ public class DatabaseManager extends Activity {
         return result;
     }
 
+    public String createMyFavPage(long ıd) {
+        BackgroundTask backgroundTask = new BackgroundTask();
+        String data_string = "u_ID=" + ıd;
+        backgroundTask.setTaskContent("showFavourite.php",data_string);
+        String result = "";
+        try {
+            result = backgroundTask.execute().get();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        Log.d("XXXXXXXXXXX",result);
+        return result;
+
+    }
+
     class BackgroundTask extends AsyncTask<Void,Void,String> {
 
         private String add_info_url;
