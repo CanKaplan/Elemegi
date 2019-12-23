@@ -24,7 +24,6 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.content.ContextCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
@@ -481,7 +480,7 @@ public class HomePagePanel extends ViewManager implements BottomNavigationView.O
             case R.id.navigation_logo:
                 break;
             case R.id.navigation_search:
-                //changeActivity(ViewManager.getInstance().openSearchPanel());
+                changeActivity(ViewManager.getInstance().openSearchPanel());
                 break;
             case R.id.navigation_add:
                 changeActivity(ViewManager.getInstance().openAddProductPanel());

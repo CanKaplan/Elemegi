@@ -23,6 +23,7 @@ import com.Elemegi.Elemegi.View.MyOrdersPanel;
 import com.Elemegi.Elemegi.View.ProductPagePanel;
 import com.Elemegi.Elemegi.View.ProfilePagePanel;
 import com.Elemegi.Elemegi.View.RegisterPanel;
+import com.Elemegi.Elemegi.View.SearchPanel;
 
 import java.util.List;
 
@@ -299,8 +300,8 @@ public class ViewManager extends AppCompatActivity {
     }
 
     public List<String> getLabels(String images) {
-        List<String> labels = MainManager.getInstance().generateLabels(images);
-        return labels;
+        MainManager.getInstance().generateLabels(images);
+        return MainManager.getInstance().createdLabels;
     }
 
     public User getCurrentUser() {
@@ -364,4 +365,6 @@ public class ViewManager extends AppCompatActivity {
     public Class openFavouritePanel() {
         return FavouritePagePanel.class;
     }
+
+    public Class openSearchPanel() { return SearchPanel.class;  }
 }

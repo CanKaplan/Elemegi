@@ -1,10 +1,22 @@
 package com.Elemegi.Elemegi.Controller;
 
+import android.util.Log;
+
 import com.Elemegi.Elemegi.Model.Comment;
 import com.Elemegi.Elemegi.Model.Order;
 import com.Elemegi.Elemegi.Model.Product;
 import com.Elemegi.Elemegi.Model.User;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,7 +28,7 @@ public class MainManager {
 
     private List<Comment> comments;
     private Order[] myOrders;
-
+    public List<String> createdLabels =new ArrayList<>();
     //defined managers that will be controlled by MainManager
     private SearchManager searchManager;
 
@@ -93,9 +105,113 @@ public class MainManager {
         return myOrders;
     }
 
-    public List<String> generateLabels(String images) {
-        List<String> generatedStrings = null;
-        return generatedStrings;
+    public void generateLabels(String images) {
+
+
+        final JSONObject tempJson = jsonMaker(images);
+        new Thread(new Runnable() {
+
+            @Override
+            public void run() {
+                try {
+                    createJSONPostRequest(tempJson);
+                } catch (IOException | JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        }).start();
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public JSONObject jsonMaker(String imageString){
+
+        JSONObject imageJson = new JSONObject();
+        try {
+            imageJson.put("content", imageString);
+
+        } catch (JSONException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+
+        JSONObject temp = new JSONObject();
+        try {
+            temp.put("type", "LABEL_DETECTION");
+            temp.put("maxResults", 10);
+        } catch (JSONException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        JSONArray featuresJsonArray = new JSONArray();
+        featuresJsonArray.put(temp);
+
+        JSONObject temp2 = new JSONObject();
+        try {
+            temp2.put("image", imageJson);
+            temp2.put("features", featuresJsonArray);
+        } catch (JSONException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+
+        JSONArray requestsJsonArray= new JSONArray();
+        requestsJsonArray.put(temp2);
+
+        JSONObject temp3 = new JSONObject();
+        try {
+            temp3.put("requests", requestsJsonArray);
+        } catch (JSONException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        String jsonStr = temp3.toString();
+        Log.i("JSON",jsonStr);
+        return temp3;
+    }
+
+    private void createJSONPostRequest(JSONObject jsonFile) throws IOException, JSONException {
+        URL url = new URL("https://vision.googleapis.com/v1/images:annotate?key=AIzaSyBPEr098bfnM9MuTfPk98QrBn0DflVGHvo");
+        HttpURLConnection con = (HttpURLConnection) url.openConnection();
+        con.setDoOutput(true);
+        con.setDoInput(true);
+        con.setRequestProperty("Content-Type", "application/json");
+        con.setRequestProperty("Accept", "application/json");
+        con.setRequestMethod("POST");
+
+        OutputStreamWriter wr = new OutputStreamWriter(con.getOutputStream());
+        wr.write(jsonFile.toString());
+        wr.flush();
+
+        StringBuilder sb = new StringBuilder();
+        int HttpResult = con.getResponseCode();
+        if (HttpResult == HttpURLConnection.HTTP_OK) {
+            BufferedReader br = new BufferedReader(
+                    new InputStreamReader(con.getInputStream(), "utf-8"));
+            String line = null;
+            while ((line = br.readLine()) != null) {
+                sb.append(line + "\n");
+            }
+            br.close();
+            List<String> newList = new ArrayList<>();
+            JSONObject newObj = new JSONObject(sb.toString());
+            JSONObject new2Obj = new JSONObject(newObj.getJSONArray("responses").get(0).toString());
+            JSONArray tempArray = new2Obj.getJSONArray("labelAnnotations");
+            for (int i = 0; i < tempArray.length(); i++) {
+                try {
+                    newList.add(tempArray.getJSONObject(i).getString("description"));
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+            createdLabels = newList;
+        } else {
+            Log.i("bbbbb",con.getResponseMessage());
+        }
     }
 
     public Long addProduct(String images, String nameString, String descriptionString, String deliveryTimeString, String priceString, List<String> labels) {
@@ -260,7 +376,7 @@ public class MainManager {
         List<List<String>> converted = converter(myProductString);
         int numberOfProducts = converted.size();
         for (int i = 0; i < numberOfProducts &&  converted.get(i) != null; i++) {
-            myProducts.add(i, new Product(converted.get(i).get(1), Long.parseLong(converted.get(i).get(2)), getCurrentUser().getName(), null, converted.get(i).get(0), converted.get(i).get(3), 0, Double.parseDouble(converted.get(i).get(4)), Integer.parseInt(converted.get(i).get(5)), null,0L));
+            myProducts.add(i, new Product(converted.get(i).get(0), Long.parseLong(converted.get(i).get(1)), getCurrentUser().getName(), null, converted.get(i).get(2), converted.get(i).get(3), 0, Double.parseDouble(converted.get(i).get(4)), Integer.parseInt(converted.get(i).get(5)), null,0L));
         }
         return myProducts;
 

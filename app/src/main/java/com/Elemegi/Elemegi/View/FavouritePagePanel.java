@@ -1,6 +1,5 @@
 package com.Elemegi.Elemegi.View;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -105,6 +104,13 @@ public class FavouritePagePanel extends ViewManager implements NavigationView.On
             layoutToAdd.addView(prodDeliverTime);
 
             myProductList.addView(layoutToAdd);
+            final int finalI = i;
+            layoutToAdd.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    changeActivity(ViewManager.getInstance().openProductPagePanel(),myProducts.get(finalI).getProductID());
+                }
+            });
 
 
         }

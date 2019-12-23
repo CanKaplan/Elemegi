@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="com.Elemegi.Elemegi">
 
     <application
@@ -11,7 +12,7 @@
         android:largeHeap="true"
         android:theme="@style/AppTheme"
         android:name=".Controller.MyApp"
-        >
+        tools:ignore="GoogleAppIndexingWarning">
 
         <activity
             android:name=".Controller.ViewManager"
@@ -28,6 +29,14 @@
         </activity>
         <activity
             android:name=".View.AddProductPanel"
+            android:theme="@style/AppTheme.NoActionBar">
+        </activity>
+        <activity
+            android:name=".View.FavouritePagePanel"
+            android:theme="@style/AppTheme.NoActionBar">
+        </activity>
+        <activity
+            android:name=".View.SearchPanel"
             android:theme="@style/AppTheme.NoActionBar">
         </activity>
         <activity
