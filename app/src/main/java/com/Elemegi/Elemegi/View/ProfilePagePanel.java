@@ -119,7 +119,7 @@ public class ProfilePagePanel extends ViewManager implements NavigationView.OnNa
             case R.id.navigation_logo:
                 break;
             case R.id.navigation_search:
-                //changeActivity(ViewManager.getInstance().openSearchPanel());
+                changeActivity(ViewManager.getInstance().openSearchPanel());
                 break;
             case R.id.navigation_add:
                 changeActivity(ViewManager.getInstance().openAddProductPanel());
@@ -128,19 +128,17 @@ public class ProfilePagePanel extends ViewManager implements NavigationView.OnNa
                 //changeActivity(ViewManager.getInstance().openSettingsPanel());
                 break;
             case R.id.nav_categories:
-                //changeActivity(ViewManager.getInstance().openSettingsPanel());
+                //changeActivity(ViewManager.getInstance().openCategoriesPanel());
                 break;
             case R.id.nav_favourites:
-                //changeActivity(ViewManager.getInstance().openSettingsPanel());
+                changeActivity(ViewManager.getInstance().openFavouritePanel());
                 break;
             case R.id.nav_my_orders:
+            case R.id.nav_orders:
                 changeActivity(ViewManager.getInstance().openMyOrdersPanel());
                 break;
             case R.id.nav_help:
-                //changeActivity(ViewManager.getInstance().openSettingsPanel());
-                break;
-            case R.id.nav_orders:
-                changeActivity(ViewManager.getInstance().openMyOrdersPanel());
+                //changeActivity(ViewManager.getInstance().openHelpPanel());
                 break;
             case R.id.nav_logout:
                 changeActivity(ViewManager.getInstance().openLoginPanel1());

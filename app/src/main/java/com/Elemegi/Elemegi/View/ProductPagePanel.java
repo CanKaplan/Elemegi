@@ -12,6 +12,7 @@ import android.util.Base64;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -240,6 +241,44 @@ public class ProductPagePanel extends ViewManager implements BottomNavigationVie
                 changeActivity(ViewManager.getInstance().openEditProductPanel(),productID);
             }
         });
+        orderButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(ProductPagePanel.this);
+                builder.setTitle("Add Note");
+
+                final EditText input = new EditText(ProductPagePanel.this);
+                builder.setView(input);
+
+                builder.setPositiveButton("Order", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int whichButton) {
+                        String asda = input.getText().toString();
+                        ViewManager.getInstance().giveOrder(productID,ViewManager.getInstance().getCurrentUser().getID(),asda);
+                        final CharSequence[] options = { "Yayy!" };
+                        AlertDialog.Builder builder = new AlertDialog.Builder(ProductPagePanel.this);
+                        builder.setTitle("Congratulations! Product Succesfully Added into the System!");
+                        builder.setItems(options, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int item) {
+                                if (options[item].equals("Yayy"))
+                                {
+                                    dialog.dismiss();
+                                }
+                            }
+                        });
+                        builder.show();
+                    }
+                });
+
+                builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int whichButton) {
+                        // Canceled.
+                    }
+                });
+
+                builder.show();
+            }
+        });
 
     }
 
@@ -271,7 +310,7 @@ public class ProductPagePanel extends ViewManager implements BottomNavigationVie
             case R.id.navigation_logo:
                 break;
             case R.id.navigation_search:
-                //changeActivity(ViewManager.getInstance().openSearchPanel());
+                changeActivity(ViewManager.getInstance().openSearchPanel());
                 break;
             case R.id.navigation_add:
                 changeActivity(ViewManager.getInstance().openAddProductPanel());
@@ -280,19 +319,17 @@ public class ProductPagePanel extends ViewManager implements BottomNavigationVie
                 //changeActivity(ViewManager.getInstance().openSettingsPanel());
                 break;
             case R.id.nav_categories:
-                //changeActivity(ViewManager.getInstance().openSettingsPanel());
+                //changeActivity(ViewManager.getInstance().openCategoriesPanel());
                 break;
             case R.id.nav_favourites:
-                //changeActivity(ViewManager.getInstance().openSettingsPanel());
+                changeActivity(ViewManager.getInstance().openFavouritePanel());
                 break;
             case R.id.nav_my_orders:
+            case R.id.nav_orders:
                 changeActivity(ViewManager.getInstance().openMyOrdersPanel());
                 break;
             case R.id.nav_help:
-                //changeActivity(ViewManager.getInstance().openSettingsPanel());
-                break;
-            case R.id.nav_orders:
-                changeActivity(ViewManager.getInstance().openMyOrdersPanel());
+                //changeActivity(ViewManager.getInstance().openHelpPanel());
                 break;
             case R.id.nav_logout:
                 changeActivity(ViewManager.getInstance().openLoginPanel1());

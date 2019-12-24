@@ -489,19 +489,17 @@ public class HomePagePanel extends ViewManager implements BottomNavigationView.O
                 //changeActivity(ViewManager.getInstance().openSettingsPanel());
                 break;
             case R.id.nav_categories:
-                //changeActivity(ViewManager.getInstance().openSettingsPanel());
+                //changeActivity(ViewManager.getInstance().openCategoriesPanel());
                 break;
             case R.id.nav_favourites:
                 changeActivity(ViewManager.getInstance().openFavouritePanel());
                 break;
             case R.id.nav_my_orders:
+            case R.id.nav_orders:
                 changeActivity(ViewManager.getInstance().openMyOrdersPanel());
                 break;
             case R.id.nav_help:
-                //changeActivity(ViewManager.getInstance().openSettingsPanel());
-                break;
-            case R.id.nav_orders:
-                changeActivity(ViewManager.getInstance().openMyOrdersPanel());
+                //changeActivity(ViewManager.getInstance().openHelpPanel());
                 break;
             case R.id.nav_logout:
                 changeActivity(ViewManager.getInstance().openLoginPanel1());

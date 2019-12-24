@@ -153,6 +153,7 @@ public class FavouritePagePanel extends ViewManager implements NavigationView.On
     public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
         switch(menuItem.getItemId()) {
             case R.id.navigation_home:
+                changeActivity(ViewManager.getInstance().openHomePagePanel());
                 break;
             case R.id.navigation_profile:
                 changeActivity(ViewManager.getInstance().openProfile());
@@ -160,7 +161,7 @@ public class FavouritePagePanel extends ViewManager implements NavigationView.On
             case R.id.navigation_logo:
                 break;
             case R.id.navigation_search:
-                //changeActivity(ViewManager.getInstance().openSearchPanel());
+                changeActivity(ViewManager.getInstance().openSearchPanel());
                 break;
             case R.id.navigation_add:
                 changeActivity(ViewManager.getInstance().openAddProductPanel());
@@ -169,19 +170,16 @@ public class FavouritePagePanel extends ViewManager implements NavigationView.On
                 //changeActivity(ViewManager.getInstance().openSettingsPanel());
                 break;
             case R.id.nav_categories:
-                //changeActivity(ViewManager.getInstance().openSettingsPanel());
+                //changeActivity(ViewManager.getInstance().openCategoriesPanel());
                 break;
             case R.id.nav_favourites:
-                //changeActivity(ViewManager.getInstance().openFavouritePanel());
                 break;
             case R.id.nav_my_orders:
+            case R.id.nav_orders:
                 changeActivity(ViewManager.getInstance().openMyOrdersPanel());
                 break;
             case R.id.nav_help:
-                //changeActivity(ViewManager.getInstance().openSettingsPanel());
-                break;
-            case R.id.nav_orders:
-                //changeActivity(ViewManager.getInstance().openMyOrdersPanel());
+                //changeActivity(ViewManager.getInstance().openHelpPanel());
                 break;
             case R.id.nav_logout:
                 changeActivity(ViewManager.getInstance().openLoginPanel1());

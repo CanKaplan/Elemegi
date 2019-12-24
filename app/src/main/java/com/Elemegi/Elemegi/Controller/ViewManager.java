@@ -385,4 +385,8 @@ public class ViewManager extends AppCompatActivity {
         searchList = MainManager.getInstance().searchProduct(searchString);
         return searchList;
     }
+
+    public void giveOrder(long productID, long id,String note) {
+        MainManager.getInstance().giveOrder(productID,id,note);
+    }
 }

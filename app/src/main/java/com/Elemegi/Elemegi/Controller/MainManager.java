@@ -51,7 +51,7 @@ public class MainManager {
     }
 
     public void registerUser(String name, String surname,String roleType, String email, String password) {
-
+        name = name.replaceAll(" ","%20");
         checkUserEmail(email);
         DatabaseManager.getInstance().registerUser(name,surname,email, password, roleType);
         //databaseManager.setUserID(email,password);
@@ -223,6 +223,9 @@ public class MainManager {
     }
 
     public Long addProduct(String images, String nameString, String descriptionString, String deliveryTimeString, String priceString, List<String> labels) {
+        nameString = nameString.replaceAll(" ","%20");
+        descriptionString = descriptionString.replaceAll(" ","%20");
+
         String addProductString = DatabaseManager.getInstance().addProductPage(currentUser.getID(),nameString,descriptionString,deliveryTimeString,priceString,labels);
         int stringCount = images.length() / 3000;
         Long productID = Long.parseLong(addProductString);
@@ -326,6 +329,7 @@ public class MainManager {
     }
 
     public void sendComment(String commentAddString, long productID, long id) {
+        commentAddString = commentAddString.replaceAll(" ","%20");
         DatabaseManager.getInstance().sendComment(commentAddString,productID,id);
     }
 
@@ -355,8 +359,8 @@ public class MainManager {
 
     public void updateProduct(long productID, String nameString, String descriptionString, double price, int deliveryTime, String images) {
 
-        descriptionString = descriptionString.replace(' ', '-');
-        nameString = nameString.replace(' ', '-');
+        descriptionString = descriptionString.replaceAll(" ","%20");
+        nameString = nameString.replaceAll(" ","%20");
 
         int stringCount = images.length() / 3000;
         DatabaseManager.getInstance().updateProduct(productID,nameString,descriptionString,price,deliveryTime);
@@ -409,6 +413,7 @@ public class MainManager {
     }
 
     public List<Product> searchProduct(String searchString) {
+        searchString = searchString.replaceAll(" ","%20");
         List<Product> searchedProducts = new ArrayList<>();
         String myProductString = DatabaseManager.getInstance().searchProduct(searchString);
         List<List<String>> converted = converter(myProductString);
@@ -417,5 +422,10 @@ public class MainManager {
             searchedProducts.add(i, new Product(converted.get(i).get(0), Long.parseLong(converted.get(i).get(1)), getCurrentUser().getName(), null, converted.get(i).get(2), converted.get(i).get(3), 0, Double.parseDouble(converted.get(i).get(4)), Integer.parseInt(converted.get(i).get(5)), null,0L));
         }
         return searchedProducts;
+    }
+
+    public void giveOrder(long productID, long id, String note) {
+        note = note.replaceAll(" ","%20");
+        DatabaseManager.getInstance().giveOrder(productID,id,note);
     }
 }

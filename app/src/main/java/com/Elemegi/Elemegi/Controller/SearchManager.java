@@ -1,14 +1,5 @@
 package com.Elemegi.Elemegi.Controller;
 
-import android.graphics.Color;
-
-import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.model.BitmapDescriptorFactory;
-import com.google.android.gms.maps.model.Circle;
-import com.google.android.gms.maps.model.CircleOptions;
-import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.MarkerOptions;
-
 public class SearchManager extends MainManager {
     public SearchManager(){
 
@@ -22,7 +13,7 @@ public class SearchManager extends MainManager {
 
 //TODO this part is necessary to use search on map feature for Search Manager
     //TODO reference : https://ingenuity.ph/blog/android-maps-with-google-places-api-web-service/
-
+/*
     MapsActivity mapsActivity=null; //initialization
     LatLng latLng=null;
     int globalRadius=10000;
@@ -64,6 +55,6 @@ public class SearchManager extends MainManager {
 
 
 
-
+*/
 
 }
