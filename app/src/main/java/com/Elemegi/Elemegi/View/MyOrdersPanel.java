@@ -31,6 +31,8 @@ import com.Elemegi.Elemegi.R;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
 
+import java.util.List;
+
 public class MyOrdersPanel extends ViewManager implements BottomNavigationView.OnNavigationItemSelectedListener, NavigationView.OnNavigationItemSelectedListener {
     private AppCompatActivity act;
     BottomNavigationView navView2;
@@ -56,10 +58,18 @@ public class MyOrdersPanel extends ViewManager implements BottomNavigationView.O
         navView2 = findViewById(R.id.nav_view_bottom);
         LinearLayout myOrderList;
 
-        Order[] myOrders = ViewManager.getMyOrderList(MainManager.getInstance().getCurrentUser().getID());
-        Bitmap[] imageBitMap = new Bitmap[myOrders.length];
-        for(int i = 0; i < myOrders.length; i++){
-            imageBitMap[i] = convertToBitmap(myOrders[i].getProductImage());
+        String userType = "";
+        if(MainManager.getInstance().getCurrentUser() != null) {
+            userType = MainManager.getInstance().getCurrentUser().getRoleType(); // User Typeına göre işlem yap customersa home_oage_page otherwise home_page_page_p
+        }
+        else {
+            userType = "";
+        }
+
+        List<Order> myOrders = ViewManager.getInstance().getMyOrderList(MainManager.getInstance().getCurrentUser().getID());
+        Bitmap[] imageBitMap = new Bitmap[myOrders.size()];
+        for(int i = 0; i < myOrders.size(); i++){
+            imageBitMap[i] = convertToBitmap(myOrders.get(i).getProductImage());
         }
 
         myOrderList = (LinearLayout) findViewById(R.id.my_order_list);
@@ -67,7 +77,7 @@ public class MyOrdersPanel extends ViewManager implements BottomNavigationView.O
         myApp.setCurrentActivity(this);
         act = myApp.getCurrentActivity();
 
-        for (int i = 0; i < myOrders.length; i++){
+        for (int i = 0; i < myOrders.size(); i++){
             LinearLayout layoutToAdd = new LinearLayout(act);
 
             layoutToAdd.setBackgroundColor(Color.parseColor("#FFFFFF"));
@@ -89,43 +99,44 @@ public class MyOrdersPanel extends ViewManager implements BottomNavigationView.O
             layoutToAdd.addView(prodImage);
 
             TextView prodName = new TextView(act); // Product Title
-            prodName.setText(myOrders[i].getProductName());
+            prodName.setText(myOrders.get(i).getProductName());
             prodName.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.WRAP_CONTENT, TableRow.LayoutParams.WRAP_CONTENT));
             prodName.setTextAlignment(View.TEXT_ALIGNMENT_TEXT_START);
             prodName.setTextColor(Color.parseColor("#000F00"));
             layoutToAdd.addView(prodName);
+            if(userType.equals("Customer")) {
+                TextView prodPrice = new TextView(act); //Product Price
+                prodPrice.setText(String.valueOf(myOrders.get(i).getPrice()));
+                TableRow.LayoutParams paramPrice = new TableRow.LayoutParams(TableRow.LayoutParams.WRAP_CONTENT, TableRow.LayoutParams.WRAP_CONTENT, 1f);
+                paramPrice.setMargins(50, 30, 0, 30);
+                prodPrice.setLayoutParams(paramPrice);
+                prodPrice.setTextColor(Color.parseColor("#000000"));
+                prodPrice.setTextAlignment(View.TEXT_ALIGNMENT_TEXT_START);
+                layoutToAdd.addView(prodPrice);
 
-            TextView prodPrice = new TextView(act); //Product Price
-            prodPrice.setText(String.valueOf(myOrders[i].getPrice()));
-            TableRow.LayoutParams paramPrice = new TableRow.LayoutParams(TableRow.LayoutParams.WRAP_CONTENT, TableRow.LayoutParams.WRAP_CONTENT,1f);
-            paramPrice.setMargins(50,30,0,30);
-            prodPrice.setLayoutParams(paramPrice);
-            prodPrice.setTextColor(Color.parseColor("#000000"));
-            prodPrice.setTextAlignment(View.TEXT_ALIGNMENT_TEXT_START);
-            layoutToAdd.addView(prodPrice);
+                ImageView prodRate = new ImageView(act); //Product rate button
+                prodRate.setId(R.id.rateButton);
+                prodRate.setImageResource(R.drawable.comment);
+                TableRow.LayoutParams imageProdParam = new TableRow.LayoutParams(120,120);
+                imageProdParam.setMargins(10,10,0,10);
+                prodRate.setLayoutParams(imageProdParam);
+                layoutToAdd.addView(prodRate);
 
-            ImageView prodRate = new ImageView(act); //Product rate button
-            prodRate.setId(R.id.rateButton);
-            prodRate.setImageResource(R.drawable.comment);
-            TableRow.LayoutParams imageProdParam = new TableRow.LayoutParams(120,120);
-            imageProdParam.setMargins(10,10,0,10);
-            prodRate.setLayoutParams(imageProdParam);
-            layoutToAdd.addView(prodRate);
 
-            TextView prodRemainingTime = new TextView(act); //Product Remaining Time
-            prodRemainingTime.setText(myOrders[i].getRemainingTime());
-            TableRow.LayoutParams paramRemainingTime = new TableRow.LayoutParams(TableRow.LayoutParams.WRAP_CONTENT, TableRow.LayoutParams.WRAP_CONTENT,1f);
-            paramRemainingTime.setMargins(50,30,0,30);
-            prodRemainingTime.setLayoutParams(paramRemainingTime);
-            prodRemainingTime.setTextColor(Color.parseColor("#000000"));
-            prodRemainingTime.setTextAlignment(View.TEXT_ALIGNMENT_TEXT_START);
-            layoutToAdd.addView(prodRemainingTime);
+                TextView prodRemainingTime = new TextView(act); //Product Remaining Time
+                prodRemainingTime.setText(myOrders.get(i).getRemainingTime());
+                TableRow.LayoutParams paramRemainingTime = new TableRow.LayoutParams(TableRow.LayoutParams.WRAP_CONTENT, TableRow.LayoutParams.WRAP_CONTENT,1f);
+                paramRemainingTime.setMargins(50,30,0,30);
+                prodRemainingTime.setLayoutParams(paramRemainingTime);
+                prodRemainingTime.setTextColor(Color.parseColor("#000000"));
+                prodRemainingTime.setTextAlignment(View.TEXT_ALIGNMENT_TEXT_START);
+                layoutToAdd.addView(prodRemainingTime);
 
-            if(myOrders[i].getRemainingTime() > 0)
-                prodRate.setVisibility(View.INVISIBLE);
-            else
-                prodRate.setVisibility(View.VISIBLE);
-
+                if(myOrders.get(i).getRemainingTime() > 0)
+                    prodRate.setVisibility(View.INVISIBLE);
+                else
+                    prodRate.setVisibility(View.VISIBLE);
+            }
             myOrderList.addView(layoutToAdd);
         }
 

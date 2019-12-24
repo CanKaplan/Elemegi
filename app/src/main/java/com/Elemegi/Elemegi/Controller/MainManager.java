@@ -99,9 +99,14 @@ public class MainManager {
         return myProducts; // bu sadece producer kullanılıyorsa kullanılıcak.
     }
 
-    public Order[] getMyOrders(long id) {
-        String myOrdersString = DatabaseManager.getInstance().createMyOrdersPage(id);
-        //BURDAKİ STRING SANA ORDERLARI DÖNDÜRCEK ONLARI ORDER ARRAYINE ÇEVİR
+    public List<Order> getMyOrders(long id) {
+        List<Order> myOrders = new ArrayList<>();
+        String myProductString = DatabaseManager.getInstance().createMyOrdersPage(id);
+        List<List<String>> converted = converter(myProductString);
+        int numberOfProducts = converted.size();
+        for (int i = 0; i < numberOfProducts &&  converted.get(i) != null; i++) {
+            //myOrders.add(i, new Order());
+        }
         return myOrders;
     }
 
@@ -140,8 +145,8 @@ public class MainManager {
 
         JSONObject temp = new JSONObject();
         try {
-            temp.put("type", "LABEL_DETECTION");
-            temp.put("maxResults", 10);
+            temp.put("type", "WEB_DETECTION");
+            temp.put("maxResults", 20);
         } catch (JSONException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
@@ -199,10 +204,13 @@ public class MainManager {
             List<String> newList = new ArrayList<>();
             JSONObject newObj = new JSONObject(sb.toString());
             JSONObject new2Obj = new JSONObject(newObj.getJSONArray("responses").get(0).toString());
-            JSONArray tempArray = new2Obj.getJSONArray("labelAnnotations");
+            JSONObject new3Obj = new JSONObject(new2Obj.getJSONObject("webDetection").toString());
+
+            JSONArray tempArray = new3Obj.getJSONArray("webEntities");
             for (int i = 0; i < tempArray.length(); i++) {
                 try {
-                    newList.add(tempArray.getJSONObject(i).getString("description"));
+                    String temp = tempArray.getJSONObject(i).getString("description");
+                    newList.add(temp);
 
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -380,5 +388,34 @@ public class MainManager {
         }
         return myProducts;
 
+    }
+
+    public List<Product> searchLabelsFromDatabase(List<String> labels) {
+        List<Product> searchedProducts = new ArrayList<>();
+        StringBuilder searchString = new StringBuilder();
+        for (int i = 0; i < labels.size() - 1 ; i++) {
+            searchString.append(labels.get(i)).append(",");
+        }
+        searchString.append(labels.get(labels.size()-1));
+        String searchModifiedString = searchString.toString();
+        searchModifiedString = searchModifiedString.replaceAll(" ","%20");
+        String myProductString = DatabaseManager.getInstance().searchLabelsFromDatabase(searchModifiedString);
+        List<List<String>> converted = converter(myProductString);
+        int numberOfProducts = converted.size();
+        for (int i = 0; i < numberOfProducts &&  converted.get(i) != null; i++) {
+            searchedProducts.add(i, new Product(converted.get(i).get(1),Long.parseLong(converted.get(i).get(0)),"",null,converted.get(i).get(5),converted.get(i).get(2),0,Double.parseDouble(converted.get(i).get(3)),Integer.parseInt(converted.get(i).get(4)),null,0L));
+        }
+        return searchedProducts;
+    }
+
+    public List<Product> searchProduct(String searchString) {
+        List<Product> searchedProducts = new ArrayList<>();
+        String myProductString = DatabaseManager.getInstance().searchProduct(searchString);
+        List<List<String>> converted = converter(myProductString);
+        int numberOfProducts = converted.size();
+        for (int i = 0; i < numberOfProducts &&  converted.get(i) != null; i++) {
+            searchedProducts.add(i, new Product(converted.get(i).get(0), Long.parseLong(converted.get(i).get(1)), getCurrentUser().getName(), null, converted.get(i).get(2), converted.get(i).get(3), 0, Double.parseDouble(converted.get(i).get(4)), Integer.parseInt(converted.get(i).get(5)), null,0L));
+        }
+        return searchedProducts;
     }
 }

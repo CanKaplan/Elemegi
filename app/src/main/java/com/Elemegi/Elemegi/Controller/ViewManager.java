@@ -228,8 +228,9 @@ public class ViewManager extends AppCompatActivity {
         return myProd;
     }
 
-    protected static Order[] getMyOrderList(long id) {
-        Order[] myOrders = MainManager.getInstance().getMyOrders(id);
+    public static List<Order> getMyOrderList(long id) {
+
+        List<Order> myOrders = MainManager.getInstance().getMyOrders(id);
         return myOrders;
     }
 
@@ -301,6 +302,11 @@ public class ViewManager extends AppCompatActivity {
 
     public List<String> getLabels(String images) {
         MainManager.getInstance().generateLabels(images);
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         return MainManager.getInstance().createdLabels;
     }
 
@@ -367,4 +373,16 @@ public class ViewManager extends AppCompatActivity {
     }
 
     public Class openSearchPanel() { return SearchPanel.class;  }
+
+    public List<Product> searchLabelsFromDatabase(List<String> labels) {
+        List<Product> searchList;
+        searchList = MainManager.getInstance().searchLabelsFromDatabase(labels);
+        return searchList;
+    }
+
+    public List<Product> getSearchResult(String searchString) {
+        List<Product> searchList;
+        searchList = MainManager.getInstance().searchProduct(searchString);
+        return searchList;
+    }
 }

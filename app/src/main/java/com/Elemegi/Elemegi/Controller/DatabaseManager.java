@@ -420,6 +420,38 @@ public class DatabaseManager extends Activity {
 
     }
 
+    public String searchLabelsFromDatabase(String labels) {
+        BackgroundTask backgroundTask = new BackgroundTask();
+        String data_string = "label=" + labels;
+        backgroundTask.setTaskContent("label.php",data_string);
+        String result = "";
+        try {
+            result = backgroundTask.execute().get();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        Log.d("XXXXXXXXXXX", result);
+        return result;
+    }
+
+    public String searchProduct(String searchString) {
+        BackgroundTask backgroundTask = new BackgroundTask();
+        String data_string = "label=" + searchString;
+        backgroundTask.setTaskContent("searchProduct.php",data_string);
+        String result = "";
+        try {
+            result = backgroundTask.execute().get();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        Log.d("XXXXXXXXXXX",result);
+        return result;
+    }
+
     class BackgroundTask extends AsyncTask<Void,Void,String> {
 
         private String add_info_url;
