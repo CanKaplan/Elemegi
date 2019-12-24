@@ -18,7 +18,7 @@
     <string name="menu_message"><b>Messages</b></string>
     <string name="menu_help"><b>Help</b></string>
     <string name="menu_logout"><b>Logout</b></string>
-
+    <string name="title_activity_maps">Map</string>
 
 
 </resources>
