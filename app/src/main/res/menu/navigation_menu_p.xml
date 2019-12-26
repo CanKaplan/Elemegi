@@ -7,15 +7,11 @@
     <group android:checkableBehavior="single">
         <item
             android:id="@+id/nav_orders"
-            android:icon="@drawable/ic_menu_camera"
+            android:icon="@drawable/orders"
             android:title="Orders" />
         <item
-            android:id="@+id/nav_message"
-            android:icon="@drawable/message"
-            android:title="Message" />
-        <item
             android:id="@+id/nav_help"
-            android:icon="@drawable/help"
+            android:icon="@drawable/help_icon"
             android:title="Help" />
         <item
             android:id="@+id/nav_logout"

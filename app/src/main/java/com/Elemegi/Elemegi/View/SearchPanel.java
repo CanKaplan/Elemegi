@@ -69,7 +69,7 @@ public class SearchPanel extends ViewManager implements NavigationView.OnNavigat
                 searchString = searchStringEdit.getText().toString();
 
                 currentProducts = ViewManager.getInstance().getSearchResult(searchString);
-
+                getSearchContent();
             }
         });
 
@@ -286,10 +286,7 @@ public class SearchPanel extends ViewManager implements NavigationView.OnNavigat
                 changeActivity(ViewManager.getInstance().openAddProductPanel());
                 break;
             case R.id.navigation_settings:
-                //changeActivity(ViewManager.getInstance().openSettingsPanel());
-                break;
-            case R.id.nav_categories:
-                //changeActivity(ViewManager.getInstance().openCategoriesPanel());
+                changeActivity(ViewManager.getInstance().openSettingsPanel());
                 break;
             case R.id.nav_favourites:
                 changeActivity(ViewManager.getInstance().openFavouritePanel());
@@ -299,7 +296,7 @@ public class SearchPanel extends ViewManager implements NavigationView.OnNavigat
                 changeActivity(ViewManager.getInstance().openMyOrdersPanel());
                 break;
             case R.id.nav_help:
-                //changeActivity(ViewManager.getInstance().openHelpPanel());
+                changeActivity(ViewManager.getInstance().openHelpPanel());
                 break;
             case R.id.nav_logout:
                 changeActivity(ViewManager.getInstance().openLoginPanel1());
@@ -309,7 +306,8 @@ public class SearchPanel extends ViewManager implements NavigationView.OnNavigat
     }
 
     public void changeActivity(Class className) {
-        startActivity(new Intent(SearchPanel.this, className));
+        Intent myIntent = new Intent(SearchPanel.this, className);
+        startActivity(myIntent);
     }
 
     public void changeActivity(Class className, long id) {

@@ -14,7 +14,6 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.List;
 import java.util.concurrent.ExecutionException;
 
 public class DatabaseManager extends Activity {
@@ -145,21 +144,6 @@ public class DatabaseManager extends Activity {
         return result;
     }
 
-    public String updateProfile(String image, String name, String email, String phone, String password, String address){
-        BackgroundTask backgroundTask = new BackgroundTask();
-        String data_string = "image=" + image + "&name=" + name + "&email=" + email + "&phone=" + phone + "&password=" + password + "&address=" + address;
-        backgroundTask.setTaskContent("updateProfile.php",data_string);
-        String result = "";
-        try {
-            result = backgroundTask.execute().get();
-        } catch (ExecutionException e) {
-            e.printStackTrace();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-        Log.d("XXXXXXXXXXX",result);
-        return result;
-    }
 
     public String createHomePageSliderProducts(long id) {
 
@@ -237,10 +221,10 @@ public class DatabaseManager extends Activity {
 
     }
 
-    public String addProductPage(long id, String nameString, String descriptionString, String deliveryTimeString, String priceString, List<String> labels) {
+    public String addProductPage(long id, String nameString, String descriptionString, String deliveryTimeString, String priceString, String labels) {
         BackgroundTask backgroundTask = new BackgroundTask();
         String data_string = "u_ID=" + id + "&p_name=" + nameString + "&description=" + descriptionString + "&price=" + priceString + "&deliveryTime="
-                + deliveryTimeString + "&label=" + "";
+                + deliveryTimeString + "&label=" + labels;
         backgroundTask.setTaskContent("addproduct.php",data_string);
         String result = "";
         try {
@@ -493,6 +477,23 @@ public class DatabaseManager extends Activity {
         BackgroundTask backgroundTask = new BackgroundTask();
         String data_string = "p_ID=" + productID + "&u_ID=" + id;
         backgroundTask.setTaskContent("checkRate.php",data_string);
+        String result = "";
+        try {
+            result = backgroundTask.execute().get();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        Log.d("XXXXXXXXXXX",result);
+        return result;
+    }
+
+    public String updateProfile(long id, String nameString, String emailString, String passwordString, String password2String, String addressString, String phoneString, String imageString) {
+        BackgroundTask backgroundTask = new BackgroundTask();
+        String data_string = "u_ID=" + id + "&name=" + nameString + "&email=" + emailString + "&password1=" + passwordString+ "&password2=" + password2String
+                + "&address=" + addressString+ "&phone=" + phoneString+ "&image=" + imageString ;
+        backgroundTask.setTaskContent("updateProfile.php",data_string);
         String result = "";
         try {
             result = backgroundTask.execute().get();

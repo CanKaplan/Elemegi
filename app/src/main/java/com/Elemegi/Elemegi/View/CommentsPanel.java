@@ -36,13 +36,7 @@ public class CommentsPanel extends ViewManager {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        /*
-        layout=findViewById(R.id.layout);
-        anim=(AnimationDrawable)layout.getBackground();
-        anim.setEnterFadeDuration(10);
-        anim.setExitFadeDuration(1000);
-        anim.start();
-        */
+
         Intent intent = getIntent();
         productID = intent.getLongExtra("id",0);
         setContentView(R.layout.comment_page);

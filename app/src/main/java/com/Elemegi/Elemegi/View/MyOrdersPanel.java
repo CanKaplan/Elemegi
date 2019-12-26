@@ -81,7 +81,6 @@ public class MyOrdersPanel extends ViewManager implements BottomNavigationView.O
             nameForCustomer.setText("Customer");
             phoneNumberText.setText("Phone");
             addressText.setText("Address");
-
             TableRow.LayoutParams custNameParamText = new TableRow.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
             custNameParamText.setMargins(20,0,0,0);
             nameForCustomer.setLayoutParams(custNameParamText);
@@ -305,6 +304,12 @@ public class MyOrdersPanel extends ViewManager implements BottomNavigationView.O
         toggle.setDrawerIndicatorEnabled(true);
         toggle.syncState();
         navigationView = (NavigationView) findViewById(R.id.nav_view);
+        if (userType.equals("Producer")){
+            navigationView.getMenu().clear();
+            navigationView.inflateMenu(R.menu.navigation_menu_p);
+            navView2.getMenu().clear();
+            navView2.inflateMenu(R.menu.navigation_menu_bottom_p);
+        }
         navigationView.setNavigationItemSelectedListener(this);
         navView2.setOnNavigationItemSelectedListener(this);
     }
@@ -344,10 +349,7 @@ public class MyOrdersPanel extends ViewManager implements BottomNavigationView.O
                 changeActivity(ViewManager.getInstance().openAddProductPanel());
                 break;
             case R.id.navigation_settings:
-                //changeActivity(ViewManager.getInstance().openSettingsPanel());
-                break;
-            case R.id.nav_categories:
-                //changeActivity(ViewManager.getInstance().openCategoriesPanel());
+                changeActivity(ViewManager.getInstance().openSettingsPanel());
                 break;
             case R.id.nav_favourites:
                 changeActivity(ViewManager.getInstance().openFavouritePanel());
@@ -356,7 +358,7 @@ public class MyOrdersPanel extends ViewManager implements BottomNavigationView.O
             case R.id.nav_orders:
                 break;
             case R.id.nav_help:
-                //changeActivity(ViewManager.getInstance().openHelpPanel());
+                changeActivity(ViewManager.getInstance().openHelpPanel());
                 break;
             case R.id.nav_logout:
                 changeActivity(ViewManager.getInstance().openLoginPanel1());

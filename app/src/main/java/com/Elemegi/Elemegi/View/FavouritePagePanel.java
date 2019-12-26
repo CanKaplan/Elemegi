@@ -167,10 +167,7 @@ public class FavouritePagePanel extends ViewManager implements NavigationView.On
                 changeActivity(ViewManager.getInstance().openAddProductPanel());
                 break;
             case R.id.navigation_settings:
-                //changeActivity(ViewManager.getInstance().openSettingsPanel());
-                break;
-            case R.id.nav_categories:
-                //changeActivity(ViewManager.getInstance().openCategoriesPanel());
+                changeActivity(ViewManager.getInstance().openSettingsPanel());
                 break;
             case R.id.nav_favourites:
                 break;
@@ -179,7 +176,7 @@ public class FavouritePagePanel extends ViewManager implements NavigationView.On
                 changeActivity(ViewManager.getInstance().openMyOrdersPanel());
                 break;
             case R.id.nav_help:
-                //changeActivity(ViewManager.getInstance().openHelpPanel());
+                changeActivity(ViewManager.getInstance().openHelpPanel());
                 break;
             case R.id.nav_logout:
                 changeActivity(ViewManager.getInstance().openLoginPanel1());

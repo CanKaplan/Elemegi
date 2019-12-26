@@ -82,7 +82,7 @@ public class MainManager {
         List<Product> bottomProducts = new ArrayList<>();
         String bottomProductsString = DatabaseManager.getInstance().createHomePageProducts(id);
         List<List<String>> converted = converter(bottomProductsString);
-        for(int i = 0 ; i < 18 &&  converted.get(i) != null  ; i++){
+        for(int i = 0 ; i < 12 &&  converted.get(i) != null  ; i++){
             bottomProducts.add(i,new Product(converted.get(i).get(1),Long.parseLong(converted.get(i).get(0)) , converted.get(i).get(2), null,converted.get(i).get(6),null,0,Double.parseDouble(converted.get(i).get(4)),0,null,0L));
         }
         return bottomProducts;
@@ -233,7 +233,15 @@ public class MainManager {
         nameString = nameString.replaceAll(" ","%20");
         descriptionString = descriptionString.replaceAll(" ","%20");
 
-        String addProductString = DatabaseManager.getInstance().addProductPage(currentUser.getID(),nameString,descriptionString,deliveryTimeString,priceString,labels);
+        StringBuilder searchString = new StringBuilder();
+        for (int i = 0; i < labels.size() - 1 ; i++) {
+            searchString.append(labels.get(i)).append(",");
+        }
+        if(labels.size() > 0)
+            searchString.append(labels.get(labels.size()-1));
+        String newLabels = searchString.toString();
+        newLabels = newLabels.replaceAll(" ","%20");
+        String addProductString = DatabaseManager.getInstance().addProductPage(currentUser.getID(),nameString,descriptionString,deliveryTimeString,priceString,newLabels);
         int stringCount = images.length() / 3000;
         Long productID = Long.parseLong(addProductString);
         for (int i = 0; i < stringCount ; i++) {
@@ -407,7 +415,8 @@ public class MainManager {
         for (int i = 0; i < labels.size() - 1 ; i++) {
             searchString.append(labels.get(i)).append(",");
         }
-        searchString.append(labels.get(labels.size()-1));
+        if(labels.size() > 0)
+            searchString.append(labels.get(labels.size()-1));
         String searchModifiedString = searchString.toString();
         searchModifiedString = searchModifiedString.replaceAll(" ","%20");
         String myProductString = DatabaseManager.getInstance().searchLabelsFromDatabase(searchModifiedString);
@@ -423,10 +432,11 @@ public class MainManager {
         searchString = searchString.replaceAll(" ","%20");
         List<Product> searchedProducts = new ArrayList<>();
         String myProductString = DatabaseManager.getInstance().searchProduct(searchString);
+
         List<List<String>> converted = converter(myProductString);
         int numberOfProducts = converted.size();
         for (int i = 0; i < numberOfProducts &&  converted.get(i) != null; i++) {
-            searchedProducts.add(i, new Product(converted.get(i).get(0), Long.parseLong(converted.get(i).get(1)), getCurrentUser().getName(), null, converted.get(i).get(2), converted.get(i).get(3), 0, Double.parseDouble(converted.get(i).get(4)), Integer.parseInt(converted.get(i).get(5)), null,0L));
+            searchedProducts.add(i, new Product(converted.get(i).get(1),Long.parseLong(converted.get(i).get(0)),"",null,converted.get(i).get(5),converted.get(i).get(2),0,Double.parseDouble(converted.get(i).get(3)),Integer.parseInt(converted.get(i).get(4)),null,0L));
         }
         return searchedProducts;
     }
@@ -445,5 +455,16 @@ public class MainManager {
         if(res.equals("TRUE"))
             return true;
         return false;
+    }
+
+    public boolean updateProfile(long id, String nameString, String emailString, String passwordString, String password2String, String addressString, String phoneString, String imageString) {
+        nameString = nameString.replaceAll(" ","%20");
+        addressString = addressString.replaceAll(" ","%20");
+        phoneString = phoneString.replaceAll(" ","%20");
+        String updateResult = DatabaseManager.getInstance().updateProfile(id,nameString,emailString,passwordString,password2String,addressString,phoneString,imageString);
+        if(updateResult.equals("TRUE"))
+            return true;
+        else
+            return false;
     }
 }

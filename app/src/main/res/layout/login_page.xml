@@ -84,8 +84,8 @@
         android:textAlignment="center"
         android:textAllCaps="false"
         android:textColor="#E1070404"
-        android:textIsSelectable="false"
-        android:textSize="14sp" />
+        android:textSize="14sp"
+        android:textIsSelectable="false" />
 
     <EditText
         android:id="@+id/email"

@@ -17,6 +17,7 @@ import com.Elemegi.Elemegi.View.EditProductPanel;
 import com.Elemegi.Elemegi.View.EditProfilePanel;
 import com.Elemegi.Elemegi.View.FavouritePagePanel;
 import com.Elemegi.Elemegi.View.ForgotPasswordPanel;
+import com.Elemegi.Elemegi.View.HelpPanel;
 import com.Elemegi.Elemegi.View.HomePagePanel;
 import com.Elemegi.Elemegi.View.LoginPanel;
 import com.Elemegi.Elemegi.View.MyOrdersPanel;
@@ -24,6 +25,7 @@ import com.Elemegi.Elemegi.View.ProductPagePanel;
 import com.Elemegi.Elemegi.View.ProfilePagePanel;
 import com.Elemegi.Elemegi.View.RegisterPanel;
 import com.Elemegi.Elemegi.View.SearchPanel;
+import com.Elemegi.Elemegi.View.SettingsPanel;
 
 import java.util.List;
 
@@ -398,4 +400,15 @@ public class ViewManager extends AppCompatActivity {
         return MainManager.getInstance().isRated(productID,id);
     }
 
+    public boolean updateProfile(long id, String nameString, String emailString, String passwordString, String password2String, String addressString, String phoneString, String imageString) {
+        return MainManager.getInstance().updateProfile(id,nameString,emailString,passwordString,password2String,addressString,phoneString,imageString);
+    }
+
+    public Class openHelpPanel() {
+        return HelpPanel.class;
+    }
+
+    public Class openSettingsPanel() {
+        return SettingsPanel.class;
+    }
 }

@@ -62,6 +62,7 @@ public class HomePagePanel extends ViewManager implements BottomNavigationView.O
     private TextView text6;
     private TextView sliderNames;
     private DrawerLayout layout;
+    String[] tempNamesForSlide;
     private AnimationDrawable anim;
 
     @SuppressLint("ClickableViewAccessibility")
@@ -89,9 +90,9 @@ public class HomePagePanel extends ViewManager implements BottomNavigationView.O
             final List<Product> bottomProds =  ViewManager.createHomePageImages(MainManager.getInstance().getCurrentUser().getID());
 
             String[] tempImagesForSlide = new String[3];
-            String[] tempNamesForSlide = new String[3];
-            String[] tempImagesForBottom = new String[18];
-            String[] tempNamesForBottom = new String[18];
+            tempNamesForSlide = new String[3];
+            String[] tempImagesForBottom = new String[12];
+            String[] tempNamesForBottom = new String[12];
 
             for(int i = 0; i < sliderProds.size(); i++){
                 tempImagesForSlide[i] = sliderProds.get(i).getImage();
@@ -219,7 +220,7 @@ public class HomePagePanel extends ViewManager implements BottomNavigationView.O
                             }
 
                             //swipe left
-                            if (startX > endX && currentPosition != 2 && Math.abs(startX - endX) >= 10) {
+                            if (startX > endX && currentPosition != 1 && Math.abs(startX - endX) >= 10) {
                                 v_flipper_product.setInAnimation(imgAnimationIn);
                                 v_flipper_product.showNext();
                                 currentPosition++;
@@ -366,6 +367,7 @@ public class HomePagePanel extends ViewManager implements BottomNavigationView.O
                 TextView tempTitle = new TextView(act); // Product Title
                 tempTitle.setText(myProducts.get(i).getName());
                 tempTitle.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.WRAP_CONTENT, TableRow.LayoutParams.WRAP_CONTENT));
+                tempTitle.setWidth(160);
                 tempTitle.setTextAlignment(View.TEXT_ALIGNMENT_TEXT_START);
                 tempTitle.setTextColor(Color.parseColor("#000F00"));
                 layoutToAdd.addView(tempTitle);
@@ -375,6 +377,7 @@ public class HomePagePanel extends ViewManager implements BottomNavigationView.O
                 TableRow.LayoutParams paramDescription = new TableRow.LayoutParams(TableRow.LayoutParams.WRAP_CONTENT, TableRow.LayoutParams.WRAP_CONTENT,1f);
                 paramDescription.setMargins(50,30,0,30);
                 prodDescription.setLayoutParams(paramDescription);
+                prodDescription.setWidth(220);
                 prodDescription.setTextColor(Color.parseColor("#000000"));
                 prodDescription.setTextAlignment(View.TEXT_ALIGNMENT_TEXT_START);
                 layoutToAdd.addView(prodDescription);
@@ -464,7 +467,7 @@ public class HomePagePanel extends ViewManager implements BottomNavigationView.O
             for(int i = 0; i< dotscount; i++){
                 dots[i].setImageDrawable(ContextCompat.getDrawable(getApplicationContext(), R.drawable.non_active_dot));
             }
-
+            sliderNames.setText(tempNamesForSlide[v_flipper.getDisplayedChild()]);
             dots[v_flipper.getDisplayedChild()].setImageDrawable(ContextCompat.getDrawable(getApplicationContext(), R.drawable.active_dot));
         }
     };
@@ -492,10 +495,7 @@ public class HomePagePanel extends ViewManager implements BottomNavigationView.O
                 changeActivity(ViewManager.getInstance().openAddProductPanel());
                 break;
             case R.id.navigation_settings:
-                //changeActivity(ViewManager.getInstance().openSettingsPanel());
-                break;
-            case R.id.nav_categories:
-                //changeActivity(ViewManager.getInstance().openCategoriesPanel());
+                changeActivity(ViewManager.getInstance().openSettingsPanel());
                 break;
             case R.id.nav_favourites:
                 changeActivity(ViewManager.getInstance().openFavouritePanel());
@@ -505,7 +505,7 @@ public class HomePagePanel extends ViewManager implements BottomNavigationView.O
                 changeActivity(ViewManager.getInstance().openMyOrdersPanel());
                 break;
             case R.id.nav_help:
-                //changeActivity(ViewManager.getInstance().openHelpPanel());
+                changeActivity(ViewManager.getInstance().openHelpPanel());
                 break;
             case R.id.nav_logout:
                 changeActivity(ViewManager.getInstance().openLoginPanel1(),true);

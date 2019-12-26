@@ -18,6 +18,7 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.drawerlayout.widget.DrawerLayout;
 
+import com.Elemegi.Elemegi.Controller.MainManager;
 import com.Elemegi.Elemegi.Controller.ViewManager;
 import com.Elemegi.Elemegi.Model.User;
 import com.Elemegi.Elemegi.R;
@@ -52,6 +53,7 @@ public class ProfilePagePanel extends ViewManager implements NavigationView.OnNa
         profileImage = (ImageView) findViewById(R.id.profileImage);
 
         Intent intent = getIntent();
+        producerID = intent.getLongExtra("id",0L);
         if(producerID != 0L){
             producerID = intent.getLongExtra("id",0);
             currentProfileUser = ViewManager.getInstance().getUserProfile(producerID);
@@ -94,7 +96,20 @@ public class ProfilePagePanel extends ViewManager implements NavigationView.OnNa
         drawer.addDrawerListener(toggle);
         toggle.setDrawerIndicatorEnabled(true);
         toggle.syncState();
+        String userType = "";
+        if(MainManager.getInstance().getCurrentUser() != null) {
+            userType = MainManager.getInstance().getCurrentUser().getRoleType(); // User Typeına göre işlem yap customersa home_oage_page otherwise home_page_page_p
+        }
+        else {
+            userType = "";
+        }
         navigationView = (NavigationView) findViewById(R.id.nav_view3);
+        if (userType.equals("Producer")){
+            navigationView.getMenu().clear();
+            navigationView.inflateMenu(R.menu.navigation_menu_p);
+            navView3.getMenu().clear();
+            navView3.inflateMenu(R.menu.navigation_menu_bottom_p);
+        }
         navigationView.setNavigationItemSelectedListener(this);
         navView3.setOnNavigationItemSelectedListener(this);
     }
@@ -125,10 +140,7 @@ public class ProfilePagePanel extends ViewManager implements NavigationView.OnNa
                 changeActivity(ViewManager.getInstance().openAddProductPanel());
                 break;
             case R.id.navigation_settings:
-                //changeActivity(ViewManager.getInstance().openSettingsPanel());
-                break;
-            case R.id.nav_categories:
-                //changeActivity(ViewManager.getInstance().openCategoriesPanel());
+                changeActivity(ViewManager.getInstance().openSettingsPanel());
                 break;
             case R.id.nav_favourites:
                 changeActivity(ViewManager.getInstance().openFavouritePanel());
@@ -138,7 +150,7 @@ public class ProfilePagePanel extends ViewManager implements NavigationView.OnNa
                 changeActivity(ViewManager.getInstance().openMyOrdersPanel());
                 break;
             case R.id.nav_help:
-                //changeActivity(ViewManager.getInstance().openHelpPanel());
+                changeActivity(ViewManager.getInstance().openHelpPanel());
                 break;
             case R.id.nav_logout:
                 changeActivity(ViewManager.getInstance().openLoginPanel1());

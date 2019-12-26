@@ -10,14 +10,12 @@ import android.graphics.drawable.AnimationDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Base64;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
@@ -32,12 +30,9 @@ import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.util.List;
 
-public class EditProductPanel extends ViewManager implements NavigationView.OnNavigationItemSelectedListener, BottomNavigationView.OnNavigationItemSelectedListener {
+public class EditProductPanel extends ViewManager {
 
-    private static int imageCount  = 1;
     private boolean check1 = false;
-    private boolean check2 = false;
-    private boolean check3 = false;
 
     private AppCompatActivity act;
     private BottomNavigationView navView2;
@@ -225,43 +220,5 @@ public class EditProductPanel extends ViewManager implements NavigationView.OnNa
         return BitmapFactory.decodeStream(imageStream);
     }
 
-    public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
-        switch(menuItem.getItemId()) {
-            case R.id.navigation_home:
-                changeActivity(ViewManager.getInstance().openHomePagePanel());
-                break;
-            case R.id.navigation_profile:
-                changeActivity(ViewManager.getInstance().openProfile());
-                break;
-            case R.id.navigation_logo:
-                break;
-            case R.id.navigation_search:
-                changeActivity(ViewManager.getInstance().openSearchPanel());
-                break;
-            case R.id.navigation_add:
-                changeActivity(ViewManager.getInstance().openAddProductPanel());
-                break;
-            case R.id.navigation_settings:
-                //changeActivity(ViewManager.getInstance().openSettingsPanel());
-                break;
-            case R.id.nav_categories:
-                //changeActivity(ViewManager.getInstance().openCategoriesPanel());
-                break;
-            case R.id.nav_favourites:
-                changeActivity(ViewManager.getInstance().openFavouritePanel());
-                break;
-            case R.id.nav_my_orders:
-            case R.id.nav_orders:
-                changeActivity(ViewManager.getInstance().openMyOrdersPanel());
-                break;
-            case R.id.nav_help:
-                //changeActivity(ViewManager.getInstance().openHelpPanel());
-                break;
-            case R.id.nav_logout:
-                changeActivity(ViewManager.getInstance().openLoginPanel1());
-                break;
-        }
-        return true;
-    }
 }
 

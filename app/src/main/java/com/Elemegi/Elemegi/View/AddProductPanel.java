@@ -122,6 +122,11 @@ public class AddProductPanel extends ViewManager implements NavigationView.OnNav
 
                 if(counter == 4 && imageCount > 0){
                     labels = ViewManager.getInstance().getLabels(imageString);
+                    try {
+                        Thread.sleep(2000);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
                     Long tempResult = ViewManager.getInstance().addProduct(imageString,nameString,descriptionString,deliveryTimeString,priceString,labels);
                     if( tempResult!= 0) {
                         final CharSequence[] options = { "Yayy!" };
@@ -228,10 +233,7 @@ public class AddProductPanel extends ViewManager implements NavigationView.OnNav
             case R.id.navigation_add:
                 break;
             case R.id.navigation_settings:
-                //changeActivity(ViewManager.getInstance().openSettingsPanel());
-                break;
-            case R.id.nav_categories:
-                //changeActivity(ViewManager.getInstance().openCategoriesPanel());
+                changeActivity(ViewManager.getInstance().openSettingsPanel());
                 break;
             case R.id.nav_favourites:
                 changeActivity(ViewManager.getInstance().openFavouritePanel());
@@ -241,7 +243,7 @@ public class AddProductPanel extends ViewManager implements NavigationView.OnNav
                 changeActivity(ViewManager.getInstance().openMyOrdersPanel());
                 break;
             case R.id.nav_help:
-                //changeActivity(ViewManager.getInstance().openHelpPanel());
+                changeActivity(ViewManager.getInstance().openHelpPanel());
                 break;
             case R.id.nav_logout:
                 changeActivity(ViewManager.getInstance().openLoginPanel1());
