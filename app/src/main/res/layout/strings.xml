@@ -2,8 +2,16 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent">
-    <resources>
-        <string android:name="app_name">Sample</string>
-        <string android:name="map_key" android:translatable="false">Enter your google API key here</string>
+    <resources
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+        <string
+            android:name="app_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">My Project</string>
+        <string
+            android:name="map_key"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">AIzaSyA4H9_UcLXuaHfGKti_EgB19Vm3EN_U8_k</string>
     </resources>
 </LinearLayout>

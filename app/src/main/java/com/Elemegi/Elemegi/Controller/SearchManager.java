@@ -26,9 +26,10 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 
-public class SearchManager extends MainManager {
+public class SearchManager extends MapsActivity{
     public SearchManager(){
-
+        //Intent mapsintent = new Intent(this, MapsActivity.class);
+        //startActivity(mapsintent);
     }
 
 
