@@ -30,8 +30,6 @@ public class MainManager {
     private Order[] myOrders;
     public List<String> createdLabels =new ArrayList<>();
     //defined managers that will be controlled by MainManager
-    private SearchManager searchManager;
-
     private final static MainManager instance = new MainManager();
 
     public static MainManager getInstance() {
