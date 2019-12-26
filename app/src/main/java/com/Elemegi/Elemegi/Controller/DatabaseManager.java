@@ -212,11 +212,18 @@ public class DatabaseManager extends Activity {
         return result;
     }
 
-    public String createMyOrdersPage(long id) {
-
+    public String createMyOrdersPage(long id, int i) {
+        String data_string;
         BackgroundTask backgroundTask = new BackgroundTask();
-        String data_string = "u_ID=" + id;
-        backgroundTask.setTaskContent("????????.php",data_string);
+        if(i == 0){
+            data_string = "u_ID=" + id;
+            backgroundTask.setTaskContent("showOrderCustomer.php",data_string);
+        }
+        else{
+            data_string = "u_ID=" + id;
+            backgroundTask.setTaskContent("producerOrder.php",data_string);
+        }
+
         String result = "";
         try {
             result = backgroundTask.execute().get();
@@ -465,6 +472,37 @@ public class DatabaseManager extends Activity {
             e.printStackTrace();
         }
         Log.d("XXXXXXXXXXX",result);
+    }
+
+    public void giveRate(long productID, long id, int rati2) {
+        BackgroundTask backgroundTask = new BackgroundTask();
+        String data_string = "p_ID=" + productID + "&u_ID=" + id + "&rate=" + rati2;
+        backgroundTask.setTaskContent("addRate.php",data_string);
+        String result = "";
+        try {
+            result = backgroundTask.execute().get();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        Log.d("XXXXXXXXXXX",result);
+    }
+
+    public String isRated(long productID, long id) {
+        BackgroundTask backgroundTask = new BackgroundTask();
+        String data_string = "p_ID=" + productID + "&u_ID=" + id;
+        backgroundTask.setTaskContent("checkRate.php",data_string);
+        String result = "";
+        try {
+            result = backgroundTask.execute().get();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        Log.d("XXXXXXXXXXX",result);
+        return result;
     }
 
     class BackgroundTask extends AsyncTask<Void,Void,String> {

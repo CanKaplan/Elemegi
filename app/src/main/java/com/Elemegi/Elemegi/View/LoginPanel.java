@@ -1,6 +1,7 @@
 package com.Elemegi.Elemegi.View;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.drawable.AnimationDrawable;
 import android.os.Bundle;
 import android.view.View;
@@ -26,20 +27,18 @@ public class LoginPanel extends ViewManager {
     private String password;
     private boolean rememberMe;
     private CheckBox rememberMeBox;
+    private Boolean saveLogin;
     private AppCompatActivity act;
     private RelativeLayout layout;
     private AnimationDrawable anim;
+    SharedPreferences pref;
+    SharedPreferences.Editor editor;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.login_page);
         myApp.setCurrentActivity(this);
         act = myApp.getCurrentActivity();
-        layout=findViewById(R.id.layout);
-        anim=(AnimationDrawable)layout.getBackground();
-        anim.setEnterFadeDuration(10);
-        anim.setExitFadeDuration(1000);
-        anim.start();
 
         loginButton = (Button) findViewById(R.id.loginButton);
         registerButton = (Button) findViewById(R.id.registerButton);
@@ -48,6 +47,24 @@ public class LoginPanel extends ViewManager {
         passwordEdit = (EditText) findViewById(R.id.password);
         rememberMeBox = (CheckBox) findViewById(R.id.rememberMe);
 
+        pref = getApplicationContext().getSharedPreferences("MyPref", 0); // 0 - for private mode
+        editor = pref.edit();
+
+        Intent myIntent = getIntent();
+        boolean result = false;
+        result = myIntent.getBooleanExtra("statement",false);
+        if(result){
+            editor.putBoolean("saveLogin", false); // Storing boolean - true/false
+            editor.remove("email");
+            editor.remove("password");
+            editor.commit();
+        }
+
+        saveLogin = pref.getBoolean("saveLogin", false);
+        if(saveLogin){
+            ViewManager.getInstance().checkUserFromDatabase(pref.getString("email",""),pref.getString("password",""));
+            changeActivity(ViewManager.getInstance().openHomePagePanel());
+        }
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -56,6 +73,12 @@ public class LoginPanel extends ViewManager {
                 password = passwordEdit.getText().toString();
 
                 if(ViewManager.getInstance().checkUserFromDatabase(email,password)){
+                    if(rememberMeBox.isChecked()){
+                        editor.putBoolean("saveLogin", true); // Storing boolean - true/false
+                        editor.putString("email", email); // Storing string
+                        editor.putString("password", password); // Storing string
+                        editor.commit();
+                    }
                     changeActivity(ViewManager.getInstance().openHomePagePanel());
                     //changeActivity(ViewManager.getInstance().openFavouritePanel());
                 }
@@ -78,9 +101,9 @@ public class LoginPanel extends ViewManager {
             }
         });
 
-        //*********************rememberMe Yapılcak********************
 
     }
+
 
     public void changeActivity(Class className) {
         startActivity(new Intent(act, className));

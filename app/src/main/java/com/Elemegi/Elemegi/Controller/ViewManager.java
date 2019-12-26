@@ -228,9 +228,9 @@ public class ViewManager extends AppCompatActivity {
         return myProd;
     }
 
-    public static List<Order> getMyOrderList(long id) {
+    public static List<Order> getMyOrderList(long id , int i) {
 
-        List<Order> myOrders = MainManager.getInstance().getMyOrders(id);
+        List<Order> myOrders = MainManager.getInstance().getMyOrders(id , i);
         return myOrders;
     }
 
@@ -389,4 +389,13 @@ public class ViewManager extends AppCompatActivity {
     public void giveOrder(long productID, long id,String note) {
         MainManager.getInstance().giveOrder(productID,id,note);
     }
+
+    public void giveRate(long productID, long id, int rati2) {
+        MainManager.getInstance().giveRate(productID,id,rati2);
+    }
+
+    public boolean isRated(long productID, long id) {
+        return MainManager.getInstance().isRated(productID,id);
+    }
+
 }

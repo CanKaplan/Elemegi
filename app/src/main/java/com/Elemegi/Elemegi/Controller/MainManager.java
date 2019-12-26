@@ -99,13 +99,20 @@ public class MainManager {
         return myProducts; // bu sadece producer kullanılıyorsa kullanılıcak.
     }
 
-    public List<Order> getMyOrders(long id) {
+    public List<Order> getMyOrders(long id, int k) {
         List<Order> myOrders = new ArrayList<>();
-        String myProductString = DatabaseManager.getInstance().createMyOrdersPage(id);
+        String myProductString = DatabaseManager.getInstance().createMyOrdersPage(id,k);
         List<List<String>> converted = converter(myProductString);
         int numberOfProducts = converted.size();
-        for (int i = 0; i < numberOfProducts &&  converted.get(i) != null; i++) {
-            //myOrders.add(i, new Order());
+        if(k == 0){
+            for (int i = 0; i < numberOfProducts &&  converted.get(i) != null; i++) {
+                myOrders.add(i, new Order(Long.parseLong(converted.get(i).get(1)),converted.get(i).get(2),converted.get(i).get(0),0L,"","","",Double.parseDouble(converted.get(i).get(3)),Integer.parseInt(converted.get(i).get(5)),converted.get(i).get(4)));
+            }
+        }
+        else{
+            for (int i = 0; i < numberOfProducts &&  converted.get(i) != null; i++) {
+                myOrders.add(i, new Order(Long.parseLong(converted.get(i).get(0)),converted.get(i).get(6),"",0L,converted.get(i).get(1),converted.get(i).get(3),converted.get(i).get(2),0,Integer.parseInt(converted.get(i).get(5)),converted.get(i).get(4)));
+            }
         }
         return myOrders;
     }
@@ -427,5 +434,16 @@ public class MainManager {
     public void giveOrder(long productID, long id, String note) {
         note = note.replaceAll(" ","%20");
         DatabaseManager.getInstance().giveOrder(productID,id,note);
+    }
+
+    public void giveRate(long productID, long id, int rati2) {
+        DatabaseManager.getInstance().giveRate(productID,id,rati2);
+    }
+
+    public boolean isRated(long productID, long id) {
+        String res = DatabaseManager.getInstance().isRated(productID,id);
+        if(res.equals("TRUE"))
+            return true;
+        return false;
     }
 }

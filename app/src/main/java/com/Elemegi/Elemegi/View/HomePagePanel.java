@@ -452,6 +452,12 @@ public class HomePagePanel extends ViewManager implements BottomNavigationView.O
         startActivity(myIntent);
     }
 
+    public void changeActivity(Class className, boolean statement) {
+        Intent myIntent = new Intent(act, className);
+        myIntent.putExtra("statement", statement);
+        startActivity(myIntent);
+    }
+
     View.OnLayoutChangeListener onLayoutChangeListener_viewFlipper = new View.OnLayoutChangeListener() {
         @Override
         public void onLayoutChange(View v, int left, int top, int right, int bottom, int oldLeft, int oldTop, int oldRight, int oldBottom) {
@@ -502,7 +508,7 @@ public class HomePagePanel extends ViewManager implements BottomNavigationView.O
                 //changeActivity(ViewManager.getInstance().openHelpPanel());
                 break;
             case R.id.nav_logout:
-                changeActivity(ViewManager.getInstance().openLoginPanel1());
+                changeActivity(ViewManager.getInstance().openLoginPanel1(),true);
                 break;
         }
         return true;
