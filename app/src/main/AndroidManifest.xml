@@ -80,7 +80,6 @@
             android:name=".View.ChangePasswordPanel"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".View.EditProductPanel" />
-        <activity android:name=".Controller.SearchManager" />
     </application>
 
 </manifest>
