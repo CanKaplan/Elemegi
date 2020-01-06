@@ -203,6 +203,11 @@ public class SearchPanel extends ViewManager implements NavigationView.OnNavigat
                 Bitmap scaledBitmap = Bitmap.createScaledBitmap(capturedImage,200,200,true);
                 imageString = bitmapToBase64(scaledBitmap);
                 labels = ViewManager.getInstance().getLabels(imageString);
+                try {
+                    Thread.sleep(2000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
                 for (int i = 0; i < labels.size(); i++) {
                     Log.d("asadasdasdasdsa",labels.get(i));
                 }
@@ -213,7 +218,7 @@ public class SearchPanel extends ViewManager implements NavigationView.OnNavigat
                 }
                 currentProducts = ViewManager.getInstance().searchLabelsFromDatabase(labels);
                 try {
-                    Thread.sleep(1000);
+                    Thread.sleep(3000);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }

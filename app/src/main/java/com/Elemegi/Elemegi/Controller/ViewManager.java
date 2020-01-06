@@ -309,7 +309,7 @@ public class ViewManager extends AppCompatActivity {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        return MainManager.getInstance().createdLabels;
+        return MainManager.getInstance().getCreatedLabels();
     }
 
     public User getCurrentUser() {

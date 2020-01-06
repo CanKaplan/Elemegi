@@ -465,4 +465,8 @@ public class MainManager {
         else
             return false;
     }
+
+    public List<String> getCreatedLabels() {
+        return createdLabels;
+    }
 }

@@ -22,7 +22,7 @@
 the searching by word. Second option is searching with image. You can select a product and open its page. This page lets you you comments and order a product.
 when you press the order button system will show you a order option which lets you to enter a note and finish your order. By pressing order button you can terminate the ordering process.
 By using my orders page which is in the side bar, you can see and rate your orders."/>
-    
+
 
     <TextView
         android:layout_width="wrap_content"
